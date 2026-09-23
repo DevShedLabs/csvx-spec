@@ -128,7 +128,7 @@ Especially because this doesn't need to be a server.
 The core should just be a **Go library**:
 
 ```go
-import "github.com/csvx-org/csvx"
+import "github.com/DevShedLabs/csvx-go"
 ```
 
 Then Coder could either call a compiled binary or integrate it into whatever service boundary makes sense.
