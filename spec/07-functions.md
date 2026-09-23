@@ -1,7 +1,7 @@
 # 7. Functions
 
-Core 1.0 functions are `SUM`, `AVERAGE`, `MIN`, `MAX`, `COUNT`, `IF`, `AND`, `OR`, `NOT`,
-`ROUND`, `ABS`, `CONCAT`, and `LEN`.
+Core 1.0 functions are `SUM`, `COUNT`, `IF`, `ROUND`, and `ABS`. Additional functions require a
+later specification version or a registered extension.
 
 Function names are ASCII case-insensitive. Arguments are evaluated left-to-right. A function MUST
 return the same result for the same workbook state and MUST document its treatment of blanks,

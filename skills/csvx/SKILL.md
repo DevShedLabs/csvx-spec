@@ -39,11 +39,12 @@ Before making a format or calculation decision:
 
 ## When creating a workbook
 
-1. Start with a valid package layout: `manifest.json`, `workbook.json`, and one JSON resource per
-   sheet under `sheets/`.
+1. Start with a valid package layout: `manifest.json`, `workbook.json`, and one CSV resource per
+   sheet under `sheets/`, with a `.meta.json` sidecar when metadata is needed.
 2. Give the workbook and every sheet stable IDs.
 3. Define column types where they are known.
-4. Encode each value explicitly using the CSVX type model.
+4. Encode each CSV value according to the declared column type; use metadata for formulas, caches,
+   styles, validation, and explicit cell overrides.
 5. Store formulas as strings beginning with `=`.
 6. Include cached formula values only when they came from a successful calculation.
 7. Add styles and validation as metadata; never use presentation to encode data semantics.

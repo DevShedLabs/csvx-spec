@@ -391,6 +391,8 @@ B2:D20
 %
 ```
 
+Exponentiation is not part of Core 1.0.
+
 ### Comparison
 
 ```text
@@ -401,6 +403,8 @@ B2:D20
 <=
 >=
 ```
+
+`!=` is the canonical not-equal operator. Operators use standard spreadsheet precedence.
 
 ### Functions
 

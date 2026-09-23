@@ -1,7 +1,8 @@
 # 4. Data types
 
-Core scalar types are `blank`, `boolean`, `integer`, `decimal`, `text`, `date`, `time`,
-`datetime`, and `error`.
+Core scalar types are `blank`, `boolean`, `integer`, `decimal`, `string`, `date`, `time`,
+`datetime`, and `error`. `string` is the canonical serialized name; implementations MAY call it
+`text` internally.
 
 JSON representation is explicit to avoid language-specific coercion:
 

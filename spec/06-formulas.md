@@ -6,9 +6,13 @@ Formulas are UTF-8 strings beginning with `=`. The Core grammar is intentionally
 formula  = "=" expression
 expression = literal | reference | function | unary | binary | range | "(" expression ")"
 binary   = expression operator expression
-operator = "+" | "-" | "*" | "/" | "^" | "=" | "<>" | "<" | "<=" | ">" | ">="
+operator = "+" | "-" | "*" | "/" | "%" | "=" | "!=" | "<" | "<=" | ">" | ">="
 reference = [sheet "!"] cell
 range    = reference ":" reference
+
+Operators use standard precedence: unary signs, percent, multiplication/division, addition/
+subtraction, then comparisons. `!=` is the canonical not-equal operator. Exponentiation is not
+part of Core 1.0.
 ```
 
 References are case-insensitive for matching but MUST retain their original spelling when preserved.
