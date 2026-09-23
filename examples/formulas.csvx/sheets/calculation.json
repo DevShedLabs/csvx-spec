@@ -1,0 +1,69 @@
+{
+	"id": "calculation",
+	"name": "Calculation",
+	"columns": [
+		{
+			"id": "A",
+			"name": "Quantity",
+			"type": "integer"
+		},
+		{
+			"id": "B",
+			"name": "Price",
+			"type": "decimal"
+		},
+		{
+			"id": "C",
+			"name": "Total",
+			"type": "decimal"
+		}
+	],
+	"rows": 3,
+	"cells": {
+		"A1": {
+			"value": {
+				"type": "integer",
+				"value": 2
+			}
+		},
+		"B1": {
+			"value": {
+				"type": "decimal",
+				"value": "4.50"
+			}
+		},
+		"C1": {
+			"formula": "=A1*B1",
+			"value": {
+				"type": "decimal",
+				"value": "9.00"
+			}
+		},
+		"A2": {
+			"value": {
+				"type": "integer",
+				"value": 3
+			}
+		},
+		"B2": {
+			"value": {
+				"type": "decimal",
+				"value": "2.00"
+			}
+		},
+		"C2": {
+			"formula": "=A2*B2",
+			"value": {
+				"type": "decimal",
+				"value": "6.00"
+			}
+		},
+		"C3": {
+			"formula": "=SUM(C1:C2)",
+			"value": {
+				"type": "decimal",
+				"value": "15.00"
+			}
+		}
+	}
+}

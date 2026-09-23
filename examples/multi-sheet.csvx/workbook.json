@@ -1,0 +1,16 @@
+{
+	"id": "multi-book",
+	"version": "1.0",
+	"sheets": [
+		{
+			"id": "sales",
+			"name": "Sales",
+			"path": "sheets/sales.json"
+		},
+		{
+			"id": "summary",
+			"name": "Summary",
+			"path": "sheets/summary.json"
+		}
+	]
+}

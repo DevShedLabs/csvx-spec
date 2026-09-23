@@ -1,0 +1,22 @@
+{
+	"id": "style-preservation",
+	"operation": "round-trip",
+	"input": {
+		"style": {
+			"id": "custom",
+			"numberFormat": "0.00",
+			"vendorProperty": {
+				"enabled": true
+			}
+		}
+	},
+	"expected": {
+		"style": {
+			"id": "custom",
+			"numberFormat": "0.00",
+			"vendorProperty": {
+				"enabled": true
+			}
+		}
+	}
+}

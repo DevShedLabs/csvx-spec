@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://csvx.dev/schemas/formulas.schema.json",
+  "title": "CSVX Formula Cell",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["formula"],
+  "properties": {
+    "formula": { "type": "string", "pattern": "^=" },
+    "value": { "$ref": "#/$defs/value" }
+  },
+  "$defs": {
+    "value": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": { "enum": ["blank", "boolean", "integer", "decimal", "text", "date", "time", "datetime", "error"] },
+        "value": {},
+        "code": { "type": "string" },
+        "message": { "type": "string" }
+      },
+      "additionalProperties": true
+    }
+  }
+}

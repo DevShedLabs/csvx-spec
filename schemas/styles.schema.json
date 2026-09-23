@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://csvx.dev/schemas/styles.schema.json",
+  "title": "CSVX Styles",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["styles"],
+  "properties": {
+    "styles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$" },
+          "numberFormat": { "type": "string" },
+          "font": { "type": "object", "additionalProperties": true },
+          "fill": { "type": "object", "additionalProperties": true },
+          "border": { "type": "object", "additionalProperties": true },
+          "alignment": { "type": "object", "additionalProperties": true },
+          "protection": { "type": "object", "additionalProperties": true }
+        },
+        "additionalProperties": true
+      }
+    }
+  }
+}

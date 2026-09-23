@@ -1,0 +1,9 @@
+{
+	"id": "parse-minimal-package",
+	"operation": "validate-package",
+	"input": "examples/minimal.csvx",
+	"expected": {
+		"valid": true,
+		"errors": []
+	}
+}

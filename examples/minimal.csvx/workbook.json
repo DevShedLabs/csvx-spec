@@ -1,0 +1,15 @@
+{
+	"id": "book-1",
+	"version": "1.0",
+	"sheets": [
+		{
+			"id": "sheet-1",
+			"name": "Sheet 1",
+			"path": "sheets/sheet-1.json"
+		}
+	],
+	"calculation": {
+		"mode": "automatic",
+		"iteration": false
+	}
+}

@@ -1,0 +1,24 @@
+{
+	"id": "calculation-cycle",
+	"operation": "recalculate",
+	"input": {
+		"cells": {
+			"A1": {
+				"formula": "=B1+1"
+			},
+			"B1": {
+				"formula": "=A1+1"
+			}
+		}
+	},
+	"expected": {
+		"A1": {
+			"type": "error",
+			"code": "CYCLE"
+		},
+		"B1": {
+			"type": "error",
+			"code": "CYCLE"
+		}
+	}
+}

@@ -1,0 +1,20 @@
+{
+	"styles": [
+		{
+			"id": "currency",
+			"numberFormat": "$#,##0.00",
+			"alignment": {
+				"horizontal": "right"
+			}
+		},
+		{
+			"id": "heading",
+			"font": {
+				"bold": true
+			},
+			"fill": {
+				"color": "#E8F0FE"
+			}
+		}
+	]
+}

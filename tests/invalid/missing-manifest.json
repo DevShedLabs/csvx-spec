@@ -1,0 +1,17 @@
+{
+	"id": "invalid-missing-manifest",
+	"operation": "validate-package",
+	"input": {
+		"files": [
+			"workbook.json"
+		]
+	},
+	"expected": {
+		"valid": false,
+		"errors": [
+			{
+				"code": "MISSING_MANIFEST"
+			}
+		]
+	}
+}

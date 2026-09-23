@@ -1,0 +1,21 @@
+{
+	"id": "summary",
+	"name": "Summary",
+	"columns": [
+		{
+			"id": "A",
+			"name": "Total",
+			"type": "decimal"
+		}
+	],
+	"rows": 1,
+	"cells": {
+		"A1": {
+			"formula": "=SUM('Sales'!A1:A2)",
+			"value": {
+				"type": "decimal",
+				"value": "22.50"
+			}
+		}
+	}
+}

@@ -1,0 +1,24 @@
+{
+	"id": "formula-core-sum",
+	"operation": "evaluate",
+	"input": {
+		"formula": "=SUM(A1:A3)",
+		"cells": {
+			"A1": {
+				"type": "integer",
+				"value": 2
+			},
+			"A2": {
+				"type": "blank"
+			},
+			"A3": {
+				"type": "decimal",
+				"value": "3.50"
+			}
+		}
+	},
+	"expected": {
+		"type": "decimal",
+		"value": "5.50"
+	}
+}

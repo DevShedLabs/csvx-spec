@@ -1,0 +1,13 @@
+{
+	"id": "invalid-unsupported-formula",
+	"operation": "parse-formula",
+	"input": "=IMPORT(\"https://example.test/data\")",
+	"expected": {
+		"valid": false,
+		"errors": [
+			{
+				"code": "NAME"
+			}
+		]
+	}
+}

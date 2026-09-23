@@ -1,0 +1,30 @@
+{
+	"id": "calculation-dependency-order",
+	"operation": "recalculate",
+	"input": {
+		"cells": {
+			"A1": {
+				"value": {
+					"type": "integer",
+					"value": 2
+				}
+			},
+			"B1": {
+				"formula": "=A1+3"
+			},
+			"C1": {
+				"formula": "=B1*4"
+			}
+		}
+	},
+	"expected": {
+		"B1": {
+			"type": "integer",
+			"value": 5
+		},
+		"C1": {
+			"type": "integer",
+			"value": 20
+		}
+	}
+}

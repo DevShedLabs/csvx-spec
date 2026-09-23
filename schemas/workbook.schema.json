@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://csvx.dev/schemas/workbook.schema.json",
+  "title": "CSVX Workbook",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "version", "sheets"],
+  "properties": {
+    "id": { "$ref": "#/$defs/id" },
+    "version": { "const": "1.0" },
+    "sheets": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "path"],
+        "properties": {
+          "id": { "$ref": "#/$defs/id" },
+          "name": { "type": "string", "minLength": 1, "maxLength": 255 },
+          "path": { "type": "string", "pattern": "^sheets/[A-Za-z][A-Za-z0-9_-]{0,63}\\.json$" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "calculation": {
+      "type": "object",
+      "properties": {
+        "mode": { "enum": ["automatic", "manual", "on-load"] },
+        "iteration": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$" }
+  }
+}

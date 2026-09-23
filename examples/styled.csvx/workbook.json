@@ -1,0 +1,11 @@
+{
+	"id": "styled-book",
+	"version": "1.0",
+	"sheets": [
+		{
+			"id": "report",
+			"name": "Report",
+			"path": "sheets/report.json"
+		}
+	]
+}

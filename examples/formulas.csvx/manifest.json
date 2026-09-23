@@ -1,0 +1,10 @@
+{
+	"format": "csvx",
+	"version": "1.0",
+	"workbook": "workbook.json",
+	"files": [
+		"manifest.json",
+		"workbook.json",
+		"sheets/calculation.json"
+	]
+}

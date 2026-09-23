@@ -1,0 +1,11 @@
+{
+	"id": "typed-book",
+	"version": "1.0",
+	"sheets": [
+		{
+			"id": "data",
+			"name": "Data",
+			"path": "sheets/data.json"
+		}
+	]
+}

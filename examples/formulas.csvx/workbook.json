@@ -1,0 +1,15 @@
+{
+	"id": "formula-book",
+	"version": "1.0",
+	"sheets": [
+		{
+			"id": "calculation",
+			"name": "Calculation",
+			"path": "sheets/calculation.json"
+		}
+	],
+	"calculation": {
+		"mode": "automatic",
+		"iteration": false
+	}
+}

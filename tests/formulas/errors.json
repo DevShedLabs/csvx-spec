@@ -1,0 +1,11 @@
+{
+	"id": "formula-div-zero",
+	"operation": "evaluate",
+	"input": {
+		"formula": "=10/0"
+	},
+	"expected": {
+		"type": "error",
+		"code": "DIV0"
+	}
+}

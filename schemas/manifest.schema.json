@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://csvx.dev/schemas/manifest.schema.json",
+  "title": "CSVX Manifest",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["format", "version", "workbook", "files"],
+  "properties": {
+    "format": { "const": "csvx" },
+    "version": { "const": "1.0" },
+    "workbook": { "type": "string", "const": "workbook.json" },
+    "files": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    }
+  }
+}

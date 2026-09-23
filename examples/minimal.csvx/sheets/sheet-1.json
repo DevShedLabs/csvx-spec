@@ -1,0 +1,26 @@
+{
+	"id": "sheet-1",
+	"name": "Sheet 1",
+	"columns": [
+		{
+			"id": "A",
+			"name": "Value",
+			"type": "integer"
+		}
+	],
+	"rows": 2,
+	"cells": {
+		"A1": {
+			"value": {
+				"type": "integer",
+				"value": 1
+			}
+		},
+		"A2": {
+			"value": {
+				"type": "integer",
+				"value": 2
+			}
+		}
+	}
+}

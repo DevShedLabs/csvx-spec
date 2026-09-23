@@ -1,0 +1,28 @@
+{
+	"id": "report",
+	"name": "Report",
+	"columns": [
+		{
+			"id": "A",
+			"name": "Revenue",
+			"type": "decimal"
+		}
+	],
+	"rows": 2,
+	"cells": {
+		"A1": {
+			"value": {
+				"type": "decimal",
+				"value": "1250.00"
+			},
+			"style": "currency"
+		},
+		"A2": {
+			"value": {
+				"type": "text",
+				"value": "Total"
+			},
+			"style": "heading"
+		}
+	}
+}
