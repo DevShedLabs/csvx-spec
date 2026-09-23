@@ -1,0 +1,211 @@
+{
+  "columns": [
+    { "id": "todo", "title": "To Do" },
+    { "id": "backlog", "title": "Backlog" },
+    { "id": "in-progress", "title": "In Progress" },
+    { "id": "review", "title": "Review" },
+    { "id": "done", "title": "Done" }
+  ],
+  "cards": [
+    {
+      "id": "project-specification",
+      "title": "Define the full project specification",
+      "body": "Foundation — Establish CSVX as an implementation-independent, specification-first spreadsheet format. Labels: specification, architecture.",
+      "status": "done",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "core-spec-documents",
+      "title": "Write the normative Core 1.0 specification",
+      "body": "Foundation — Document the container, workbook, sheets, types, values, formulas, functions, styles, validation, calculation, import/export, security, and conformance requirements. Labels: specification.",
+      "status": "done",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "csv-data-layer-decision",
+      "title": "Align the package around CSV as the data layer",
+      "body": "Foundation — Use sheets/<sheet-id>.csv as canonical tabular data with optional matching .meta.json sidecars for formulas, caches, types, styles, validation, and overrides. Labels: format, decision.",
+      "status": "done",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "schemas",
+      "title": "Add and align JSON Schemas",
+      "body": "Foundation — Keep manifest, workbook, styles, and formula schemas consistent with CSV-backed sheets and typed values. Labels: schemas.",
+      "status": "done",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "examples-and-fixtures",
+      "title": "Create reviewable examples and initial conformance vectors",
+      "body": "Foundation — Provide minimal, typed, formula, multi-sheet, styled, parsing, calculation, style-preservation, and invalid fixtures. Labels: examples, testing.",
+      "status": "done",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "ai-skill",
+      "title": "Add the CSVX AI skill",
+      "body": "Foundation — Document how AI tools should inspect the specification, preserve metadata, handle formulas, validate changes, and report assumptions. Labels: ai, developer-experience.",
+      "status": "done",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "phase-1-package-reader",
+      "title": "Phase 1: Implement CSVX package and data model",
+      "body": "Phase 1 — Build the Go package reader/writer, manifest loading, workbook loading, sheet loading, typed values, sparse metadata, and round-trip preservation. Labels: go, engine, phase-1.",
+      "status": "in-progress",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "go-package-reader",
+      "title": "Load CSVX ZIP packages",
+      "body": "Phase 1 — Read manifest.json, workbook.json, CSV sheets, and optional metadata sidecars; reject duplicate and unsafe ZIP entries. Labels: go, package.",
+      "status": "done",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "go-directory-reader",
+      "title": "Load unpacked CSVX directories",
+      "body": "Phase 1 — Support development-friendly inspection of unpacked CSVX fixtures. Labels: go, package.",
+      "status": "done",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "go-cli-foundation",
+      "title": "Add initial CSVX CLI",
+      "body": "Phase 1 — Provide inspect, validate, version, help, and package commands with useful command-specific help. Labels: go, cli.",
+      "status": "done",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "go-package-writer",
+      "title": "Implement canonical CSVX package writing",
+      "body": "Phase 1 — Write valid CSVX ZIP packages from the canonical workbook model with deterministic resource paths and metadata. Labels: go, package, phase-1.",
+      "status": "backlog",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "phase-1-validation",
+      "title": "Complete Phase 1 validation and round-trip tests",
+      "body": "Phase 1 — Validate schemas, required resources, CSV/header rules, sidecar identity, unknown metadata preservation, and directory-to-package round trips. Labels: testing, phase-1.",
+      "status": "backlog",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "phase-2-formula-mvp",
+      "title": "Phase 2: Implement the formula MVP",
+      "body": "Phase 2 — Add literals, cell references, ranges, arithmetic, comparisons, percent, and Core functions SUM, COUNT, IF, ROUND, and ABS. Labels: formula, phase-2.",
+      "status": "backlog",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "formula-grammar",
+      "title": "Specify and test formula grammar",
+      "body": "Phase 2 — Define tokenization, precedence, string and boolean literals, sheet references, quoted sheet names, ranges, and invalid syntax behavior. Labels: formula, specification.",
+      "status": "backlog",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "core-functions",
+      "title": "Implement Core formula functions",
+      "body": "Phase 2 — Implement SUM, COUNT, IF, ROUND, and ABS with explicit blank, string, type, and error semantics. Labels: formula, calculation.",
+      "status": "backlog",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "phase-3-calculation",
+      "title": "Phase 3: Implement deterministic calculation",
+      "body": "Phase 3 — Build dependency graphs, deterministic evaluation, stale cache invalidation, calculation ordering, and portable errors. Labels: calculation, phase-3.",
+      "status": "backlog",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "dependency-graph",
+      "title": "Build formula dependency graph",
+      "body": "Phase 3 — Track direct and transitive dependencies across cells and sheets, and invalidate only affected formula caches. Labels: calculation.",
+      "status": "backlog",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "calculation-errors",
+      "title": "Implement portable calculation errors",
+      "body": "Phase 3 — Produce CYCLE, DIV0, VALUE, REF, and NAME errors according to the normative semantics. Labels: calculation, errors.",
+      "status": "backlog",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "phase-4-conformance",
+      "title": "Phase 4: Build the executable conformance suite",
+      "body": "Phase 4 — Create an implementation-independent runner for valid, invalid, formula, calculation, and round-trip CSVX fixtures. Labels: testing, conformance, phase-4.",
+      "status": "backlog",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "real-csvx-fixtures",
+      "title": "Generate real .csvx fixture archives",
+      "body": "Phase 4 — Package the unpacked examples into valid ZIP fixtures and add invalid archive cases. Labels: testing, fixtures.",
+      "status": "backlog",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "csv-import-export",
+      "title": "Implement CSV import and export",
+      "body": "Post-Core — Define and implement loss-aware conversion between standalone CSV files and the CSVX workbook model. Labels: import, export.",
+      "status": "backlog",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "xlsx-interoperability",
+      "title": "Implement XLSX import and export",
+      "body": "Post-Core — Translate XLSX through the canonical CSVX workbook model with documented unsupported-feature behavior. Labels: import, export, xlsx.",
+      "status": "backlog",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "cli-operations",
+      "title": "Complete CLI operations",
+      "body": "Post-Core — Add recalculate, conversion, structured diagnostics, output selection, and machine-readable modes. Labels: cli.",
+      "status": "backlog",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "coder-integration",
+      "title": "Integrate the engine with Coder",
+      "body": "Post-Core — Expose CSVX through a UI without leaking Coder-specific behavior into the format or engine. Labels: coder, integration.",
+      "status": "backlog",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    },
+    {
+      "id": "independent-implementations",
+      "title": "Enable independent language implementations",
+      "body": "Post-Core — Use the specification, schemas, fixtures, and conformance suite to support Rust, Python, TypeScript, and other engines. Labels: ecosystem, conformance.",
+      "status": "backlog",
+      "createdAt": "2026-09-23T14:31:50.150Z",
+      "updatedAt": "2026-09-23T14:31:50.150Z"
+    }
+  ]
+}
