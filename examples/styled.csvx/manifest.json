@@ -6,6 +6,7 @@
 		"manifest.json",
 		"workbook.json",
 		"styles.json",
-		"sheets/report.json"
+		"sheets/report.csv",
+		"sheets/report.meta.json"
 	]
 }

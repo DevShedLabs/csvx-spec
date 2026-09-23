@@ -1,0 +1,26 @@
+{
+	"id": "data",
+	"name": "Data",
+	"columns": [
+		{
+			"id": "A",
+			"name": "Name",
+			"type": "string"
+		},
+		{
+			"id": "B",
+			"name": "Amount",
+			"type": "decimal"
+		},
+		{
+			"id": "C",
+			"name": "Date",
+			"type": "date"
+		},
+		{
+			"id": "D",
+			"name": "Active",
+			"type": "boolean"
+		}
+	]
+}

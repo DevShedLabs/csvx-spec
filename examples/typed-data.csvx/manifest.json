@@ -5,6 +5,7 @@
 	"files": [
 		"manifest.json",
 		"workbook.json",
-		"sheets/data.json"
+		"sheets/data.csv",
+		"sheets/data.meta.json"
 	]
 }

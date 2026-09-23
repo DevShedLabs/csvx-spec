@@ -62,8 +62,7 @@ Before making a format or calculation decision:
 ## Formula and calculation behavior
 
 Use only Core functions unless the workbook declares a supported extension. Core functions include:
-`SUM`, `AVERAGE`, `MIN`, `MAX`, `COUNT`, `IF`, `AND`, `OR`, `NOT`, `ROUND`, `ABS`, `CONCAT`, and
-`LEN`.
+`SUM`, `COUNT`, `IF`, `ROUND`, and `ABS`.
 
 Apply these rules:
 

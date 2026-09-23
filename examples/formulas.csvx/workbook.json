@@ -5,7 +5,8 @@
 		{
 			"id": "calculation",
 			"name": "Calculation",
-			"path": "sheets/calculation.json"
+			"path": "sheets/calculation.csv",
+			"metadata": "sheets/calculation.meta.json"
 		}
 	],
 	"calculation": {

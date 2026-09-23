@@ -5,7 +5,8 @@
 		{
 			"id": "report",
 			"name": "Report",
-			"path": "sheets/report.json"
+			"path": "sheets/report.csv",
+			"metadata": "sheets/report.meta.json"
 		}
 	]
 }

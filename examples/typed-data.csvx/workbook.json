@@ -5,7 +5,8 @@
 		{
 			"id": "data",
 			"name": "Data",
-			"path": "sheets/data.json"
+			"path": "sheets/data.csv",
+			"metadata": "sheets/data.meta.json"
 		}
 	]
 }

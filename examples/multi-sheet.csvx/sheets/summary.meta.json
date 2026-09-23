@@ -8,11 +8,10 @@
 			"type": "decimal"
 		}
 	],
-	"rows": 1,
 	"cells": {
-		"A1": {
-			"formula": "=SUM('Sales'!A1:A2)",
-			"value": {
+		"A2": {
+			"formula": "=SUM('Sales'!A2:A3)",
+			"cached": {
 				"type": "decimal",
 				"value": "22.50"
 			}

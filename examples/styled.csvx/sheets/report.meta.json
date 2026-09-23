@@ -8,20 +8,11 @@
 			"type": "decimal"
 		}
 	],
-	"rows": 2,
 	"cells": {
-		"A1": {
-			"value": {
-				"type": "decimal",
-				"value": "1250.00"
-			},
+		"A2": {
 			"style": "currency"
 		},
-		"A2": {
-			"value": {
-				"type": "text",
-				"value": "Total"
-			},
+		"A3": {
 			"style": "heading"
 		}
 	}

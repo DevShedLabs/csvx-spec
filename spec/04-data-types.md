@@ -14,7 +14,11 @@ JSON representation is explicit to avoid language-specific coercion:
 {"type":"error","code":"DIV0","message":"Division by zero"}
 ```
 
+All values MUST use an object with a `type` member. `blank` uses no `value` member. `error` MUST
+use a stable `code` member and MAY include a diagnostic `message`; messages are not used for
+semantic comparison. A string uses `{"type":"string","value":"..."}`.
+
 Decimals MUST be encoded as base-10 strings. Dates and datetimes use RFC 3339 forms; a datetime
-without an offset is invalid. Implementations MUST NOT silently convert invalid values to text.
+without an offset is invalid. Implementations MUST NOT silently convert invalid values to string.
 
 Core error codes are `NULL`, `DIV0`, `VALUE`, `REF`, `NAME`, `NUM`, `N/A`, and `CYCLE`.

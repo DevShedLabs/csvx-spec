@@ -7,14 +7,14 @@
   "required": ["formula"],
   "properties": {
     "formula": { "type": "string", "pattern": "^=" },
-    "value": { "$ref": "#/$defs/value" }
+    "cached": { "$ref": "#/$defs/value" }
   },
   "$defs": {
     "value": {
       "type": "object",
       "required": ["type"],
       "properties": {
-        "type": { "enum": ["blank", "boolean", "integer", "decimal", "text", "date", "time", "datetime", "error"] },
+        "type": { "enum": ["blank", "boolean", "integer", "decimal", "string", "date", "time", "datetime", "error"] },
         "value": {},
         "code": { "type": "string" },
         "message": { "type": "string" }

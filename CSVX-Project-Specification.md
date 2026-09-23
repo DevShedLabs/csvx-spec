@@ -250,6 +250,11 @@ report.csvx
 └── formulas.json
 ```
 
+CSV is the canonical sheet data layer. Each sheet MUST have a UTF-8 CSV resource with a header
+row. Formulas, cached values, types, styles, validation, and cell overrides that CSV cannot express
+belong in the matching optional `.meta.json` sidecar. A plain tabular workbook may contain only CSV
+sheet resources.
+
 The specification defines:
 
 * required files
@@ -528,7 +533,13 @@ Conceptually:
 #NAME!
 ```
 
-The exact serialized representation is defined by the specification.
+Errors are serialized as typed values with a stable `code`, for example:
+
+```json
+{"type":"error","code":"DIV0","message":"Division by zero"}
+```
+
+The `message` is optional diagnostic text and is not used for semantic comparison.
 
 Engines must produce equivalent error categories for equivalent conditions.
 

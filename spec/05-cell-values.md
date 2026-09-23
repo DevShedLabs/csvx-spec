@@ -1,11 +1,12 @@
 # 5. Cell values
 
-A cell MAY contain `value`, `formula`, `style`, and `validation`. It MUST contain at least one of
-`value` or `formula`; a formula cell SHOULD contain a cached `value` produced by the last successful
-calculation.
+A cell metadata entry MAY contain `formula`, `cached`, `style`, and `validation`. A formula cell
+MUST contain `formula`; it MAY contain a `cached` value produced by the last successful calculation.
+Ordinary non-formula values belong in the sheet CSV. An explicit blank metadata entry is permitted
+when style or validation must be attached.
 
 ```json
-{"formula":"=A2*B2","value":{"type":"decimal","value":"19.95"}}
+{"formula":"=A2*B2","cached":{"type":"decimal","value":"19.95"}}
 ```
 
 The cached value is advisory. Readers that calculate MUST replace it when the formula is evaluated.

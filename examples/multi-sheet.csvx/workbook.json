@@ -10,7 +10,8 @@
 		{
 			"id": "summary",
 			"name": "Summary",
-			"path": "sheets/summary.json"
+			"path": "sheets/summary.csv",
+			"metadata": "sheets/summary.meta.json"
 		}
 	]
 }

@@ -1,0 +1,44 @@
+{
+	"id": "calculation",
+	"name": "Calculation",
+	"columns": [
+		{
+			"id": "A",
+			"name": "Quantity",
+			"type": "integer"
+		},
+		{
+			"id": "B",
+			"name": "Price",
+			"type": "decimal"
+		},
+		{
+			"id": "C",
+			"name": "Total",
+			"type": "decimal"
+		}
+	],
+	"cells": {
+		"C2": {
+			"formula": "=A2*B2",
+			"cached": {
+				"type": "decimal",
+				"value": "9.00"
+			}
+		},
+		"C3": {
+			"formula": "=A3*B3",
+			"cached": {
+				"type": "decimal",
+				"value": "6.00"
+			}
+		},
+		"C4": {
+			"formula": "=SUM(C2:C3)",
+			"cached": {
+				"type": "decimal",
+				"value": "15.00"
+			}
+		}
+	}
+}
