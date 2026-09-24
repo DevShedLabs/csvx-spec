@@ -18,7 +18,12 @@ sheets/<sheet-id>.meta.json
 styles.json
 schemas/*.json
 attachments/*
-```
+source/original.xlsx
+source/source.json
+``` 
+
+The `source/*` entries are defined by the optional XLSX interoperability extension. They MUST NOT be
+required for Core 1.0 packages.
 
 CSV is the canonical sheet data layer. A sheet CSV MUST be valid UTF-8 RFC 4180-compatible CSV and
 MUST contain a header row. The header row is part of the sheet and occupies row 1 in A1 references.

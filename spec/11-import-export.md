@@ -8,5 +8,8 @@ CSV import defaults to UTF-8, comma delimiter, one header row only when explicit
 text values unless type inference is enabled. CSV export MUST define how formulas are emitted; the
 Core default is to export calculated display values and report that formulas were omitted.
 
-XLSX, charts, pivots, and macros are outside Core. An implementation MAY support them through an
-extension, but extension data must not change Core calculation semantics.
+XLSX, charts, pivots, and macros are outside Core. An implementation MAY support them through the
+XLSX interoperability extension defined in `14-xlsx-interoperability.md`, but extension data must
+not change Core calculation semantics. The extension SHOULD be implemented early enough to validate
+CSVX against real XLSX workbooks; it MUST provide exact-source recovery for unchanged embedded
+sources and explicit diagnostics for regenerated exports.
