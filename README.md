@@ -132,4 +132,6 @@ Conformance test suite
 ```
 
 The goal is interoperability: different implementations should load, calculate, modify, and save the
-same workbook with predictable results.
+same workbook with predictable results. Real XLSX workbooks are used as interoperability test inputs,
+while the CSVX specification remains authoritative. The initial XLSX inspection and preservation work
+is documented in `spec/14-xlsx-interoperability.md`.
