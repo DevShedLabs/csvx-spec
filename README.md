@@ -99,11 +99,30 @@ implementation does not use it.
 spec/       Normative format and behavior definitions
 schemas/    JSON Schemas for package resources
 examples/   Small, reviewable workbook fixtures
- tests/     Cross-implementation conformance vectors
+tests/      Cross-implementation conformance vectors
+validator/  Reference JSON Schema validator for whole .csvx packages
+AGENTS.md   Binding architecture rules for any engine, CLI, or consumer app in this project
 ```
 
 The examples are stored unpacked so their contents can be reviewed in source control. A `.csvx`
 file is the ZIP package assembled from those resources according to the container specification.
+
+## Validating a package
+
+Every engine and consumer app in this project is expected to have its output checked against
+`schemas/` — see `AGENTS.md` for why. The reference validator lives in `validator/`:
+
+```bash
+cd validator && npm install
+node bin/csvx-validate.mjs path/to/package.csvx        # a .csvx ZIP file
+node bin/csvx-validate.mjs path/to/unpacked-dir         # or an unpacked package directory
+node bin/csvx-validate.mjs examples/*.csvx              # validate every bundled example at once
+```
+
+It checks `manifest.json`, `workbook.json`, `styles.json`, and every sheet's `.meta.json` together
+against `schemas/*.json`, and exits non-zero on any violation — wire it into an engine's CI rather
+than checking JSON by hand. See `validator/README.md` for details and its current limitations
+(shape only, not calculation/formula behavior — that's `tests/*.json`).
 
 ## Reference engine
 

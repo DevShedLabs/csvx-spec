@@ -89,7 +89,25 @@ schema it claims to implement.
    silently dropping them. A generated model with strict/closed types must still have an escape
    hatch (e.g. a captured "extra fields" bag) for this.
 
-## 4. Rules for csvx-web or any other consumer app
+## 4. Rules for csvx-cli
+
+1. `csvx-cli` is the *only* place `export`/`import`/`create`/`validate`/`codegen`/`gen test.csvx`
+   logic lives. No engine repo should grow a competing copy of any of these under a different name
+   (`csvx-go`'s old `cmd/csvx` did exactly this before the 2026-09-30 split — it's why this rule
+   exists).
+2. `csvx-cli` calls engine libraries for engine operations (load/edit/calculate/write); it does not
+   reimplement them. It may call multiple engines (e.g. shell out to a Python engine's own CLI, or
+   bind to a Rust engine via FFI) — the point is that engine logic has exactly one implementation
+   per language, and `csvx-cli` orchestrates rather than duplicates.
+3. `codegen` is how new/updated engine libraries get their data model. When a schema changes,
+   regenerating every engine's model via `csvx-cli codegen` (or that engine's documented generation
+   step, until `codegen` covers every language) is part of landing the schema change — not a
+   follow-up someone gets to later.
+4. `gen test.csvx` must derive its coverage from `schemas/*.json` and `spec/04-data-types.md`
+   directly (every scalar type, every style property, multi-sheet, formulas, validation rules), not
+   from copying the hand-authored `examples/`, which are illustrative and intentionally small.
+
+## 5. Rules for csvx-web or any other consumer app
 
 1. No parsing, serialization, cell-type inference, formula evaluation, number formatting, or style
    application logic may live in the consumer app. That is engine logic. If the engine isn't
@@ -102,7 +120,7 @@ schema it claims to implement.
    over a local API, via native bindings) — this is a real decision with tradeoffs and should be
    made explicitly, not defaulted into.
 
-## 5. CI expectations (aspirational until wired up — treat as required, not optional)
+## 6. CI expectations (aspirational until wired up — treat as required, not optional)
 
 - On every change to `schemas/` or `tests/`, every engine's CI should re-run against the new
   versions and fail loudly on drift, not silently pass because nobody re-ran it.
@@ -110,6 +128,8 @@ schema it claims to implement.
   must run before merge.
 - `examples/*.csvx` are golden fixtures. Any engine claiming to read or write CSVX must be able to
   load every example in `examples/` and re-validate the result against schema.
+- `csvx-cli`'s own CI must build/test it, then exercise it against an engine (`csvx-go` today) and
+  validate the result — the same loop used manually to verify the 2026-09-30 styles.json fix.
 
 ## Why this file exists
 
