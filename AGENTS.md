@@ -88,6 +88,26 @@ schema it claims to implement.
    `skills/csvx/SKILL.md`, an engine must round-trip fields it doesn't understand rather than
    silently dropping them. A generated model with strict/closed types must still have an escape
    hatch (e.g. a captured "extra fields" bag) for this.
+7. **The spec is the first source of truth, the CLI is second — and tests must prove that chain,
+   not fake it.** A unit test built from a hand-invented minimal fixture (a one-line inline JSON
+   string, a three-field struct literal) can pass forever while the engine is broken, because it
+   never touches the parts of the spec that are actually wrong. This already happened:
+   `csvx-go`'s entire pre-2026-09-30 test suite (`package_test.go`, `package_roundtrip_test.go`)
+   used only hand-written synthetic fixtures with no styles, no real XLSX input, and no schema
+   check — every test passed the whole time `styles.json` output was non-conformant, because none
+   of them ever constructed a style. Concretely, going forward:
+   - Prefer the real fixtures in `examples/` and real conversions from real source files (a real
+     `.xlsx`, not a synthetic one built inline) over hand-invented minimal JSON, wherever the
+     behavior under test can be reached that way.
+   - A test that only checks "it parsed" or "the struct fields match" without also validating the
+     real serialized output against `schemas/*.json` is incomplete, not passing. Wire schema
+     validation into the test itself (call `validator/`, or an engine's native equivalent) rather
+     than treating it as a separate manual step someone might forget to run.
+   - The CLI is not exempt because it "just calls the library." Test it as a CLI — invoke the built
+     binary as a subprocess with real arguments and real files, and check its actual stdout/exit
+     code — not just the internal functions its commands happen to call. Argument-parsing unit
+     tests (`csvx-cli`'s `main_test.go` before this rule) are necessary but not sufficient on their
+     own.
 
 ## 4. Rules for csvx-cli
 
