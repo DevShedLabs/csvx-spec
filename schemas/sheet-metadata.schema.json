@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://csvx.dev/schemas/sheet-metadata.schema.json",
+  "title": "CSVX Sheet Metadata",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "id": { "$ref": "#/$defs/id" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 255 },
+    "columns": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/column" }
+    },
+    "rowHeights": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[0-9]+$" },
+      "additionalProperties": { "type": "number", "exclusiveMinimum": 0 }
+    },
+    "cells": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[A-Z]+[1-9][0-9]*$" },
+      "additionalProperties": { "$ref": "#/$defs/cell" }
+    }
+  },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$" },
+    "scalarType": {
+      "enum": ["blank", "boolean", "integer", "decimal", "string", "date", "time", "datetime", "error"]
+    },
+    "column": {
+      "type": "object",
+      "required": ["id"],
+      "additionalProperties": true,
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string" },
+        "type": { "$ref": "#/$defs/scalarType" },
+        "width": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "cell": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "type": { "$ref": "#/$defs/scalarType" },
+        "formula": { "type": "string", "pattern": "^=" },
+        "cached": { "$ref": "https://csvx.dev/schemas/formulas.schema.json#/$defs/value" },
+        "style": { "$ref": "#/$defs/id" },
+        "validation": { "$ref": "#/$defs/validation" }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "type": { "enum": ["whole", "decimal", "list", "date", "textLength", "custom"] },
+        "allowBlank": { "type": "boolean" },
+        "operator": { "type": "string" },
+        "formula1": { "type": "string" },
+        "formula2": { "type": "string" },
+        "message": { "type": "string" }
+      }
+    }
+  }
+}

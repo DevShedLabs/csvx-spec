@@ -12,7 +12,7 @@ The core workbook object is:
 {
   "id": "book-1",
   "version": "1.0",
-  "sheets": [{"id": "sheet-1", "name": "Sales", "path": "sheets/sheet-1.json"}],
+  "sheets": [{"id": "sheet-1", "name": "Sales", "path": "sheets/sheet-1.csv"}],
   "calculation": {"mode": "automatic", "iteration": false}
 }
 ```

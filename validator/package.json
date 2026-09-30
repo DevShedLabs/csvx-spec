@@ -1,0 +1,18 @@
+{
+  "name": "@csvx/validator",
+  "version": "0.1.0",
+  "description": "JSON Schema validator for CSVX packages (manifest, workbook, styles, sheet metadata).",
+  "type": "module",
+  "private": true,
+  "bin": {
+    "csvx-validate": "./bin/csvx-validate.mjs"
+  },
+  "scripts": {
+    "validate": "node bin/csvx-validate.mjs",
+    "test": "node src/self-test.mjs"
+  },
+  "dependencies": {
+    "adm-zip": "^0.6.1",
+    "ajv": "^8.17.1"
+  }
+}

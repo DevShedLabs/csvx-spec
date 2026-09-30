@@ -5,7 +5,7 @@
 		{
 			"id": "sales",
 			"name": "Sales",
-			"path": "sheets/sales.json"
+			"path": "sheets/sales.csv"
 		},
 		{
 			"id": "summary",
