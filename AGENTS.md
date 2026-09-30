@@ -106,6 +106,25 @@ schema it claims to implement.
 4. `gen test.csvx` must derive its coverage from `schemas/*.json` and `spec/04-data-types.md`
    directly (every scalar type, every style property, multi-sheet, formulas, validation rules), not
    from copying the hand-authored `examples/`, which are illustrative and intentionally small.
+5. **`gen test.csvx` needs an XLSX counterpart, and both directions of XLSX interop must be
+   round-trip tested — schema-shape validation alone is not enough.** A package can pass every
+   check in `validator/` and still have silently lost a formula, a font color, or turned a decimal
+   into a string on the way through a converter (this happened — see `csvx-go`'s
+   cached-value-typed-as-`"string"` bug, which is schema-legal and semantically wrong). Concretely:
+   - `gen test.xlsx` (or equivalent) must produce a purpose-built XLSX fixture exercising every
+     scalar type, every style property, multiple sheets, and a representative formula set — not
+     rely on whatever a naturally-occurring spreadsheet happens to cover.
+   - XLSX→CSVX conversion must be tested against that fixture for both (a) schema conformance
+     (`validator/`) and (b) semantic fidelity — specific cell values, formula strings, and style
+     properties at known coordinates must match expected values, not just "the file parses."
+   - CSVX→XLSX conversion must be tested the same way, in reverse, once it exists as a real
+     capability. **It does not yet**: `csvx-go`'s `exportXLSXSource` only recovers an unmodified
+     embedded original byte-for-byte; there is no general "export an arbitrary/edited CSVX workbook
+     to XLSX" path. Building that is a prerequisite for reverse round-trip testing, not something
+     to fake or skip silently — track it as an open gap, don't pretend it's covered.
+   - These round-trip checks belong in `tests/interop/` in this repo (format-neutral vectors
+     pointing at real fixture files, same pattern as `tests/parsing/`) plus a real executable
+     runner — not just documented as an intention. See `tests/interop/README.md`.
 
 ## 5. Rules for csvx-web or any other consumer app
 

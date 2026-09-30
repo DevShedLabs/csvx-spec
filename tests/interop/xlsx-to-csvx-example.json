@@ -1,0 +1,18 @@
+{
+	"id": "xlsx-to-csvx-example",
+	"operation": "xlsx-to-csvx",
+	"input": "../../examples/example.xlsx",
+	"expected": {
+		"schemaValid": true,
+		"samples": [
+			{"sheet": "Sheet1", "cell": "A1", "type": "string", "value": "Average salary for a Senior Software Engineer"},
+			{"sheet": "Sheet1", "cell": "A1", "style.font.bold": true},
+			{"sheet": "Sheet1", "cell": "A1", "style.fill.color": "#434343"},
+			{"sheet": "Sheet1", "cell": "D2", "type": "decimal", "value": "170000.0"},
+			{"sheet": "Sheet1", "cell": "D2", "style.numberFormat": "\"$\"#,##0.00"},
+			{"sheet": "Sheet1", "cell": "C11", "formula": "=SUM(D11/B11)"},
+			{"sheet": "Sheet1", "cell": "C11", "cached.type": "decimal"},
+			{"sheet": "Sheet1", "cell": "C11", "cached.value": "1923.076923"}
+		]
+	}
+}

@@ -1,0 +1,59 @@
+# Interop round-trip conformance tests
+
+These vectors check something `validator/` cannot: that converting between XLSX and CSVX
+preserves meaning, not just shape. A package can be perfectly schema-valid and still have silently
+lost a formula, a font color, or turned a decimal into a string — the `cached` value bug described
+below passed every schema check while being wrong.
+
+Same format as the other `tests/` categories: format-neutral JSON vectors. A runner loads `input`,
+performs the named `operation`, and compares the semantic result against `expected`. The difference
+here is `input` points at a real binary/ZIP fixture file, not inline data — round-trip fidelity is
+inherently about real files, not abstract values.
+
+## Vector shape
+
+```json
+{
+  "id": "xlsx-to-csvx-example",
+  "operation": "xlsx-to-csvx",
+  "input": "../../examples/example.xlsx",
+  "expected": {
+    "schemaValid": true,
+    "samples": [
+      {"sheet": "Sheet1", "cell": "A1", "type": "string", "value": "Average salary for a Senior Software Engineer"},
+      {"sheet": "Sheet1", "cell": "A1", "style.font.bold": true},
+      {"sheet": "Sheet1", "cell": "D2", "type": "decimal", "value": "170000.0"},
+      {"sheet": "Sheet1", "cell": "D2", "style.numberFormat": "\"$\"#,##0.00"},
+      {"sheet": "Sheet1", "cell": "C11", "formula": "=SUM(D11/B11)"},
+      {"sheet": "Sheet1", "cell": "C11", "cached.type": "decimal"}
+    ]
+  }
+}
+```
+
+`samples` are point assertions at known A1 coordinates — specific enough to catch the class of bug
+that already shipped here (a decimal formula result cached with `"type": "decimal"` on the schema
+side but `"type": "string"` in practice), without trying to assert the entire fixture byte-for-byte.
+
+`schemaValid: true` means the runner must also validate the operation's real output against
+`../../schemas/*.json` (via `../../validator` or an engine's native equivalent) — a passing interop
+test implies a passing schema-shape test, not just the reverse.
+
+## Current status (2026-09-30)
+
+- `xlsx-to-csvx` is implemented (`csvx-go`'s `Convert`) and is the only direction currently
+  testable end to end. `xlsx-to-csvx-example.json` is a real, currently-passing vector, run today
+  as a Go unit test in `csvx-cli` (`cmd/csvx/convert_test.go`) rather than by a generic JSON-vector
+  runner — that generic runner does not exist yet for this category. Building one (so any engine,
+  not just `csvx-go`, can consume these vectors without a language-specific harness) is open work.
+- `csvx-to-xlsx` (exporting an arbitrary or edited CSVX workbook back to XLSX) **does not exist as
+  a real capability yet.** `csvx-go`'s `exportXLSXSource` only recovers an unmodified embedded
+  original byte-for-byte (`Source.Authority == "original"`) — there is no general "write CSVX
+  content into a fresh XLSX" path. Reverse round-trip vectors can't be written honestly until that
+  exists. Don't add a `csvx-to-xlsx` vector that only exercises the byte-recovery path and call it
+  round-trip coverage — that's a different, much narrower guarantee.
+- The fixtures used here (`examples/example.xlsx`, hand-picked cells) are a real spreadsheet, not a
+  purpose-built exhaustive one. `csvx-cli`'s planned `gen test.csvx` (see `../../AGENTS.md` rule
+  4.4) needs an XLSX counterpart that deliberately exercises every scalar type and style property,
+  rather than whatever `example.xlsx` happens to contain. Until that exists, treat this category's
+  coverage as representative, not exhaustive.
