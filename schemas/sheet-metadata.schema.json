@@ -44,7 +44,7 @@
       "properties": {
         "type": { "$ref": "#/$defs/scalarType" },
         "formula": { "type": "string", "pattern": "^=" },
-        "cached": { "$ref": "https://csvx.dev/schemas/formulas.schema.json#/$defs/value" },
+        "cached": { "$ref": "formulas.schema.json#/$defs/value" },
         "style": { "$ref": "#/$defs/id" },
         "validation": { "$ref": "#/$defs/validation" }
       }

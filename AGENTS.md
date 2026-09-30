@@ -7,17 +7,35 @@ section at the bottom if any rule here seems like unnecessary process.
 
 ## 1. The topology
 
+There are three distinct kinds of repo in this project. Do not blur them — `csvx-go` blurred
+"engine library" and "CLI tool" together for months before anyone noticed, which is exactly the
+kind of drift this file exists to prevent.
+
 - **`csvx-spec`** (this repo) is the *only* authority. It contains the normative spec (`spec/`),
   the JSON Schemas (`schemas/`), the format-neutral conformance vectors (`tests/`), the
-  hand-authored golden examples (`examples/`), and the schema validator (`validator/`).
-- **`csvx-go`**, **`csvx-ts`**, and any future Python/Rust/etc. engine are *implementations of*
-  the spec. None of them get to define behavior the spec doesn't already describe. If an engine
-  needs to do something the spec is silent on, that silence gets fixed in `csvx-spec` first —
-  spec and schema changes are never a side effect of writing engine code.
-- **`csvx-web`** (and any other consumer app, CLI, or integration) is a *client of an engine*. It
-  is UI/interaction code only. It must never contain its own CSVX parsing, serialization, type
-  inference, formula evaluation, or number-formatting logic. If a demo needs to read or write a
-  `.csvx` package, it calls a real engine to do it — full stop.
+  hand-authored golden examples (`examples/`), and the reference schema validator (`validator/`).
+- **Engine libraries** — `csvx-go`, `csvx-ts`, and any future Python/Rust/PHP/etc. package — are
+  *programmable interfaces only*: load, represent, edit, calculate, and write a CSVX workbook as
+  data structures. Nothing CLI-shaped belongs in these repos: no argument parsing, no subcommands,
+  no user-facing output formatting. Their data models should be *generated* from
+  `schemas/*.json` (see rule 3.1), not hand-typed. They implement the spec; they do not define it,
+  and they do not each grow their own copy of `export`/`import`/`validate`/etc. — that's `csvx-cli`.
+- **`csvx-cli`** is *the one dedicated CSVX command-line tool* — a single Go binary. It owns
+  `export`, `import`, `create`, `validate`, `codegen`, and `gen test.csvx` (a schema-exhaustive
+  fixture generator). It calls into engine libraries for engine operations rather than
+  reimplementing them, and it is the *only* place schema-validation logic should live natively —
+  see rule 3.3. If a new operation is needed, it's a `csvx-cli` command, not a new subcommand
+  bolted onto an engine repo.
+- **`csvx-web`** (and any other consumer app, or a future language binding of the CLI's
+  operations) is a *client of an engine and/or the CLI*. It is UI/interaction code only. It must
+  never contain its own CSVX parsing, serialization, type inference, formula evaluation, or
+  number-formatting logic. If a demo needs to read or write a `.csvx` package, it calls a real
+  engine to do it — full stop.
+
+This split (`csvx-go` as pure library, `csvx-cli` as the CLI) happened on 2026-09-30 by extracting
+`csvx-go`'s `cmd/csvx` into a new repo that depends on `csvx-go` as an ordinary module. Apply the
+same shape to every future engine: a thin, generated, CLI-free library, with `csvx-cli` as the only
+place a human or script actually invokes CSVX operations from a terminal.
 
 ## 2. Why "just add ajv/write a parser real quick" is not allowed
 
@@ -39,25 +57,34 @@ schema it claims to implement.
 
 1. **Generate the data model from the schema; do not hand-type it.** Structs/interfaces/classes
    for `Manifest`, `Workbook`, `Sheet`, `Style`, and cell metadata must be derived mechanically
-   from `schemas/*.json` (e.g. `quicktype`, `json-schema-to-typescript`, or an equivalent for the
-   target language), not hand-written from memory of what the shape "should" be. The
-   `styles.json` bug above is a hand-typed struct that disagreed with the schema — that class of
-   bug is impossible if the struct is generated from the schema instead of guessed at.
+   from `schemas/*.json` (e.g. `go-jsonschema`, `quicktype`, `json-schema-to-typescript`, or an
+   equivalent for the target language), not hand-written from memory of what the shape "should"
+   be. The `styles.json` bug above is a hand-typed struct that disagreed with the schema — that
+   class of bug is impossible if the struct is generated from the schema instead of guessed at.
+   `csvx-go`'s `internal/schema/generated.go` (fixed 2026-09-30) is the first real instance of
+   this; `csvx-cli`'s planned `codegen` command is where this generation step should eventually
+   live for every language, rather than being run by hand per engine.
 2. **Validate real output against the schema, in CI, every time.** Loading or writing a package
    and never checking the result against `schemas/*.json` is how an engine can drift for months
-   unnoticed. Every engine's CI must run `validator/` (or an equivalent for that language) against
-   its own generated fixtures on every change.
-3. **Behavior conformance runs through `tests/*.json`, not ad hoc engine-specific tests.** Schema
+   unnoticed. Every engine's CI must run `validator/` (or `csvx-cli validate` once it exists)
+   against its own generated fixtures on every change.
+3. **There is one canonical schema validator — do not let engines reimplement it.** `validator/`
+   in this repo (Node/ajv) is the reference implementation today; `csvx-cli`'s planned native `validate`
+   command is meant to replace it as the single-binary canonical validator. Either way, there is
+   exactly one JSON-Schema-conformance implementation project-wide. An engine library
+   (`csvx-go`, `csvx-ts`, ...) must never grow its own copy of schema-validation logic — that is
+   precisely the same drift risk as reimplementing the format itself, just one layer up.
+4. **Behavior conformance runs through `tests/*.json`, not ad hoc engine-specific tests.** Schema
    validation only proves shape, not behavior — it will not catch a `SUM` formula computing the
    wrong value, or a cached value typed `"string"` when it should be `"decimal"` (a real bug found
    in the current Go-generated fixture). Every engine must have a thin runner that consumes
    `tests/*.json` verbatim, performs the named `operation`, and diffs against `expected`. This
    runner must be part of that engine's CI.
-4. **New behavior means spec first, schema second, tests third, implementation last.** Never add
+5. **New behavior means spec first, schema second, tests third, implementation last.** Never add
    a field, type, or behavior to an engine that isn't already described in `spec/`, typed in
    `schemas/`, and covered by at least one vector in `tests/`. If it's needed and missing, stop
    and fix `csvx-spec`, in that repo, before writing engine code for it.
-5. **Preserve unknown fields.** Per `spec/08-styles.md` and the general preservation rules in
+6. **Preserve unknown fields.** Per `spec/08-styles.md` and the general preservation rules in
    `skills/csvx/SKILL.md`, an engine must round-trip fields it doesn't understand rather than
    silently dropping them. A generated model with strict/closed types must still have an escape
    hatch (e.g. a captured "extra fields" bag) for this.
