@@ -170,6 +170,15 @@ schema it claims to implement.
 - `csvx-cli`'s own CI must build/test it, then exercise it against an engine (`csvx-go` today) and
   validate the result — the same loop used manually to verify the 2026-09-30 styles.json fix.
 
+**Interim practice while GitHub Actions minutes are constrained**: `csvx-go` and `csvx-cli` each
+have a tracked `scripts/check.sh` (gofmt/vet/build/test) and a `.githooks/pre-push` that runs it,
+enabled per-clone via `git config core.hooksPath .githooks`. This is a real stand-in for CI, not a
+lesser substitute to feel good about — it already blocks a push the same way a required CI check
+would. It is not a replacement for eventually adding real CI: a local hook only protects the person
+who has it enabled, not every contributor, and not pull requests from forks. When Actions minutes
+stop being a constraint, add the real workflow and keep the local hook too — they check the same
+thing from two different trust boundaries.
+
 ## Why this file exists
 
 This project was designed spec-first on purpose: one schema, many conformant engines (Go now, TS
