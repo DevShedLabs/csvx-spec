@@ -13,6 +13,7 @@
     },
     "rowHeights": {
       "type": "object",
+      "description": "Row height by 1-based row number, in points (XLSX's own unit; its default row height is 15pt) — see spec/03-sheets.md.",
       "propertyNames": { "pattern": "^[0-9]+$" },
       "additionalProperties": { "type": "number", "exclusiveMinimum": 0 }
     },
@@ -35,7 +36,11 @@
         "id": { "type": "string", "minLength": 1 },
         "name": { "type": "string" },
         "type": { "$ref": "#/$defs/scalarType" },
-        "width": { "type": "number", "exclusiveMinimum": 0 }
+        "width": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "XLSX character-width units (the number of '0' glyphs, in the workbook's default font, that fit the column, plus padding) — see spec/03-sheets.md for the canonical pixel conversion formula every engine must use."
+        }
       }
     },
     "cell": {
