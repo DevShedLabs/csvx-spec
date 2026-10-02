@@ -7,6 +7,7 @@ Tests are format-neutral JSON vectors. A runner loads `input`, performs the oper
 - `formulas/` formula grammar and function behavior
 - `calculations/` dependency and cache behavior
 - `styles/` preservation of presentation metadata
+- `print/` preservation of sheet print settings
 - `invalid/` required rejection cases
 
 Decimal values are strings intentionally. Test IDs are stable and should be cited in implementation

@@ -1,0 +1,31 @@
+{
+	"id": "xlsx-to-csvx-print-settings",
+	"operation": "xlsx-to-csvx",
+	"input": "../../examples/print-settings.xlsx",
+	"expected": {
+		"schemaValid": true,
+		"samples": [
+			{"sheet": "Fit", "print.orientation": "landscape"},
+			{"sheet": "Fit", "print.paperSize": "a4"},
+			{"sheet": "Fit", "print.pageOrder": "overThenDown"},
+			{"sheet": "Fit", "print.fitToWidth": 1},
+			{"sheet": "Fit", "print.fitToHeight": 0},
+			{"sheet": "Fit", "print.scale": null},
+			{"sheet": "Fit", "print.area": "A1:H20"},
+			{"sheet": "Fit", "print.repeatRows": "1:2"},
+			{"sheet": "Fit", "print.repeatColumns": "A:B"},
+			{"sheet": "Fit", "print.gridlines": true},
+			{"sheet": "Fit", "print.centerHorizontally": true},
+			{"sheet": "Fit", "print.margins.top": 0.5},
+			{"sheet": "Fit", "print.margins.right": 0.4},
+			{"sheet": "Fit", "print.margins.bottom": 0.6},
+			{"sheet": "Fit", "print.margins.left": 0.3},
+			{"sheet": "Fit", "print.columnBreaks": [4]},
+			{"sheet": "Fit", "print.rowBreaks": [10]},
+			{"sheet": "Scaled", "print.scale": 80},
+			{"sheet": "Scaled", "print.paperSize": "legal"},
+			{"sheet": "Scaled", "print.fitToWidth": null},
+			{"sheet": "Plain", "print": null}
+		]
+	}
+}

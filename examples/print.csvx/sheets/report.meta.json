@@ -1,0 +1,20 @@
+{
+	"id": "report",
+	"name": "Report",
+	"print": {
+		"orientation": "landscape",
+		"paperSize": "a4",
+		"margins": { "top": 0.5, "right": 0.4, "bottom": 0.6, "left": 0.3 },
+		"fitToWidth": 1,
+		"fitToHeight": 0,
+		"area": "A1:E3",
+		"repeatRows": "1:1",
+		"repeatColumns": "A:A",
+		"pageOrder": "overThenDown",
+		"gridlines": true,
+		"centerHorizontally": true,
+		"columnBreaks": [3],
+		"rowBreaks": [2],
+		"headerFooter": { "oddFooter": "&P of &N" }
+	}
+}

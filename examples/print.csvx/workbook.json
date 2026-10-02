@@ -1,0 +1,12 @@
+{
+	"id": "print-book",
+	"version": "1.0",
+	"sheets": [
+		{
+			"id": "report",
+			"name": "Report",
+			"path": "sheets/report.csv",
+			"metadata": "sheets/report.meta.json"
+		}
+	]
+}

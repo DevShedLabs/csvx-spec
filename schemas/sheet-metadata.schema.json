@@ -17,6 +17,7 @@
       "propertyNames": { "pattern": "^[0-9]+$" },
       "additionalProperties": { "type": "number", "exclusiveMinimum": 0 }
     },
+    "print": { "$ref": "#/$defs/print" },
     "cells": {
       "type": "object",
       "propertyNames": { "pattern": "^[A-Z]+[1-9][0-9]*$" },
@@ -27,6 +28,37 @@
     "id": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$" },
     "scalarType": {
       "enum": ["blank", "boolean", "integer", "decimal", "string", "date", "time", "datetime", "error"]
+    },
+    "print": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Print and pagination settings — see spec/03-sheets.md (Print settings) and spec/14-xlsx-interoperability.md.",
+      "properties": {
+        "orientation": { "enum": ["portrait", "landscape"] },
+        "paperSize": { "enum": ["letter", "legal", "tabloid", "a3", "a4", "a5"] },
+        "margins": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Inches, the unit XLSX uses.",
+          "properties": {
+            "top": { "type": "number", "minimum": 0 },
+            "right": { "type": "number", "minimum": 0 },
+            "bottom": { "type": "number", "minimum": 0 },
+            "left": { "type": "number", "minimum": 0 }
+          }
+        },
+        "scale": { "type": "number", "minimum": 10, "maximum": 400 },
+        "fitToWidth": { "type": "integer", "minimum": 0 },
+        "fitToHeight": { "type": "integer", "minimum": 0 },
+        "area": { "type": "string", "pattern": "^[A-Z]+[1-9][0-9]*:[A-Z]+[1-9][0-9]*$" },
+        "repeatRows": { "type": "string", "pattern": "^[1-9][0-9]*:[1-9][0-9]*$" },
+        "repeatColumns": { "type": "string", "pattern": "^[A-Z]+:[A-Z]+$" },
+        "pageOrder": { "enum": ["downThenOver", "overThenDown"] },
+        "gridlines": { "type": "boolean" },
+        "centerHorizontally": { "type": "boolean" },
+        "columnBreaks": { "type": "array", "items": { "type": "integer", "minimum": 1 } },
+        "rowBreaks": { "type": "array", "items": { "type": "integer", "minimum": 1 } }
+      }
     },
     "column": {
       "type": "object",

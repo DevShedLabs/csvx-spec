@@ -63,3 +63,30 @@ Implementations SHOULD provide:
 3. A conversion report identifying supported, preserved, transformed, and unsupported features.
 
 These tests validate interoperability; they do not make XLSX the CSVX specification.
+
+## 14.6 Print settings mapping
+
+An importer MUST map these XLSX constructs onto the sheet `print` object (03-sheets.md) and an
+exporter MUST map them back:
+
+| `print` property | XLSX source |
+| --- | --- |
+| `orientation` | `pageSetup/@orientation` |
+| `paperSize` | `pageSetup/@paperSize` (1 letter, 3 tabloid, 5 legal, 8 a3, 9 a4, 11 a5) |
+| `margins` | `pageMargins/@top,@right,@bottom,@left` |
+| `scale` | `pageSetup/@scale` |
+| `fitToWidth`, `fitToHeight` | `pageSetup/@fitToWidth,@fitToHeight`, only when `sheetPr/pageSetUpPr/@fitToPage` is true |
+| `area` | defined name `_xlnm.Print_Area` scoped to the sheet |
+| `repeatRows`, `repeatColumns` | defined name `_xlnm.Print_Titles` scoped to the sheet |
+| `pageOrder` | `pageSetup/@pageOrder` (`downThenOver`, `overThenDown`) |
+| `gridlines` | `printOptions/@gridLines` |
+| `centerHorizontally` | `printOptions/@horizontalCentered` |
+| `columnBreaks`, `rowBreaks` | `colBreaks/brk/@id`, `rowBreaks/brk/@id` |
+
+An importer SHOULD omit `margins` that equal the defaults in 03-sheets.md and `scale` of 100, since
+nearly every XLSX file states them and they carry no information.
+
+A paper size with no CSVX equivalent is not mapped to `paperSize`; the importer MUST keep the source
+value on the `print` object as `xlsxPaperSize` so it round-trips. Headers and footers are not part of
+Core 1.0 and are preserved as unknown properties when an importer chooses to carry them.
+

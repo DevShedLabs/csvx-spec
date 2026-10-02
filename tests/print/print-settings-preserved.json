@@ -1,0 +1,48 @@
+{
+	"id": "print-settings-preserved",
+	"operation": "round-trip",
+	"input": {
+		"sheetMetadata": {
+			"id": "sheet-1",
+			"name": "Report",
+			"print": {
+				"orientation": "landscape",
+				"paperSize": "a4",
+				"margins": { "top": 0.5, "right": 0.4, "bottom": 0.6, "left": 0.3 },
+				"fitToWidth": 1,
+				"fitToHeight": 0,
+				"area": "A1:H20",
+				"repeatRows": "1:2",
+				"repeatColumns": "A:B",
+				"pageOrder": "overThenDown",
+				"gridlines": true,
+				"centerHorizontally": true,
+				"columnBreaks": [4],
+				"rowBreaks": [10],
+				"headerFooter": { "oddFooter": "&P of &N" }
+			}
+		}
+	},
+	"expected": {
+		"sheetMetadata": {
+			"id": "sheet-1",
+			"name": "Report",
+			"print": {
+				"orientation": "landscape",
+				"paperSize": "a4",
+				"margins": { "top": 0.5, "right": 0.4, "bottom": 0.6, "left": 0.3 },
+				"fitToWidth": 1,
+				"fitToHeight": 0,
+				"area": "A1:H20",
+				"repeatRows": "1:2",
+				"repeatColumns": "A:B",
+				"pageOrder": "overThenDown",
+				"gridlines": true,
+				"centerHorizontally": true,
+				"columnBreaks": [4],
+				"rowBreaks": [10],
+				"headerFooter": { "oddFooter": "&P of &N" }
+			}
+		}
+	}
+}
