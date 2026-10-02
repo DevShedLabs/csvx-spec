@@ -1,0 +1,20 @@
+{
+	"id": "xlsx-to-csvx-borders",
+	"operation": "xlsx-to-csvx",
+	"input": "../../examples/borders.xlsx",
+	"expected": {
+		"schemaValid": true,
+		"samples": [
+			{"sheet": "Borders", "cell": "A1", "style.border.bottom.style": "thin"},
+			{"sheet": "Borders", "cell": "A1", "style.border.bottom.color": "#000000"},
+			{"sheet": "Borders", "cell": "A1", "style.border.top": null},
+			{"sheet": "Borders", "cell": "B1", "style.border.left.style": "medium"},
+			{"sheet": "Borders", "cell": "B1", "style.border.left.color": "#FF0000"},
+			{"sheet": "Borders", "cell": "B1", "style.border.right.color": "#FF0000"},
+			{"sheet": "Borders", "cell": "C1", "style.border.left.style": "thin"},
+			{"sheet": "Borders", "cell": "C1", "style.border.left.xlsxStyle": "hair"},
+			{"sheet": "Borders", "cell": "D1", "style.border.top.style": "double"},
+			{"sheet": "Borders", "cell": "E1", "style.border": null}
+		]
+	}
+}

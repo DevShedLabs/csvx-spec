@@ -1,0 +1,22 @@
+{
+	"id": "style-border-per-edge",
+	"operation": "round-trip",
+	"input": {
+		"style": {
+			"id": "underlined",
+			"border": {
+				"bottom": { "style": "thin", "color": "#000000" },
+				"diagonal": { "style": "thin", "color": "#ff0000" }
+			}
+		}
+	},
+	"expected": {
+		"style": {
+			"id": "underlined",
+			"border": {
+				"bottom": { "style": "thin", "color": "#000000" },
+				"diagonal": { "style": "thin", "color": "#ff0000" }
+			}
+		}
+	}
+}

@@ -5,6 +5,17 @@
   "type": "object",
   "additionalProperties": true,
   "required": ["styles"],
+  "$defs": {
+    "borderLineStyle": { "enum": ["none", "thin", "medium", "thick", "dashed", "dotted", "double"] },
+    "borderEdge": {
+      "type": "object",
+      "properties": {
+        "style": { "$ref": "#/$defs/borderLineStyle" },
+        "color": { "type": "string" }
+      },
+      "additionalProperties": true
+    }
+  },
   "properties": {
     "styles": {
       "type": "array",
@@ -16,7 +27,18 @@
           "numberFormat": { "type": "string" },
           "font": { "type": "object", "additionalProperties": true },
           "fill": { "type": "object", "additionalProperties": true },
-          "border": { "type": "object", "additionalProperties": true },
+          "border": {
+            "type": "object",
+            "properties": {
+              "style": { "$ref": "#/$defs/borderLineStyle" },
+              "color": { "type": "string" },
+              "top": { "$ref": "#/$defs/borderEdge" },
+              "right": { "$ref": "#/$defs/borderEdge" },
+              "bottom": { "$ref": "#/$defs/borderEdge" },
+              "left": { "$ref": "#/$defs/borderEdge" }
+            },
+            "additionalProperties": true
+          },
           "alignment": { "type": "object", "additionalProperties": true },
           "protection": { "type": "object", "additionalProperties": true }
         },
