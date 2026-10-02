@@ -9,6 +9,15 @@ has explicit types, formulas, cached calculation results, styles, validation met
 identifiers. The format is designed for source control, automation, data pipelines, and independent
 implementations.
 
+## Skip the Reading
+__Projects__   
+
+- [React demo using the TS engine](https://github.com/DevShedLabs/csvx-web)
+- [TypeScript Engine](https://github.com/DevShedLabs/csvx-ts)
+- [Go Engine](https://github.com/DevShedLabs/csvx-go)
+- [CSVX CLI](https://github.com/DevShedLabs/csvx-cli) uses the Go Engine
+
+
 ## Project principles
 
 ### The specification is the authority
@@ -154,3 +163,4 @@ The goal is interoperability: different implementations should load, calculate, 
 same workbook with predictable results. Real XLSX workbooks are used as interoperability test inputs,
 while the CSVX specification remains authoritative. The initial XLSX inspection and preservation work
 is documented in `spec/14-xlsx-interoperability.md`.
+
