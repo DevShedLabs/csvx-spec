@@ -1,0 +1,6 @@
+{
+	"id": "csv-import-malformed",
+	"operation": "csv-to-csvx",
+	"input": {"file": "examples/csv/malformed.csv", "options": {}},
+	"expected": {"error": true, "line": 2}
+}

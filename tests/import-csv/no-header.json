@@ -1,0 +1,18 @@
+{
+	"id": "csv-import-no-header",
+	"operation": "csv-to-csvx",
+	"input": {"file": "examples/csv/people.csv", "options": {"header": false, "name": "People & Co"}},
+	"expected": {
+		"schemaValid": true,
+		"sheet": {"id": "people-co", "name": "People & Co"},
+		"columns": [
+			{"id": "A", "name": "Column 1"},
+			{"id": "B", "name": "Column 2"},
+			{"id": "C", "name": "Column 3"},
+			{"id": "D", "name": "Column 4"},
+			{"id": "E", "name": "Column 5"}
+		],
+		"csv": "Column 1,Column 2,Column 3,Column 4,Column 5\nName,Amount,Date,Active,Zip\nAda,19.95,2026-09-22,true,02134\n\"Lovelace, Countess\",3,2026-09-23,false,10001\n=SUM(A1),,2026-09-24,true,\n",
+		"warnings": [{"location": "record 1"}]
+	}
+}

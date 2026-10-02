@@ -1,0 +1,15 @@
+{
+	"id": "csv-import-ragged",
+	"operation": "csv-to-csvx",
+	"input": {"file": "examples/csv/ragged.csv", "options": {}},
+	"expected": {
+		"schemaValid": true,
+		"columns": [
+			{"id": "A", "name": "a"},
+			{"id": "B", "name": "b"},
+			{"id": "C", "name": "Column 3"}
+		],
+		"csv": "a,b,Column 3\n1,2,3\n4,,\n",
+		"warnings": [{"location": "record 2"}, {"location": "record 3"}]
+	}
+}

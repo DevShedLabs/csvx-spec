@@ -1,0 +1,6 @@
+{
+	"id": "csv-import-empty",
+	"operation": "csv-to-csvx",
+	"input": {"file": "examples/csv/empty.csv", "options": {}},
+	"expected": {"error": true}
+}
