@@ -2,6 +2,10 @@
 
 A sheet consists of a canonical CSV data file and optional JSON metadata sidecar. The CSV header
 row defines the visible columns and occupies row 1 in A1 references. Data records begin at row 2.
+This holds everywhere A1 coordinates are used — formulas, `cells` keys, `rowHeights` keys, and
+print settings — so the Nth line of the CSV file is always row N. The header row is a real row of
+the sheet: it can carry style and other cell metadata under row-1 coordinates (`A1`, `B1`, …), and
+a header cell's text is the column's `name`.
 
 ```text
 sheets/sales.csv
@@ -59,8 +63,8 @@ an absent property takes the default shown. Unknown properties are preserved.
 | `columnBreaks` | array of integers | none | 1-based column numbers after which a page break is forced. |
 | `rowBreaks` | array of integers | none | 1-based row numbers after which a page break is forced. |
 
-Ranges and row and column numbers here use the same A1 coordinates as the sheet's `cells` keys, so
-they are the row and column numbers an XLSX import carries over unchanged. The **used
+Ranges and row and column numbers here are A1 coordinates as defined at the top of this document,
+so they are the row and column numbers an XLSX import carries over unchanged. The **used
 range** is the rows and columns up to the last cell that prints something: a value, a formula, a
 visible fill, or a visible border. Formatting that draws nothing (a number format or font on an
 empty cell) is not part of the used range; this matters because spreadsheets often format

@@ -90,3 +90,13 @@ A paper size with no CSVX equivalent is not mapped to `paperSize`; the importer 
 value on the `print` object as `xlsxPaperSize` so it round-trips. Headers and footers are not part of
 Core 1.0 and are preserved as unknown properties when an importer chooses to carry them.
 
+## 14.7 Worksheet rows and the CSV header
+
+An XLSX worksheet row N is CSVX row N (03-sheets.md), with no offset. An importer MUST therefore
+write worksheet row 1 as the CSV header row and worksheet rows 2 and later as data records. Each
+header cell's text becomes that column's `name`; a header cell that is empty is named after its column
+letter (`A`, `B`, …) because a CSV header cell MUST NOT be empty. Cell metadata for row 1 (style, a
+formula and its cached value) is kept under the row-1 coordinate like any other cell's. `rowHeights`
+keys are worksheet row numbers unchanged. A worksheet with no cells is imported as a header of `A`
+only.
+

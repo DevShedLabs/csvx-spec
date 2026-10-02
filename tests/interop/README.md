@@ -31,7 +31,7 @@ inherently about real files, not abstract values.
 }
 ```
 
-`samples` are point assertions at known A1 coordinates — specific enough to catch the class of bug
+`samples` are point assertions at known A1 coordinates (row 1 is the CSV header, so a `value` there is a column name; data row N is record N-2 — see `spec/03-sheets.md` and `spec/14-xlsx-interoperability.md` 14.7) — specific enough to catch the class of bug
 that already shipped here (a decimal formula result cached with `"type": "decimal"` on the schema
 side but `"type": "string"` in practice), without trying to assert the entire fixture byte-for-byte.
 
