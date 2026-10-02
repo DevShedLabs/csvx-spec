@@ -19,6 +19,9 @@
 		{"input": {"mode": "upper", "text": "abc", "declaredType": "decimal"}, "expected": "abc"},
 		{"input": {"mode": "upper", "text": "abc", "declaredType": "string"}, "expected": "ABC"},
 		{"input": {"mode": "upper", "text": "007", "declaredType": "string"}, "expected": "007"},
-		{"input": {"mode": "upper", "text": "=sum(a1)", "formula": "=sum(a1)"}, "expected": "=sum(a1)"}
+		{"input": {"mode": "upper", "text": "=sum(a1)", "formula": "=sum(a1)"}, "expected": "=sum(a1)"},
+		{"input": {"mode": "upper", "text": "amount", "header": true, "declaredType": "decimal"}, "expected": "AMOUNT"},
+		{"input": {"mode": "title", "text": "order id", "header": true, "declaredType": "integer"}, "expected": "Order Id"},
+		{"input": {"mode": "upper", "text": "amount", "declaredType": "decimal"}, "expected": "amount"}
 	]
 }

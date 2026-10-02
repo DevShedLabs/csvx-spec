@@ -32,7 +32,7 @@ An editor that offers case conversion MUST use these rules, so every engine and 
 result. A conversion has a **mode**: `upper`, `lower`, or `title`, and applies to one cell's text
 (the CSV field, or the column name for a header cell). A header cell's text is a column name, so
 it always resolves to `string`: its column's declared type describes the data below it and never
-makes the header ineligible.
+makes the header ineligible (the conversion input is marked `header`).
 
 A cell is **eligible** only if it has no `formula` and its resolved value is `string` (a declared
 `string` type, or no declared type and the text matches no other literal form — see
