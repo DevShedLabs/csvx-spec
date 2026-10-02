@@ -1,0 +1,24 @@
+{
+	"id": "edit-text-case",
+	"operation": "change-case",
+	"cases": [
+		{"input": {"mode": "upper", "text": "hello World"}, "expected": "HELLO WORLD"},
+		{"input": {"mode": "lower", "text": "Hello WORLD"}, "expected": "hello world"},
+		{"input": {"mode": "title", "text": "hello wORLD"}, "expected": "Hello World"},
+		{"input": {"mode": "title", "text": "mary-jane O'NEIL"}, "expected": "Mary-Jane O'neil"},
+		{"input": {"mode": "title", "text": "don’t stop"}, "expected": "Don’t Stop"},
+		{"input": {"mode": "title", "text": "3RD floor  (east)"}, "expected": "3rd Floor  (East)"},
+		{"input": {"mode": "title", "text": "élan ÉCLAT"}, "expected": "Élan Éclat"},
+		{"input": {"mode": "upper", "text": "straße"}, "expected": "STRAßE"},
+		{"input": {"mode": "lower", "text": "ΣΑΣ"}, "expected": "σασ"},
+		{"input": {"mode": "upper", "text": "  keep  spaces "}, "expected": "  KEEP  SPACES "},
+		{"input": {"mode": "upper", "text": ""}, "expected": ""},
+		{"input": {"mode": "upper", "text": "true"}, "expected": "true"},
+		{"input": {"mode": "upper", "text": "2026-09-22"}, "expected": "2026-09-22"},
+		{"input": {"mode": "upper", "text": "19.95"}, "expected": "19.95"},
+		{"input": {"mode": "upper", "text": "abc", "declaredType": "decimal"}, "expected": "abc"},
+		{"input": {"mode": "upper", "text": "abc", "declaredType": "string"}, "expected": "ABC"},
+		{"input": {"mode": "upper", "text": "007", "declaredType": "string"}, "expected": "007"},
+		{"input": {"mode": "upper", "text": "=sum(a1)", "formula": "=sum(a1)"}, "expected": "=sum(a1)"}
+	]
+}
