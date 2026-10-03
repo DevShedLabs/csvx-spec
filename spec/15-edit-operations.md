@@ -1,0 +1,103 @@
+# 15. Edit operations
+
+An engine that edits a workbook MUST implement the operations in this chapter exactly as written,
+so that the same edit produces the same package in every engine and app. A consumer app MUST call
+the engine for them and MUST NOT carry its own copy (AGENTS.md §5).
+
+Coordinates are A1 coordinates as defined in 03-sheets.md: row 1 is the header row, data records
+begin at row 2, and the Nth line of the CSV is row N. Operation arguments use these 1-based row
+numbers and these column letters. An operation that is invalid (below) MUST fail without changing
+the workbook.
+
+Operations change the workbook model only. After any operation that changes a cell's content or a
+formula, the engine recalculates as 10-calculation.md requires; the vectors in `tests/edit/` compare
+the model before that recalculation (formulas, metadata, records), not cached values.
+
+## Inserting and deleting rows
+
+`insert-rows(sheet, at, count)` inserts `count` (≥ 1) blank rows before row `at`; rows `at` and
+below move down by `count`. `at` MUST be ≥ 2, so the header row is never displaced; `at` one past
+the last row appends.
+
+`delete-rows(sheet, rows)` deletes the given set of rows (duplicates ignored); every row MUST be
+≥ 2 and exist. Rows below a deleted row move up by the number of deleted rows above them. The
+header row can never be deleted.
+
+A new row is blank: every field is empty and it carries no cell metadata. In the same operation:
+
+- **Cell metadata** (`cells`) follows its row to the new row number. Metadata on a deleted row is
+  discarded.
+- **`rowHeights`** entries follow their rows in the same way, and are discarded with a deleted row.
+- **Formulas and ranges** in the workbook are rewritten as in "Reference rewriting" below.
+- **Print settings** are rewritten as in "Print settings" below.
+
+## Inserting and deleting columns
+
+`insert-columns(sheet, at, count)` inserts `count` (≥ 1) columns before column `at` (a letter);
+columns `at` and to its right move right. `at` one past the last column appends.
+`delete-columns(sheet, columns)` deletes the given set of columns; a sheet MUST keep at least one
+column.
+
+Each remaining column's `id` is reassigned to its new position's letter, in order (11-import-export.md
+fixes `id` to the letter). The rest of a column object (`name`, `type`, `width`, unknown fields)
+travels with the column. Every record, and the header row, gains or loses the matching fields.
+
+An inserted column is named `Column N`, where N is its 1-based position at the moment of creation.
+The name is stored like any other name: it is not renumbered by later edits, because a column
+name is a header cell's text, not a derived value. It has no `type`, and its fields are empty.
+
+Cell metadata (including row-1 header metadata) follows its column and is discarded with a deleted
+column. Formulas and print settings are rewritten as below.
+
+## Reference rewriting
+
+When rows or columns of sheet S change, every reference that targets S is rewritten, in every
+formula of every sheet and in every workbook-level named range, if present. A reference targets S
+if it is qualified with S's name, or is unqualified and sits on S. `$` anchors are preserved:
+inserting and deleting treat absolute and relative references alike. Spelling, case and quoting of
+untouched parts are preserved. Rewriting acts on the parsed formula; text in string literals is
+never touched. References to row 1 are never affected by a row operation.
+
+Let *map* send an index to its new index, or to *deleted*:
+
+- **Single cell.** Apply *map* to the row (for a row operation) or column (for a column
+  operation). If it is *deleted*, the whole reference, including its sheet qualifier, is replaced
+  by `#REF!` (06-formulas.md).
+- **Range `a:b`.** Insert: *map* is applied to each end independently, so an insertion strictly
+  inside the range grows it, an insertion at its first row or column moves the whole range, and an
+  insertion after its last row or column leaves it unchanged. Delete: if every row or column of
+  the range is deleted, the whole range becomes `#REF!`. Otherwise the range shrinks to the
+  surviving rows or columns: its new start is the first surviving index at or after `a`, its new
+  end the last surviving index at or before `b`, each passed through *map*.
+
+A formula that contains `#REF!` after rewriting stays valid and evaluates to the `REF` error.
+A formula's own cell moving does not change what it references.
+
+## Print settings
+
+For the target sheet's `print` object: `area`, `repeatRows` and `repeatColumns` are rewritten as
+ranges (a setting whose range is entirely deleted is removed); `rowBreaks` and `columnBreaks`
+numbers follow their row or column, and a break on a deleted row or column is removed. Unknown
+properties are preserved untouched.
+
+## Sheets
+
+`add-sheet` appends a sheet with a workbook-unique `id` and name, and the metadata sidecar and CSV
+that go with it. A new sheet has one column, `Column 1` (id `A`), and no data rows: its CSV is the
+single header line. Editors display the default grid of 03-sheets.md around it; nothing is padded
+into the file.
+
+`rename-sheet(sheet, name)` changes the sheet's `name` only. The name MUST satisfy 03-sheets.md and
+be unique in the workbook, otherwise the operation is invalid. The `id` and `path` do not change.
+Every sheet-qualified reference to the sheet in the workbook's formulas and named ranges is
+rewritten to the new name, quoted as 06-formulas.md requires for the new name.
+
+`delete-sheet(sheet)` removes the sheet and its resources. A workbook MUST keep at least one sheet.
+Every reference qualified with the deleted sheet's name is replaced by `#REF!`.
+
+## Not yet specified
+
+Cell and range edits (set cell, paste block), style patch with deduplication, and print-settings
+merge are workbook-model operations that still live only in `csvx-web`. They are tracked in
+`CSVX-GAPS.md` and MUST be specified here, with vectors, before an engine implements them.
+Data-validation ranges (09-validation.md) are not yet rewritten by structural edits.

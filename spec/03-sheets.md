@@ -39,6 +39,19 @@ same formula so a width written by one tool round-trips predictably through anot
 unit (its default row height is 15pt); a pixel-based renderer converts with `pixels = points * 4/3`
 and back with `points = pixels * 3/4`. Neither width nor height may be negative or zero.
 
+## Default grid
+
+An interactive editor SHOULD present every sheet, including a newly created one, as at least the
+grid `A1:Z100` (columns A–Z, rows 1–100), padding the view with blank cells beyond the sheet's
+actual data. This is a presentation default only and is not part of the format:
+
+- Padding is never written. A new sheet's CSV and sidecar contain no placeholder header names,
+  blank columns, or blank rows, and the sidecar declares no columns that the user has not named.
+- An engine MUST NOT pad or trim a sheet on load or save, and `create` and CSV import keep the
+  extent of the source data.
+- Padded cells are blank and carry no metadata; they are not part of the used range (see Print
+  settings). Typing into one adds it to the sheet like any other edit.
+
 ## Print settings
 
 A sheet's metadata MAY carry a `print` object describing how the sheet is paginated and printed.

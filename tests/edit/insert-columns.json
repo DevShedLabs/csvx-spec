@@ -1,0 +1,213 @@
+{
+	"id": "edit-insert-columns",
+	"operation": "insert-columns",
+	"cases": [
+		{
+			"note": "columns at/right of the insertion move",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "ColA"
+								},
+								{
+									"id": "B",
+									"name": "ColB"
+								},
+								{
+									"id": "C",
+									"name": "ColC"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {
+								"D1": {
+									"formula": "=A2+B2+C2"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"at": "B",
+					"count": 1
+				}
+			},
+			"expected": {
+				"formulas": {
+					"D1": "=A2+C2+D2"
+				}
+			}
+		},
+		{
+			"note": "insertion inside a range grows it",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "ColA"
+								},
+								{
+									"id": "B",
+									"name": "ColB"
+								},
+								{
+									"id": "C",
+									"name": "ColC"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {
+								"D1": {
+									"formula": "=SUM(A2:C2)"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"at": "B",
+					"count": 1
+				}
+			},
+			"expected": {
+				"formulas": {
+					"D1": "=SUM(A2:D2)"
+				}
+			}
+		},
+		{
+			"note": "anchors do not stop a shift; the formula cell moves too",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "ColA"
+								},
+								{
+									"id": "B",
+									"name": "ColB"
+								},
+								{
+									"id": "C",
+									"name": "ColC"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {
+								"D1": {
+									"formula": "=$A$2"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"at": "A",
+					"count": 1
+				}
+			},
+			"expected": {
+				"formulas": {
+					"E1": "=$B$2"
+				}
+			}
+		}
+	]
+}

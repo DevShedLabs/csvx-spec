@@ -1,0 +1,527 @@
+{
+	"id": "edit-sheets-and-columns",
+	"cases": [
+		{
+			"note": "another sheet's formulas are rewritten only for references that target the edited sheet",
+			"operation": "delete-columns",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "X"
+								},
+								{
+									"id": "B",
+									"name": "Y"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"2"
+								]
+							],
+							"cells": {}
+						},
+						{
+							"id": "sheet-2",
+							"name": "Other Sheet",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Z"
+								}
+							],
+							"records": [
+								[
+									"3"
+								]
+							],
+							"cells": {
+								"A2": {
+									"formula": "=Sales!A2+'Other Sheet'!B2+B2"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales",
+					"columns": [
+						"A"
+					]
+				}
+			},
+			"expected": {
+				"formulas": {
+					"sheet-2": {
+						"A2": "=#REF!+'Other Sheet'!B2+B2"
+					}
+				}
+			}
+		},
+		{
+			"note": "inserted column is named Column N by its position at creation; ids follow position",
+			"operation": "insert-columns",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "X"
+								},
+								{
+									"id": "B",
+									"name": "Y"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"2"
+								]
+							],
+							"cells": {}
+						},
+						{
+							"id": "sheet-2",
+							"name": "Other Sheet",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Z"
+								}
+							],
+							"records": [
+								[
+									"3"
+								]
+							],
+							"cells": {
+								"A2": {
+									"formula": "=Sales!A2+'Other Sheet'!B2+B2"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales",
+					"at": "A",
+					"count": 1
+				}
+			},
+			"expected": {
+				"columns": {
+					"sheet-1": [
+						{
+							"id": "A",
+							"name": "Column 1"
+						},
+						{
+							"id": "B",
+							"name": "X"
+						},
+						{
+							"id": "C",
+							"name": "Y"
+						}
+					]
+				},
+				"formulas": {
+					"sheet-2": {
+						"A2": "=Sales!B2+'Other Sheet'!B2+B2"
+					}
+				}
+			}
+		},
+		{
+			"note": "rename-sheet rewrites qualified references, quoting as needed",
+			"operation": "rename-sheet",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "X"
+								},
+								{
+									"id": "B",
+									"name": "Y"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"2"
+								]
+							],
+							"cells": {}
+						},
+						{
+							"id": "sheet-2",
+							"name": "Other Sheet",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Z"
+								}
+							],
+							"records": [
+								[
+									"3"
+								]
+							],
+							"cells": {
+								"A2": {
+									"formula": "=Sales!A2+'Other Sheet'!B2+B2"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales",
+					"name": "Q1 Sales"
+				}
+			},
+			"expected": {
+				"names": [
+					"Q1 Sales",
+					"Other Sheet"
+				],
+				"formulas": {
+					"sheet-2": {
+						"A2": "='Q1 Sales'!A2+'Other Sheet'!B2+B2"
+					}
+				}
+			}
+		},
+		{
+			"note": "rename to an existing name is invalid and changes nothing",
+			"operation": "rename-sheet",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "X"
+								},
+								{
+									"id": "B",
+									"name": "Y"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"2"
+								]
+							],
+							"cells": {}
+						},
+						{
+							"id": "sheet-2",
+							"name": "Other Sheet",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Z"
+								}
+							],
+							"records": [
+								[
+									"3"
+								]
+							],
+							"cells": {
+								"A2": {
+									"formula": "=Sales!A2+'Other Sheet'!B2+B2"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales",
+					"name": "Other Sheet"
+				}
+			},
+			"expected": {
+				"valid": false
+			}
+		},
+		{
+			"note": "delete-sheet turns qualified references into #REF!",
+			"operation": "delete-sheet",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "X"
+								},
+								{
+									"id": "B",
+									"name": "Y"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"2"
+								]
+							],
+							"cells": {}
+						},
+						{
+							"id": "sheet-2",
+							"name": "Other Sheet",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Z"
+								}
+							],
+							"records": [
+								[
+									"3"
+								]
+							],
+							"cells": {
+								"A2": {
+									"formula": "=Sales!A2+'Other Sheet'!B2+B2"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales"
+				}
+			},
+			"expected": {
+				"names": [
+					"Other Sheet"
+				],
+				"formulas": {
+					"sheet-2": {
+						"A2": "=#REF!+'Other Sheet'!B2+B2"
+					}
+				}
+			}
+		},
+		{
+			"note": "the last sheet cannot be deleted",
+			"operation": "delete-sheet",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "X"
+								},
+								{
+									"id": "B",
+									"name": "Y"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"2"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales"
+				}
+			},
+			"expected": {
+				"valid": false
+			}
+		},
+		{
+			"note": "the header row cannot be displaced",
+			"operation": "insert-rows",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "X"
+								},
+								{
+									"id": "B",
+									"name": "Y"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"2"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales",
+					"at": 1,
+					"count": 1
+				}
+			},
+			"expected": {
+				"valid": false
+			}
+		},
+		{
+			"note": "the header row cannot be deleted",
+			"operation": "delete-rows",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "X"
+								},
+								{
+									"id": "B",
+									"name": "Y"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"2"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales",
+					"rows": [
+						1
+					]
+				}
+			},
+			"expected": {
+				"valid": false
+			}
+		},
+		{
+			"note": "a sheet must keep at least one column",
+			"operation": "delete-columns",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-2",
+							"name": "Other Sheet",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Z"
+								}
+							],
+							"records": [
+								[
+									"3"
+								]
+							],
+							"cells": {
+								"A2": {
+									"formula": "=Sales!A2+'Other Sheet'!B2+B2"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Other Sheet",
+					"columns": [
+						"A"
+					]
+				}
+			},
+			"expected": {
+				"valid": false
+			}
+		},
+		{
+			"note": "add-sheet: one column named Column 1, no data rows, unique id and name",
+			"operation": "add-sheet",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-2",
+							"name": "Sheet 2",
+							"columns": [
+								{
+									"id": "A",
+									"name": "X"
+								}
+							],
+							"records": [],
+							"cells": {}
+						}
+					]
+				},
+				"args": {}
+			},
+			"expected": {
+				"newSheet": {
+					"columns": [
+						{
+							"id": "A",
+							"name": "Column 1"
+						}
+					],
+					"records": []
+				},
+				"idUnique": true,
+				"nameUnique": true
+			}
+		}
+	]
+}

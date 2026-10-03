@@ -1,0 +1,364 @@
+{
+	"id": "edit-delete-rows",
+	"operation": "delete-rows",
+	"cases": [
+		{
+			"note": "reference to a deleted row becomes #REF!; rows below move up",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "ColA"
+								},
+								{
+									"id": "B",
+									"name": "ColB"
+								},
+								{
+									"id": "C",
+									"name": "ColC"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {
+								"D1": {
+									"formula": "=A3*2"
+								},
+								"D2": {
+									"formula": "=A4*2"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"rows": [
+						3
+					]
+				}
+			},
+			"expected": {
+				"formulas": {
+					"D1": "=#REF!*2",
+					"D2": "=A3*2"
+				}
+			}
+		},
+		{
+			"note": "deleted rows inside a range shrink it",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "ColA"
+								},
+								{
+									"id": "B",
+									"name": "ColB"
+								},
+								{
+									"id": "C",
+									"name": "ColC"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {
+								"D1": {
+									"formula": "=SUM(A2:A6)"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"rows": [
+						3,
+						4
+					]
+				}
+			},
+			"expected": {
+				"formulas": {
+					"D1": "=SUM(A2:A4)"
+				}
+			}
+		},
+		{
+			"note": "deleting a range's first row: start becomes the first surviving row",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "ColA"
+								},
+								{
+									"id": "B",
+									"name": "ColB"
+								},
+								{
+									"id": "C",
+									"name": "ColC"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {
+								"D1": {
+									"formula": "=SUM(A2:A6)"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"rows": [
+						2
+					]
+				}
+			},
+			"expected": {
+				"formulas": {
+					"D1": "=SUM(A2:A5)"
+				}
+			}
+		},
+		{
+			"note": "a range whose rows are all deleted becomes #REF!",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "ColA"
+								},
+								{
+									"id": "B",
+									"name": "ColB"
+								},
+								{
+									"id": "C",
+									"name": "ColC"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {
+								"D1": {
+									"formula": "=SUM(A3:A4)"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"rows": [
+						3,
+						4
+					]
+				}
+			},
+			"expected": {
+				"formulas": {
+					"D1": "=SUM(#REF!)"
+				}
+			}
+		},
+		{
+			"note": "order and duplicates in the row set do not matter",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "ColA"
+								},
+								{
+									"id": "B",
+									"name": "ColB"
+								},
+								{
+									"id": "C",
+									"name": "ColC"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {
+								"D1": {
+									"formula": "=A5"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"rows": [
+						4,
+						3,
+						3
+					]
+				}
+			},
+			"expected": {
+				"formulas": {
+					"D1": "=A3"
+				}
+			}
+		}
+	]
+}

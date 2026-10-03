@@ -1,0 +1,14 @@
+{
+	"id": "formula-ref-error",
+	"operation": "evaluate",
+	"cases": [
+		{"input": {"formula": "=#REF!"}, "expected": {"type": "error", "code": "REF"}},
+		{"input": {"formula": "=#ref!"}, "expected": {"type": "error", "code": "REF"}},
+		{
+			"input": {"formula": "=A3*#REF!", "cells": {"A3": {"type": "integer", "value": 2}}},
+			"expected": {"type": "error", "code": "REF"}
+		},
+		{"input": {"formula": "=SUM(#REF!)"}, "expected": {"type": "error", "code": "REF"}},
+		{"input": {"formula": "=1+#REF!"}, "expected": {"type": "error", "code": "REF"}}
+	]
+}

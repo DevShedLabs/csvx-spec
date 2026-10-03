@@ -8,7 +8,7 @@ Tests are format-neutral JSON vectors. A runner loads `input`, performs the oper
 - `calculations/` dependency and cache behavior
 - `styles/` preservation of presentation metadata
 - `print/` preservation of sheet print settings
-- `edit/` editor operations whose result must agree across engines (text case)
+- `edit/` editor operations whose result must agree across engines (text case, row/column insert and delete, sheet add/rename/delete; see spec/15)
 - `import-csv/` plain CSV → CSVX conversion (see its README)
 - `invalid/` required rejection cases
 

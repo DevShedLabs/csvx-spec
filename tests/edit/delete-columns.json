@@ -1,0 +1,146 @@
+{
+	"id": "edit-delete-columns",
+	"operation": "delete-columns",
+	"cases": [
+		{
+			"note": "deleted column's references become #REF!; the formula cell D shifts to C",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "ColA"
+								},
+								{
+									"id": "B",
+									"name": "ColB"
+								},
+								{
+									"id": "C",
+									"name": "ColC"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {
+								"D1": {
+									"formula": "=A2+B2+C2"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"columns": [
+						"B"
+					]
+				}
+			},
+			"expected": {
+				"formulas": {
+					"C1": "=A2+#REF!+B2"
+				}
+			}
+		},
+		{
+			"note": "deleted column inside a range shrinks it",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "ColA"
+								},
+								{
+									"id": "B",
+									"name": "ColB"
+								},
+								{
+									"id": "C",
+									"name": "ColC"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {
+								"D1": {
+									"formula": "=SUM(A2:C2)"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"columns": [
+						"B"
+					]
+				}
+			},
+			"expected": {
+				"formulas": {
+					"C1": "=SUM(A2:B2)"
+				}
+			}
+		}
+	]
+}

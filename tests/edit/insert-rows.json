@@ -1,0 +1,424 @@
+{
+	"id": "edit-insert-rows",
+	"operation": "insert-rows",
+	"cases": [
+		{
+			"note": "cell at/below the insertion row moves; above stays; $ anchors treated alike",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "ColA"
+								},
+								{
+									"id": "B",
+									"name": "ColB"
+								},
+								{
+									"id": "C",
+									"name": "ColC"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {
+								"D1": {
+									"formula": "=A3+A4"
+								},
+								"D2": {
+									"formula": "=A$4*2"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"at": 4,
+					"count": 1
+				}
+			},
+			"expected": {
+				"formulas": {
+					"D1": "=A3+A5",
+					"D2": "=A$5*2"
+				}
+			}
+		},
+		{
+			"note": "insertion strictly inside a range grows it",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "ColA"
+								},
+								{
+									"id": "B",
+									"name": "ColB"
+								},
+								{
+									"id": "C",
+									"name": "ColC"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {
+								"D1": {
+									"formula": "=SUM(A2:A6)"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"at": 4,
+					"count": 2
+				}
+			},
+			"expected": {
+				"formulas": {
+					"D1": "=SUM(A2:A8)"
+				}
+			}
+		},
+		{
+			"note": "insertion at a range's first row moves the whole range",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "ColA"
+								},
+								{
+									"id": "B",
+									"name": "ColB"
+								},
+								{
+									"id": "C",
+									"name": "ColC"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {
+								"D1": {
+									"formula": "=SUM(A2:A6)"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"at": 2,
+					"count": 1
+				}
+			},
+			"expected": {
+				"formulas": {
+					"D1": "=SUM(A3:A7)"
+				}
+			}
+		},
+		{
+			"note": "insertion after a range's last row leaves it unchanged",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "ColA"
+								},
+								{
+									"id": "B",
+									"name": "ColB"
+								},
+								{
+									"id": "C",
+									"name": "ColC"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {
+								"D1": {
+									"formula": "=SUM(A2:A6)"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"at": 7,
+					"count": 1
+				}
+			},
+			"expected": {
+				"formulas": {
+					"D1": "=SUM(A2:A6)"
+				}
+			}
+		},
+		{
+			"note": "row 1 (header) references never move",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "ColA"
+								},
+								{
+									"id": "B",
+									"name": "ColB"
+								},
+								{
+									"id": "C",
+									"name": "ColC"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {
+								"D1": {
+									"formula": "=A1+A2"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"at": 3,
+					"count": 1
+				}
+			},
+			"expected": {
+				"formulas": {
+					"D1": "=A1+A3"
+				}
+			}
+		},
+		{
+			"note": "a formula cell moves with its row and its references are rewritten",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "ColA"
+								},
+								{
+									"id": "B",
+									"name": "ColB"
+								},
+								{
+									"id": "C",
+									"name": "ColC"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {
+								"D4": {
+									"formula": "=A4"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"at": 3,
+					"count": 1
+				}
+			},
+			"expected": {
+				"formulas": {
+					"D5": "=A5"
+				}
+			}
+		}
+	]
+}

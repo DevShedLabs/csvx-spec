@@ -32,6 +32,8 @@ and **MAY** have their usual RFC 2119 meaning.
 11. [Import and export](11-import-export.md)
 12. [Security](12-security.md)
 13. [Conformance](13-conformance.md)
+14. [XLSX interoperability](14-xlsx-interoperability.md)
+15. [Edit operations](15-edit-operations.md)
 
 Core 1.0 intentionally excludes charts, pivot tables, images, comments, macros, and external
 references. These belong in separately versioned extensions.

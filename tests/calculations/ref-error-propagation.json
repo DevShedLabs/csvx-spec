@@ -1,0 +1,15 @@
+{
+	"id": "calculation-ref-error-propagation",
+	"operation": "recalculate",
+	"input": {
+		"cells": {
+			"A1": {"type": "integer", "value": 2},
+			"B1": {"formula": "=A1*#REF!"},
+			"C1": {"formula": "=B1+1"}
+		}
+	},
+	"expected": {
+		"B1": {"type": "error", "code": "REF"},
+		"C1": {"type": "error", "code": "REF"}
+	}
+}

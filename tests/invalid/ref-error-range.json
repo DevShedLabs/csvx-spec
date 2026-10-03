@@ -1,0 +1,8 @@
+{
+	"id": "invalid-ref-error-range",
+	"operation": "parse-formula",
+	"input": "=A1:#REF!",
+	"expected": {
+		"valid": false
+	}
+}
