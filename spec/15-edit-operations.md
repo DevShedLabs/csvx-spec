@@ -51,9 +51,16 @@ column. Formulas and print settings are rewritten as below.
 
 ## Reference rewriting
 
-When rows or columns of sheet S change, every reference that targets S is rewritten, in every
-formula of every sheet and in every workbook-level named range, if present. A reference targets S
-if it is qualified with S's name, or is unqualified and sits on S. `$` anchors are preserved:
+When rows or columns of sheet S change, every reference that targets S is rewritten in:
+
+- every cell formula of every sheet;
+- every `refersTo` of `namedRanges` (02-workbook.md); every reference in one is sheet-qualified, so
+  none is unqualified;
+- the `formula1` and `formula2` of every cell `validation` rule (09-validation.md) whose value
+  begins with `=`. A value that does not begin with `=` (a literal, a comma-separated list) is not
+  a formula and is left alone. An unqualified reference in one targets the sheet the cell is on.
+
+A reference targets S if it is qualified with S's name, or is unqualified and sits on S. `$` anchors are preserved:
 inserting and deleting treat absolute and relative references alike. Spelling, case and quoting of
 untouched parts are preserved. Rewriting acts on the parsed formula; text in string literals is
 never touched. References to row 1 are never affected by a row operation.
@@ -89,11 +96,11 @@ into the file.
 
 `rename-sheet(sheet, name)` changes the sheet's `name` only. The name MUST satisfy 03-sheets.md and
 be unique in the workbook, otherwise the operation is invalid. The `id` and `path` do not change.
-Every sheet-qualified reference to the sheet in the workbook's formulas and named ranges is
+Every sheet-qualified reference to the sheet in the places listed under "Reference rewriting" is
 rewritten to the new name, quoted as 06-formulas.md requires for the new name.
 
 `delete-sheet(sheet)` removes the sheet and its resources. A workbook MUST keep at least one sheet.
-Every reference qualified with the deleted sheet's name is replaced by `#REF!`.
+Every reference qualified with the deleted sheet's name, in the same places, is replaced by `#REF!`.
 
 ## Setting cells
 
@@ -158,6 +165,5 @@ removed from the sidecar.
 
 ## Not yet specified
 
-Translating relative references when copying and pasting formulas, and data-validation ranges
-(09-validation.md) under structural edits, are not yet covered. They MUST be specified here, with
-vectors, before an engine implements them.
+Translating relative references when copying and pasting formulas is not yet covered. It MUST be
+specified here, with vectors, before an engine implements it.

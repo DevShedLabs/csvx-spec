@@ -4,13 +4,14 @@ Formulas are UTF-8 strings beginning with `=`. The Core grammar is intentionally
 
 ```text
 formula  = "=" expression
-expression = literal | reference | ref-error | function | unary | binary | range | "(" expression ")"
+expression = literal | reference | ref-error | name | function | unary | binary | range | "(" expression ")"
 binary   = expression operator expression
 operator = "+" | "-" | "*" | "/" | "%" | "=" | "!=" | "<" | "<=" | ">" | ">="
 reference = [sheet "!"] cell
 cell     = ["$"] column ["$"] row
 range    = reference ":" reference
 ref-error = "#REF!"
+name     = identifier
 
 Operators use standard precedence: unary signs, percent, multiplication/division, addition/
 subtraction, then comparisons. `!=` is the canonical not-equal operator. Exponentiation is not
@@ -27,6 +28,16 @@ A `$` before the column letters, the row number, or both marks that part of a re
 absolute (`$A$1`, `A$1`, `$A1`). It has no effect on evaluation: `=$A$1` reads the same cell as
 `=A1`. It MUST be accepted by the parser and preserved in the stored formula text. Row and column
 insertion and deletion treat absolute and relative parts alike (15-edit-operations.md).
+
+## Names
+
+An identifier that is not a function call, `TRUE`/`FALSE`, or a cell reference is a **name**
+(02-workbook.md, Named ranges). It is syntactically valid whether or not it is declared. Evaluating
+it substitutes the name's `refersTo`: a name that refers to a cell reads that cell, a name that
+refers to a range may be used wherever a range may (`SUM(Prices)`) and yields its first cell in a
+scalar position, and a name that refers to a constant yields that constant. A name that is not
+declared evaluates to `NAME`. Matching is case-insensitive. A name whose `refersTo` contains
+`#REF!` evaluates to `REF`.
 
 ## Reference errors
 

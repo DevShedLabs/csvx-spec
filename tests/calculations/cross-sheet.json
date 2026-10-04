@@ -1,0 +1,101 @@
+{
+	"id": "calculation-cross-sheet",
+	"operation": "recalculate-workbook",
+	"cases": [
+		{
+			"note": "a formula reads another sheet's formula cell, whatever the order",
+			"input": {
+				"sheets": {
+					"Sheet1": {
+						"A1": {
+							"formula": "=Sheet2!A1+1"
+						}
+					},
+					"Sheet2": {
+						"A1": {
+							"formula": "=B1*2"
+						},
+						"B1": {
+							"value": {
+								"type": "integer",
+								"value": 4
+							}
+						}
+					}
+				}
+			},
+			"expected": {
+				"Sheet1": {
+					"A1": {
+						"type": "integer",
+						"value": 9
+					}
+				},
+				"Sheet2": {
+					"A1": {
+						"type": "integer",
+						"value": 8
+					}
+				}
+			}
+		},
+		{
+			"note": "a cycle across sheets is CYCLE in every cell on it, and in cells that read it",
+			"input": {
+				"sheets": {
+					"Sheet1": {
+						"A1": {
+							"formula": "=Sheet2!A1"
+						},
+						"B1": {
+							"formula": "=A1+1"
+						}
+					},
+					"Sheet2": {
+						"A1": {
+							"formula": "=Sheet1!A1"
+						}
+					}
+				}
+			},
+			"expected": {
+				"Sheet1": {
+					"A1": {
+						"type": "error",
+						"code": "CYCLE"
+					},
+					"B1": {
+						"type": "error",
+						"code": "CYCLE"
+					}
+				},
+				"Sheet2": {
+					"A1": {
+						"type": "error",
+						"code": "CYCLE"
+					}
+				}
+			}
+		},
+		{
+			"note": "a reference to a sheet that does not exist is REF",
+			"input": {
+				"sheets": {
+					"Sheet1": {
+						"A1": {
+							"formula": "=Nope!A1"
+						}
+					}
+				}
+			},
+			"expected": {
+				"Sheet1": {
+					"A1": {
+						"type": "error",
+						"code": "REF"
+					}
+				}
+			}
+		}
+	]
+}

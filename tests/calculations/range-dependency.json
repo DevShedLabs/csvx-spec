@@ -1,0 +1,42 @@
+{
+	"id": "calculation-range-dependency",
+	"operation": "recalculate",
+	"input": {
+		"cells": {
+			"A1": {
+				"formula": "=SUM(B1:B3)"
+			},
+			"B1": {
+				"value": {
+					"type": "integer",
+					"value": 1
+				}
+			},
+			"B2": {
+				"formula": "=C1*2"
+			},
+			"B3": {
+				"value": {
+					"type": "integer",
+					"value": 3
+				}
+			},
+			"C1": {
+				"value": {
+					"type": "integer",
+					"value": 5
+				}
+			}
+		}
+	},
+	"expected": {
+		"B2": {
+			"type": "integer",
+			"value": 10
+		},
+		"A1": {
+			"type": "integer",
+			"value": 14
+		}
+	}
+}

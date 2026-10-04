@@ -1,0 +1,146 @@
+{
+	"id": "calculation-named-ranges",
+	"operation": "recalculate-workbook",
+	"cases": [
+		{
+			"note": "names resolve to cells, ranges, and constants; matching ignores case; a name over a formula cell orders correctly; undeclared is NAME; #REF! is REF",
+			"input": {
+				"namedRanges": [
+					{
+						"name": "TaxRate",
+						"refersTo": "=Rates!$B$1"
+					},
+					{
+						"name": "Prices",
+						"refersTo": "=Sales!$B$1:$B$3"
+					},
+					{
+						"name": "PiValue",
+						"refersTo": "=6.28"
+					},
+					{
+						"name": "Broken",
+						"refersTo": "=#REF!"
+					}
+				],
+				"sheets": {
+					"Rates": {
+						"B1": {
+							"value": {
+								"type": "decimal",
+								"value": "0.10"
+							}
+						}
+					},
+					"Sales": {
+						"B1": {
+							"value": {
+								"type": "integer",
+								"value": 10
+							}
+						},
+						"B2": {
+							"value": {
+								"type": "integer",
+								"value": 20
+							}
+						},
+						"B3": {
+							"formula": "=B1+B2"
+						},
+						"D1": {
+							"formula": "=SUM(Prices)"
+						},
+						"D2": {
+							"formula": "=Prices"
+						},
+						"D3": {
+							"formula": "=B1*TaxRate"
+						},
+						"D4": {
+							"formula": "=pivalue"
+						},
+						"D5": {
+							"formula": "=Nope+1"
+						},
+						"D6": {
+							"formula": "=Broken"
+						},
+						"D7": {
+							"formula": "=SUM(prices)*2"
+						}
+					}
+				}
+			},
+			"expected": {
+				"Sales": {
+					"B3": {
+						"type": "integer",
+						"value": 30
+					},
+					"D1": {
+						"type": "integer",
+						"value": 60
+					},
+					"D2": {
+						"type": "integer",
+						"value": 10
+					},
+					"D3": {
+						"type": "decimal",
+						"value": "1.00"
+					},
+					"D4": {
+						"type": "decimal",
+						"value": "6.28"
+					},
+					"D5": {
+						"type": "error",
+						"code": "NAME"
+					},
+					"D6": {
+						"type": "error",
+						"code": "REF"
+					},
+					"D7": {
+						"type": "integer",
+						"value": 120
+					}
+				}
+			}
+		},
+		{
+			"note": "a name that depends on a cell that uses the name is a cycle",
+			"input": {
+				"namedRanges": [
+					{
+						"name": "Loop",
+						"refersTo": "=Sheet1!$A$1"
+					}
+				],
+				"sheets": {
+					"Sheet1": {
+						"A1": {
+							"formula": "=Loop+1"
+						},
+						"B1": {
+							"formula": "=A1"
+						}
+					}
+				}
+			},
+			"expected": {
+				"Sheet1": {
+					"A1": {
+						"type": "error",
+						"code": "CYCLE"
+					},
+					"B1": {
+						"type": "error",
+						"code": "CYCLE"
+					}
+				}
+			}
+		}
+	]
+}

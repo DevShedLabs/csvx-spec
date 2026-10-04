@@ -1,0 +1,424 @@
+{
+	"id": "edit-validation-refs",
+	"cases": [
+		{
+			"note": "validation formulas starting with = are rewritten; unqualified references target the cell's own sheet",
+			"operation": "insert-rows",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								},
+								{
+									"id": "C",
+									"name": "C"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {
+								"A2": {
+									"validation": {
+										"type": "list",
+										"formula1": "=$C$2:$C$6",
+										"message": "pick one"
+									}
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales",
+					"at": 4,
+					"count": 1
+				}
+			},
+			"expected": {
+				"cells": {
+					"A2": {
+						"validation": {
+							"type": "list",
+							"formula1": "=$C$2:$C$7",
+							"message": "pick one"
+						}
+					}
+				}
+			}
+		},
+		{
+			"note": "formula1/formula2 that do not start with = are left alone",
+			"operation": "insert-rows",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								},
+								{
+									"id": "C",
+									"name": "C"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {
+								"A2": {
+									"validation": {
+										"type": "whole",
+										"operator": "between",
+										"formula1": "3",
+										"formula2": "10"
+									}
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales",
+					"at": 3,
+					"count": 1
+				}
+			},
+			"expected": {
+				"cells": {
+					"A2": {
+						"validation": {
+							"type": "whole",
+							"operator": "between",
+							"formula1": "3",
+							"formula2": "10"
+						}
+					}
+				}
+			}
+		},
+		{
+			"note": "a validation cell moves with its row, and a rule on another sheet that names the edited sheet is rewritten",
+			"operation": "delete-rows",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								},
+								{
+									"id": "C",
+									"name": "C"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {
+								"A4": {
+									"validation": {
+										"type": "list",
+										"formula1": "=$B$2:$B$3"
+									}
+								}
+							}
+						},
+						{
+							"id": "sheet-2",
+							"name": "Rates",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								},
+								{
+									"id": "C",
+									"name": "C"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {
+								"A2": {
+									"validation": {
+										"type": "custom",
+										"formula1": "=Sales!B4>0"
+									}
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales",
+					"rows": [
+						3
+					]
+				}
+			},
+			"expected": {
+				"cells": {
+					"A3": {
+						"validation": {
+							"type": "list",
+							"formula1": "=$B$2:$B$2"
+						}
+					}
+				},
+				"validationFormulas": {
+					"sheet-2": {
+						"A2": "=Sales!B3>0"
+					}
+				}
+			}
+		},
+		{
+			"note": "rename-sheet rewrites validation formulas on every sheet",
+			"operation": "rename-sheet",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								},
+								{
+									"id": "C",
+									"name": "C"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {}
+						},
+						{
+							"id": "sheet-2",
+							"name": "Rates",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								},
+								{
+									"id": "C",
+									"name": "C"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {
+								"A2": {
+									"validation": {
+										"type": "custom",
+										"formula1": "=Sales!B4>0"
+									}
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales",
+					"name": "Totals"
+				}
+			},
+			"expected": {
+				"validationFormulas": {
+					"sheet-2": {
+						"A2": "=Totals!B4>0"
+					}
+				}
+			}
+		}
+	]
+}

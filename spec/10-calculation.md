@@ -1,7 +1,10 @@
 # 10. Calculation
 
 Calculation builds a dependency graph from formula references and evaluates cells in deterministic
-topological order. Independent cells MUST produce the same results regardless of worker scheduling.
+topological order. The graph has an edge for every cell a formula reads: each cell inside a
+range, and cells on other sheets (`Sheet!A1`), so a reference to another sheet's formula cell sees
+its calculated value and a cycle that crosses sheets is `CYCLE` like any other. A name contributes the edges of the references in its `refersTo`. A reference to a
+sheet that does not exist is `REF`. Independent cells MUST produce the same results regardless of worker scheduling.
 
 Arithmetic uses decimal semantics. Division by zero returns `DIV0`; invalid operands return
 `VALUE`; missing references return `REF`. Errors propagate through operators and functions unless a

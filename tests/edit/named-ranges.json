@@ -1,0 +1,551 @@
+{
+	"id": "edit-named-ranges",
+	"cases": [
+		{
+			"note": "insert rows rewrites named ranges that target the edited sheet only; constants are untouched",
+			"operation": "insert-rows",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								},
+								{
+									"id": "C",
+									"name": "C"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {}
+						},
+						{
+							"id": "sheet-2",
+							"name": "Rates",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								},
+								{
+									"id": "C",
+									"name": "C"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {}
+						}
+					],
+					"namedRanges": [
+						{
+							"name": "Prices",
+							"refersTo": "=Sales!$B$2:$B$6"
+						},
+						{
+							"name": "Rate",
+							"refersTo": "=Rates!$A$3"
+						},
+						{
+							"name": "Pi",
+							"refersTo": "=3.14"
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales",
+					"at": 4,
+					"count": 2
+				}
+			},
+			"expected": {
+				"namedRanges": [
+					{
+						"name": "Prices",
+						"refersTo": "=Sales!$B$2:$B$8"
+					},
+					{
+						"name": "Rate",
+						"refersTo": "=Rates!$A$3"
+					},
+					{
+						"name": "Pi",
+						"refersTo": "=3.14"
+					}
+				]
+			}
+		},
+		{
+			"note": "delete rows: a name whose cell is deleted refers to #REF!",
+			"operation": "delete-rows",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								},
+								{
+									"id": "C",
+									"name": "C"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {}
+						},
+						{
+							"id": "sheet-2",
+							"name": "Rates",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								},
+								{
+									"id": "C",
+									"name": "C"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {}
+						}
+					],
+					"namedRanges": [
+						{
+							"name": "Prices",
+							"refersTo": "=Sales!$B$2:$B$6"
+						},
+						{
+							"name": "Rate",
+							"refersTo": "=Rates!$A$3"
+						},
+						{
+							"name": "Pi",
+							"refersTo": "=3.14"
+						}
+					]
+				},
+				"args": {
+					"sheet": "Rates",
+					"rows": [
+						3
+					]
+				}
+			},
+			"expected": {
+				"namedRanges": [
+					{
+						"name": "Prices",
+						"refersTo": "=Sales!$B$2:$B$6"
+					},
+					{
+						"name": "Rate",
+						"refersTo": "=#REF!"
+					},
+					{
+						"name": "Pi",
+						"refersTo": "=3.14"
+					}
+				]
+			}
+		},
+		{
+			"note": "rename-sheet rewrites named ranges, quoting as needed",
+			"operation": "rename-sheet",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								},
+								{
+									"id": "C",
+									"name": "C"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {}
+						},
+						{
+							"id": "sheet-2",
+							"name": "Rates",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								},
+								{
+									"id": "C",
+									"name": "C"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {}
+						}
+					],
+					"namedRanges": [
+						{
+							"name": "Prices",
+							"refersTo": "=Sales!$B$2:$B$6"
+						},
+						{
+							"name": "Rate",
+							"refersTo": "=Rates!$A$3"
+						},
+						{
+							"name": "Pi",
+							"refersTo": "=3.14"
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales",
+					"name": "Q1 Sales"
+				}
+			},
+			"expected": {
+				"namedRanges": [
+					{
+						"name": "Prices",
+						"refersTo": "='Q1 Sales'!$B$2:$B$6"
+					},
+					{
+						"name": "Rate",
+						"refersTo": "=Rates!$A$3"
+					},
+					{
+						"name": "Pi",
+						"refersTo": "=3.14"
+					}
+				]
+			}
+		},
+		{
+			"note": "delete-sheet turns named ranges on it into #REF!",
+			"operation": "delete-sheet",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								},
+								{
+									"id": "C",
+									"name": "C"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {}
+						},
+						{
+							"id": "sheet-2",
+							"name": "Rates",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								},
+								{
+									"id": "C",
+									"name": "C"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {}
+						}
+					],
+					"namedRanges": [
+						{
+							"name": "Prices",
+							"refersTo": "=Sales!$B$2:$B$6"
+						},
+						{
+							"name": "Rate",
+							"refersTo": "=Rates!$A$3"
+						},
+						{
+							"name": "Pi",
+							"refersTo": "=3.14"
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales"
+				}
+			},
+			"expected": {
+				"namedRanges": [
+					{
+						"name": "Prices",
+						"refersTo": "=#REF!"
+					},
+					{
+						"name": "Rate",
+						"refersTo": "=Rates!$A$3"
+					},
+					{
+						"name": "Pi",
+						"refersTo": "=3.14"
+					}
+				]
+			}
+		}
+	]
+}

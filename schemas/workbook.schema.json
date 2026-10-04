@@ -23,6 +23,28 @@
         "additionalProperties": true
       }
     },
+    "namedRanges": {
+      "type": "array",
+      "description": "Workbook-scoped names — spec/02-workbook.md (Named ranges).",
+      "items": {
+        "type": "object",
+        "required": ["name", "refersTo"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[A-Za-z_][A-Za-z0-9_.]*$",
+            "maxLength": 255,
+            "description": "Must also not look like a cell reference, be TRUE or FALSE, or be a Core function name, and must be unique ignoring case (spec/02-workbook.md)."
+          },
+          "refersTo": {
+            "type": "string",
+            "pattern": "^=",
+            "description": "A formula expression with sheet-qualified references (spec/02-workbook.md)."
+          }
+        },
+        "additionalProperties": true
+      }
+    },
     "calculation": {
       "type": "object",
       "properties": {
