@@ -1,9 +1,9 @@
 {
-	"id": "edit-insert-rows",
-	"operation": "insert-rows",
+	"id": "edit-print-shift",
 	"cases": [
 		{
-			"note": "cell at/below the insertion row moves; above stays; $ anchors treated alike",
+			"note": "insert rows: area, repeatRows and rowBreaks follow their rows",
+			"operation": "insert-rows",
 			"input": {
 				"workbook": {
 					"sheets": [
@@ -13,15 +13,15 @@
 							"columns": [
 								{
 									"id": "A",
-									"name": "ColA"
+									"name": "A"
 								},
 								{
 									"id": "B",
-									"name": "ColB"
+									"name": "B"
 								},
 								{
 									"id": "C",
-									"name": "ColC"
+									"name": "C"
 								}
 							],
 							"records": [
@@ -49,59 +49,6 @@
 									"",
 									"",
 									""
-								]
-							],
-							"cells": {
-								"D1": {
-									"formula": "=A3+A4"
-								},
-								"D2": {
-									"formula": "=A$4*2"
-								}
-							}
-						}
-					]
-				},
-				"args": {
-					"sheet": "Sheet1",
-					"at": 4,
-					"count": 1
-				}
-			},
-			"expected": {
-				"formulas": {
-					"D1": "=A3+A5",
-					"D2": "=A$5*2"
-				}
-			}
-		},
-		{
-			"note": "insertion strictly inside a range grows it",
-			"input": {
-				"workbook": {
-					"sheets": [
-						{
-							"id": "sheet-1",
-							"name": "Sheet1",
-							"columns": [
-								{
-									"id": "A",
-									"name": "ColA"
-								},
-								{
-									"id": "B",
-									"name": "ColB"
-								},
-								{
-									"id": "C",
-									"name": "ColC"
-								}
-							],
-							"records": [
-								[
-									"",
-									"",
-									""
 								],
 								[
 									"",
@@ -124,10 +71,15 @@
 									""
 								]
 							],
-							"cells": {
-								"D1": {
-									"formula": "=SUM(A2:A6)"
-								}
+							"cells": {},
+							"print": {
+								"area": "A1:C10",
+								"repeatRows": "1:2",
+								"rowBreaks": [
+									3,
+									6
+								],
+								"orientation": "landscape"
 							}
 						}
 					]
@@ -139,13 +91,20 @@
 				}
 			},
 			"expected": {
-				"formulas": {
-					"D1": "=SUM(A2:A8)"
+				"print": {
+					"area": "A1:C12",
+					"repeatRows": "1:2",
+					"rowBreaks": [
+						3,
+						8
+					],
+					"orientation": "landscape"
 				}
 			}
 		},
 		{
-			"note": "insertion at a range's first row moves the whole range",
+			"note": "delete rows: ranges shrink, a break on a deleted row is dropped",
+			"operation": "delete-rows",
 			"input": {
 				"workbook": {
 					"sheets": [
@@ -155,15 +114,15 @@
 							"columns": [
 								{
 									"id": "A",
-									"name": "ColA"
+									"name": "A"
 								},
 								{
 									"id": "B",
-									"name": "ColB"
+									"name": "B"
 								},
 								{
 									"id": "C",
-									"name": "ColC"
+									"name": "C"
 								}
 							],
 							"records": [
@@ -191,30 +150,59 @@
 									"",
 									"",
 									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
 								]
 							],
-							"cells": {
-								"D1": {
-									"formula": "=SUM(A2:A6)"
-								}
+							"cells": {},
+							"print": {
+								"area": "A1:C10",
+								"rowBreaks": [
+									3,
+									6
+								]
 							}
 						}
 					]
 				},
 				"args": {
 					"sheet": "Sheet1",
-					"at": 2,
-					"count": 1
+					"rows": [
+						3,
+						4
+					]
 				}
 			},
 			"expected": {
-				"formulas": {
-					"D1": "=SUM(A3:A7)"
+				"print": {
+					"area": "A1:C8",
+					"rowBreaks": [
+						4
+					]
 				}
 			}
 		},
 		{
-			"note": "insertion after a range's last row leaves it unchanged",
+			"note": "delete rows: a range wholly deleted is removed",
+			"operation": "delete-rows",
 			"input": {
 				"workbook": {
 					"sheets": [
@@ -224,15 +212,15 @@
 							"columns": [
 								{
 									"id": "A",
-									"name": "ColA"
+									"name": "A"
 								},
 								{
 									"id": "B",
-									"name": "ColB"
+									"name": "B"
 								},
 								{
 									"id": "C",
-									"name": "ColC"
+									"name": "C"
 								}
 							],
 							"records": [
@@ -260,30 +248,51 @@
 									"",
 									"",
 									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
 								]
 							],
-							"cells": {
-								"D1": {
-									"formula": "=SUM(A2:A6)"
-								}
+							"cells": {},
+							"print": {
+								"area": "A3:C4",
+								"repeatRows": "3:4"
 							}
 						}
 					]
 				},
 				"args": {
 					"sheet": "Sheet1",
-					"at": 7,
-					"count": 1
+					"rows": [
+						3,
+						4
+					]
 				}
 			},
 			"expected": {
-				"formulas": {
-					"D1": "=SUM(A2:A6)"
-				}
+				"print": {}
 			}
 		},
 		{
-			"note": "row 1 (header) references never move",
+			"note": "columns: area, repeatColumns and columnBreaks follow their columns",
+			"operation": "insert-columns",
 			"input": {
 				"workbook": {
 					"sheets": [
@@ -293,15 +302,15 @@
 							"columns": [
 								{
 									"id": "A",
-									"name": "ColA"
+									"name": "A"
 								},
 								{
 									"id": "B",
-									"name": "ColB"
+									"name": "B"
 								},
 								{
 									"id": "C",
-									"name": "ColC"
+									"name": "C"
 								}
 							],
 							"records": [
@@ -329,55 +338,6 @@
 									"",
 									"",
 									""
-								]
-							],
-							"cells": {
-								"D1": {
-									"formula": "=A1+A2"
-								}
-							}
-						}
-					]
-				},
-				"args": {
-					"sheet": "Sheet1",
-					"at": 2,
-					"count": 1
-				}
-			},
-			"expected": {
-				"formulas": {
-					"D1": "=A1+A3"
-				}
-			}
-		},
-		{
-			"note": "a formula cell moves with its row and its references are rewritten",
-			"input": {
-				"workbook": {
-					"sheets": [
-						{
-							"id": "sheet-1",
-							"name": "Sheet1",
-							"columns": [
-								{
-									"id": "A",
-									"name": "ColA"
-								},
-								{
-									"id": "B",
-									"name": "ColB"
-								},
-								{
-									"id": "C",
-									"name": "ColC"
-								}
-							],
-							"records": [
-								[
-									"",
-									"",
-									""
 								],
 								[
 									"",
@@ -400,23 +360,32 @@
 									""
 								]
 							],
-							"cells": {
-								"D4": {
-									"formula": "=A4"
-								}
+							"cells": {},
+							"print": {
+								"area": "A1:C10",
+								"repeatColumns": "A:B",
+								"columnBreaks": [
+									1,
+									2
+								]
 							}
 						}
 					]
 				},
 				"args": {
 					"sheet": "Sheet1",
-					"at": 3,
+					"at": "B",
 					"count": 1
 				}
 			},
 			"expected": {
-				"formulas": {
-					"D5": "=A5"
+				"print": {
+					"area": "A1:D10",
+					"repeatColumns": "A:C",
+					"columnBreaks": [
+						1,
+						3
+					]
 				}
 			}
 		}
