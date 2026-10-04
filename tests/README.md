@@ -10,7 +10,8 @@ Tests are format-neutral JSON vectors. A runner loads `input`, performs the oper
 - `print/` preservation of sheet print settings
 - `edit/` editor operations whose result must agree across engines (text case, row/column insert and delete, sheet add/rename/delete, cell, paste, style, print edits; see spec/15)
 - `import-csv/` plain CSV → CSVX conversion (see its README)
-- `invalid/` required rejection cases
+- `interop/` XLSX to CSVX conversion against real fixtures (see its README)
+- `invalid/` required rejection cases (including named-range validity)
 
 Decimal values are strings intentionally. Test IDs are stable and should be cited in implementation
 failure reports.

@@ -137,11 +137,12 @@ schema it claims to implement.
    - XLSX→CSVX conversion must be tested against that fixture for both (a) schema conformance
      (`validator/`) and (b) semantic fidelity — specific cell values, formula strings, and style
      properties at known coordinates must match expected values, not just "the file parses."
-   - CSVX→XLSX conversion must be tested the same way, in reverse, once it exists as a real
-     capability. **It does not yet**: `csvx-go`'s `exportXLSXSource` only recovers an unmodified
-     embedded original byte-for-byte; there is no general "export an arbitrary/edited CSVX workbook
-     to XLSX" path. Building that is a prerequisite for reverse round-trip testing, not something
-     to fake or skip silently — track it as an open gap, don't pretend it's covered.
+   - CSVX→XLSX conversion is tested the same way, in reverse: `csvx-go`'s `ExportXLSX` (spec 14.9)
+     writes an arbitrary or edited workbook, and `tests/interop/csvx-to-xlsx.json` exports real
+     fixtures, imports the result again, and compares cells, formulas, styles, print settings, names
+     and warnings. `exportXLSXSource` only recovers the embedded original when the package is
+     unmodified and its authority is still `original`; any supported edit makes it `csvx` (14.2).
+     Do not add a reverse vector that only exercises that byte-recovery path.
    - These round-trip checks belong in `tests/interop/` in this repo (format-neutral vectors
      pointing at real fixture files, same pattern as `tests/parsing/`) plus a real executable
      runner — not just documented as an intention. See `tests/interop/README.md`.

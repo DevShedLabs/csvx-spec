@@ -630,6 +630,69 @@
 			"expected": {
 				"valid": false
 			}
+		},
+		{
+			"note": "a supported edit makes the embedded source's authority csvx (14.2)",
+			"operation": "set-cell",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Qty",
+									"type": "integer"
+								},
+								{
+									"id": "B",
+									"name": "Note"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"x"
+								],
+								[
+									"2",
+									"y"
+								]
+							],
+							"cells": {
+								"B2": {
+									"formula": "=A2",
+									"type": "string",
+									"cached": {
+										"type": "integer",
+										"value": "2"
+									},
+									"style": "cur",
+									"validation": "v1"
+								}
+							}
+						}
+					],
+					"source": {
+						"format": "xlsx",
+						"filename": "a.xlsx",
+						"sha256": "00",
+						"authority": "original",
+						"importedAt": "2026-01-01T00:00:00Z",
+						"importer": "x"
+					}
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"coordinate": "B2",
+					"text": "edited"
+				}
+			},
+			"expected": {
+				"sourceAuthority": "csvx"
+			}
 		}
 	]
 }

@@ -53,7 +53,10 @@ Before making a format or calculation decision:
 ## When editing a workbook
 
 1. Load and validate before changing it.
-2. Identify dependencies before changing a referenced cell, column, sheet, or named range.
+2. Identify dependencies before changing a referenced cell, column, sheet, or named range. Insert,
+   delete, rename, set, paste, style, and print edits are specified in `spec/15-edit-operations.md`,
+   including how references, names, and validation formulas are rewritten; use those rules, and an
+   engine that implements them, rather than editing formula text by hand.
 3. Recalculate affected formulas using the specification's decimal and error semantics.
 4. Invalidate or replace stale cached values.
 5. Preserve fields and resources unrelated to the requested change.
@@ -72,7 +75,9 @@ Apply these rules:
 - `IF` evaluates only the selected branch.
 - Division by zero returns `DIV0`.
 - Invalid operands return `VALUE`.
-- Missing references return `REF`.
+- Missing references return `REF`; a deleted reference is written `#REF!` and evaluates to `REF`.
+- A bare identifier in a formula is a declared workbook name (`spec/02-workbook.md`); an undeclared
+  one is `NAME`.
 - Circular dependencies return `CYCLE` unless iterative calculation is explicitly enabled.
 - Unknown functions return `NAME`.
 

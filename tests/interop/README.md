@@ -49,12 +49,13 @@ test implies a passing schema-shape test, not just the reverse.
   as a Go unit test in `csvx-cli` (`cmd/csvx/convert_test.go`) rather than by a generic JSON-vector
   runner — that generic runner does not exist yet for this category. Building one (so any engine,
   not just `csvx-go`, can consume these vectors without a language-specific harness) is open work.
-- `csvx-to-xlsx` (exporting an arbitrary or edited CSVX workbook back to XLSX) **does not exist as
-  a real capability yet.** `csvx-go`'s `exportXLSXSource` only recovers an unmodified embedded
-  original byte-for-byte (`Source.Authority == "original"`) — there is no general "write CSVX
-  content into a fresh XLSX" path. Reverse round-trip vectors can't be written honestly until that
-  exists. Don't add a `csvx-to-xlsx` vector that only exercises the byte-recovery path and call it
-  round-trip coverage — that's a different, much narrower guarantee.
+- `csvx-to-xlsx` is implemented in `csvx-go` (`ExportXLSX`, spec 14.9) and covered by
+  `csvx-to-xlsx.json`: each case exports a real fixture (optionally after edits and added names),
+  imports the XLSX again, and compares samples, names, sheet names and the export warnings. It runs
+  as a Go test in `csvx-go` (`xlsx_export_test.go`); like `xlsx-to-csvx`, no generic cross-engine
+  runner exists, and TypeScript reaches it through the `csvx` CLI. The XLSX is checked by our own
+  importer, not by Excel; opening the files in a real spreadsheet application is still a manual check.
+  Dates round-trip as ISO text and errors as CSVX codes (spec 14.10).
 - The fixtures used here (`examples/example.xlsx`, hand-picked cells) are a real spreadsheet, not a
   purpose-built exhaustive one. `csvx-cli`'s planned `gen test.csvx` (see `../../AGENTS.md` rule
   4.4) needs an XLSX counterpart that deliberately exercises every scalar type and style property,

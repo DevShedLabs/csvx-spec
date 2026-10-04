@@ -133,15 +133,18 @@ against `schemas/*.json`, and exits non-zero on any violation — wire it into a
 than checking JSON by hand. See `validator/README.md` for details and its current limitations
 (shape only, not calculation/formula behavior — that's `tests/*.json`).
 
-## Reference engine
+## Engines and tools
 
-The planned Go engine will provide the first complete implementation of CSVX, including parsing,
-validation, formula evaluation, recalculation, and import/export. It is a reference implementation,
-not the authority for the format.
+Engines are libraries that implement the specification; none of them is the authority.
 
-The engine should remain independent of any editor or product UI. This allows CSVX to support a CLI,
-Coder integration, browser/WASM tooling, data pipelines, and other applications without coupling the
-format to one consumer.
+- [`csvx-go`](https://github.com/DevShedLabs/csvx-go) and
+  [`csvx-ts`](https://github.com/DevShedLabs/csvx-ts) load, edit, calculate, and write workbooks
+  (including the edit operations of `spec/15-edit-operations.md`). Only `csvx-go` reads XLSX.
+- [`csvx-cli`](https://github.com/DevShedLabs/csvx-cli) is the one command-line tool: import,
+  export, validate, code generation, and fixtures, built on the Go engine.
+- [`csvx-web`](https://github.com/DevShedLabs/csvx-web) is a UI that calls an engine.
+
+Known gaps between the specification and the engines are tracked in `CSVX-GAPS.md`.
 
 ## Project direction
 

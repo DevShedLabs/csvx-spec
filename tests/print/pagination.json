@@ -1,0 +1,1869 @@
+{
+	"id": "print-pagination",
+	"operation": "paginate",
+	"cases": [
+		{
+			"note": "letter portrait: 9 columns of width 10 and 45 default rows fit a page; down then over",
+			"input": {
+				"sheet": {
+					"columns": [
+						{
+							"id": "A",
+							"name": "A",
+							"width": 10
+						},
+						{
+							"id": "B",
+							"name": "B",
+							"width": 10
+						},
+						{
+							"id": "C",
+							"name": "C",
+							"width": 10
+						},
+						{
+							"id": "D",
+							"name": "D",
+							"width": 10
+						},
+						{
+							"id": "E",
+							"name": "E",
+							"width": 10
+						},
+						{
+							"id": "F",
+							"name": "F",
+							"width": 10
+						},
+						{
+							"id": "G",
+							"name": "G",
+							"width": 10
+						},
+						{
+							"id": "H",
+							"name": "H",
+							"width": 10
+						},
+						{
+							"id": "I",
+							"name": "I",
+							"width": 10
+						},
+						{
+							"id": "J",
+							"name": "J",
+							"width": 10
+						}
+					],
+					"recordCount": 99
+				},
+				"print": {
+					"area": "A1:J100"
+				}
+			},
+			"expected": {
+				"printable": {
+					"width": 681.6,
+					"height": 912
+				},
+				"scale": 1,
+				"area": "A1:J100",
+				"pages": [
+					{
+						"rows": [
+							1,
+							2,
+							3,
+							4,
+							5,
+							6,
+							7,
+							8,
+							9,
+							10,
+							11,
+							12,
+							13,
+							14,
+							15,
+							16,
+							17,
+							18,
+							19,
+							20,
+							21,
+							22,
+							23,
+							24,
+							25,
+							26,
+							27,
+							28,
+							29,
+							30,
+							31,
+							32,
+							33,
+							34,
+							35,
+							36,
+							37,
+							38,
+							39,
+							40,
+							41,
+							42,
+							43,
+							44,
+							45
+						],
+						"columns": [
+							"A",
+							"B",
+							"C",
+							"D",
+							"E",
+							"F",
+							"G",
+							"H",
+							"I"
+						]
+					},
+					{
+						"rows": [
+							46,
+							47,
+							48,
+							49,
+							50,
+							51,
+							52,
+							53,
+							54,
+							55,
+							56,
+							57,
+							58,
+							59,
+							60,
+							61,
+							62,
+							63,
+							64,
+							65,
+							66,
+							67,
+							68,
+							69,
+							70,
+							71,
+							72,
+							73,
+							74,
+							75,
+							76,
+							77,
+							78,
+							79,
+							80,
+							81,
+							82,
+							83,
+							84,
+							85,
+							86,
+							87,
+							88,
+							89,
+							90
+						],
+						"columns": [
+							"A",
+							"B",
+							"C",
+							"D",
+							"E",
+							"F",
+							"G",
+							"H",
+							"I"
+						]
+					},
+					{
+						"rows": [
+							91,
+							92,
+							93,
+							94,
+							95,
+							96,
+							97,
+							98,
+							99,
+							100
+						],
+						"columns": [
+							"A",
+							"B",
+							"C",
+							"D",
+							"E",
+							"F",
+							"G",
+							"H",
+							"I"
+						]
+					},
+					{
+						"rows": [
+							1,
+							2,
+							3,
+							4,
+							5,
+							6,
+							7,
+							8,
+							9,
+							10,
+							11,
+							12,
+							13,
+							14,
+							15,
+							16,
+							17,
+							18,
+							19,
+							20,
+							21,
+							22,
+							23,
+							24,
+							25,
+							26,
+							27,
+							28,
+							29,
+							30,
+							31,
+							32,
+							33,
+							34,
+							35,
+							36,
+							37,
+							38,
+							39,
+							40,
+							41,
+							42,
+							43,
+							44,
+							45
+						],
+						"columns": [
+							"J"
+						]
+					},
+					{
+						"rows": [
+							46,
+							47,
+							48,
+							49,
+							50,
+							51,
+							52,
+							53,
+							54,
+							55,
+							56,
+							57,
+							58,
+							59,
+							60,
+							61,
+							62,
+							63,
+							64,
+							65,
+							66,
+							67,
+							68,
+							69,
+							70,
+							71,
+							72,
+							73,
+							74,
+							75,
+							76,
+							77,
+							78,
+							79,
+							80,
+							81,
+							82,
+							83,
+							84,
+							85,
+							86,
+							87,
+							88,
+							89,
+							90
+						],
+						"columns": [
+							"J"
+						]
+					},
+					{
+						"rows": [
+							91,
+							92,
+							93,
+							94,
+							95,
+							96,
+							97,
+							98,
+							99,
+							100
+						],
+						"columns": [
+							"J"
+						]
+					}
+				]
+			}
+		},
+		{
+			"note": "overThenDown numbers pages across first",
+			"input": {
+				"sheet": {
+					"columns": [
+						{
+							"id": "A",
+							"name": "A",
+							"width": 10
+						},
+						{
+							"id": "B",
+							"name": "B",
+							"width": 10
+						},
+						{
+							"id": "C",
+							"name": "C",
+							"width": 10
+						},
+						{
+							"id": "D",
+							"name": "D",
+							"width": 10
+						},
+						{
+							"id": "E",
+							"name": "E",
+							"width": 10
+						},
+						{
+							"id": "F",
+							"name": "F",
+							"width": 10
+						},
+						{
+							"id": "G",
+							"name": "G",
+							"width": 10
+						},
+						{
+							"id": "H",
+							"name": "H",
+							"width": 10
+						},
+						{
+							"id": "I",
+							"name": "I",
+							"width": 10
+						},
+						{
+							"id": "J",
+							"name": "J",
+							"width": 10
+						}
+					],
+					"recordCount": 99
+				},
+				"print": {
+					"area": "A1:J100",
+					"pageOrder": "overThenDown"
+				}
+			},
+			"expected": {
+				"scale": 1,
+				"pages": [
+					{
+						"rows": [
+							1,
+							2,
+							3,
+							4,
+							5,
+							6,
+							7,
+							8,
+							9,
+							10,
+							11,
+							12,
+							13,
+							14,
+							15,
+							16,
+							17,
+							18,
+							19,
+							20,
+							21,
+							22,
+							23,
+							24,
+							25,
+							26,
+							27,
+							28,
+							29,
+							30,
+							31,
+							32,
+							33,
+							34,
+							35,
+							36,
+							37,
+							38,
+							39,
+							40,
+							41,
+							42,
+							43,
+							44,
+							45
+						],
+						"columns": [
+							"A",
+							"B",
+							"C",
+							"D",
+							"E",
+							"F",
+							"G",
+							"H",
+							"I"
+						]
+					},
+					{
+						"rows": [
+							1,
+							2,
+							3,
+							4,
+							5,
+							6,
+							7,
+							8,
+							9,
+							10,
+							11,
+							12,
+							13,
+							14,
+							15,
+							16,
+							17,
+							18,
+							19,
+							20,
+							21,
+							22,
+							23,
+							24,
+							25,
+							26,
+							27,
+							28,
+							29,
+							30,
+							31,
+							32,
+							33,
+							34,
+							35,
+							36,
+							37,
+							38,
+							39,
+							40,
+							41,
+							42,
+							43,
+							44,
+							45
+						],
+						"columns": [
+							"J"
+						]
+					},
+					{
+						"rows": [
+							46,
+							47,
+							48,
+							49,
+							50,
+							51,
+							52,
+							53,
+							54,
+							55,
+							56,
+							57,
+							58,
+							59,
+							60,
+							61,
+							62,
+							63,
+							64,
+							65,
+							66,
+							67,
+							68,
+							69,
+							70,
+							71,
+							72,
+							73,
+							74,
+							75,
+							76,
+							77,
+							78,
+							79,
+							80,
+							81,
+							82,
+							83,
+							84,
+							85,
+							86,
+							87,
+							88,
+							89,
+							90
+						],
+						"columns": [
+							"A",
+							"B",
+							"C",
+							"D",
+							"E",
+							"F",
+							"G",
+							"H",
+							"I"
+						]
+					},
+					{
+						"rows": [
+							46,
+							47,
+							48,
+							49,
+							50,
+							51,
+							52,
+							53,
+							54,
+							55,
+							56,
+							57,
+							58,
+							59,
+							60,
+							61,
+							62,
+							63,
+							64,
+							65,
+							66,
+							67,
+							68,
+							69,
+							70,
+							71,
+							72,
+							73,
+							74,
+							75,
+							76,
+							77,
+							78,
+							79,
+							80,
+							81,
+							82,
+							83,
+							84,
+							85,
+							86,
+							87,
+							88,
+							89,
+							90
+						],
+						"columns": [
+							"J"
+						]
+					},
+					{
+						"rows": [
+							91,
+							92,
+							93,
+							94,
+							95,
+							96,
+							97,
+							98,
+							99,
+							100
+						],
+						"columns": [
+							"A",
+							"B",
+							"C",
+							"D",
+							"E",
+							"F",
+							"G",
+							"H",
+							"I"
+						]
+					},
+					{
+						"rows": [
+							91,
+							92,
+							93,
+							94,
+							95,
+							96,
+							97,
+							98,
+							99,
+							100
+						],
+						"columns": [
+							"J"
+						]
+					}
+				]
+			}
+		},
+		{
+			"note": "repeatRows puts the header on every later page and its height counts against the room",
+			"input": {
+				"sheet": {
+					"columns": [
+						{
+							"id": "A",
+							"name": "A",
+							"width": 10
+						},
+						{
+							"id": "B",
+							"name": "B",
+							"width": 10
+						},
+						{
+							"id": "C",
+							"name": "C",
+							"width": 10
+						},
+						{
+							"id": "D",
+							"name": "D",
+							"width": 10
+						},
+						{
+							"id": "E",
+							"name": "E",
+							"width": 10
+						},
+						{
+							"id": "F",
+							"name": "F",
+							"width": 10
+						},
+						{
+							"id": "G",
+							"name": "G",
+							"width": 10
+						},
+						{
+							"id": "H",
+							"name": "H",
+							"width": 10
+						},
+						{
+							"id": "I",
+							"name": "I",
+							"width": 10
+						},
+						{
+							"id": "J",
+							"name": "J",
+							"width": 10
+						}
+					],
+					"recordCount": 99
+				},
+				"print": {
+					"area": "A1:I100",
+					"repeatRows": "1:1"
+				}
+			},
+			"expected": {
+				"pages": [
+					{
+						"rows": [
+							1,
+							2,
+							3,
+							4,
+							5,
+							6,
+							7,
+							8,
+							9,
+							10,
+							11,
+							12,
+							13,
+							14,
+							15,
+							16,
+							17,
+							18,
+							19,
+							20,
+							21,
+							22,
+							23,
+							24,
+							25,
+							26,
+							27,
+							28,
+							29,
+							30,
+							31,
+							32,
+							33,
+							34,
+							35,
+							36,
+							37,
+							38,
+							39,
+							40,
+							41,
+							42,
+							43,
+							44,
+							45
+						],
+						"columns": [
+							"A",
+							"B",
+							"C",
+							"D",
+							"E",
+							"F",
+							"G",
+							"H",
+							"I"
+						]
+					},
+					{
+						"rows": [
+							1,
+							46,
+							47,
+							48,
+							49,
+							50,
+							51,
+							52,
+							53,
+							54,
+							55,
+							56,
+							57,
+							58,
+							59,
+							60,
+							61,
+							62,
+							63,
+							64,
+							65,
+							66,
+							67,
+							68,
+							69,
+							70,
+							71,
+							72,
+							73,
+							74,
+							75,
+							76,
+							77,
+							78,
+							79,
+							80,
+							81,
+							82,
+							83,
+							84,
+							85,
+							86,
+							87,
+							88,
+							89
+						],
+						"columns": [
+							"A",
+							"B",
+							"C",
+							"D",
+							"E",
+							"F",
+							"G",
+							"H",
+							"I"
+						]
+					},
+					{
+						"rows": [
+							1,
+							90,
+							91,
+							92,
+							93,
+							94,
+							95,
+							96,
+							97,
+							98,
+							99,
+							100
+						],
+						"columns": [
+							"A",
+							"B",
+							"C",
+							"D",
+							"E",
+							"F",
+							"G",
+							"H",
+							"I"
+						]
+					}
+				]
+			}
+		},
+		{
+			"note": "repeatColumns repeats A on every later column group",
+			"input": {
+				"sheet": {
+					"columns": [
+						{
+							"id": "A",
+							"name": "A",
+							"width": 10
+						},
+						{
+							"id": "B",
+							"name": "B",
+							"width": 10
+						},
+						{
+							"id": "C",
+							"name": "C",
+							"width": 10
+						},
+						{
+							"id": "D",
+							"name": "D",
+							"width": 10
+						},
+						{
+							"id": "E",
+							"name": "E",
+							"width": 10
+						},
+						{
+							"id": "F",
+							"name": "F",
+							"width": 10
+						},
+						{
+							"id": "G",
+							"name": "G",
+							"width": 10
+						},
+						{
+							"id": "H",
+							"name": "H",
+							"width": 10
+						},
+						{
+							"id": "I",
+							"name": "I",
+							"width": 10
+						},
+						{
+							"id": "J",
+							"name": "J",
+							"width": 10
+						}
+					],
+					"recordCount": 9
+				},
+				"print": {
+					"area": "A1:J10",
+					"repeatColumns": "A:A"
+				}
+			},
+			"expected": {
+				"pages": [
+					{
+						"rows": [
+							1,
+							2,
+							3,
+							4,
+							5,
+							6,
+							7,
+							8,
+							9,
+							10
+						],
+						"columns": [
+							"A",
+							"B",
+							"C",
+							"D",
+							"E",
+							"F",
+							"G",
+							"H",
+							"I"
+						]
+					},
+					{
+						"rows": [
+							1,
+							2,
+							3,
+							4,
+							5,
+							6,
+							7,
+							8,
+							9,
+							10
+						],
+						"columns": [
+							"A",
+							"J"
+						]
+					}
+				]
+			}
+		},
+		{
+			"note": "forced row and column breaks end a group early",
+			"input": {
+				"sheet": {
+					"columns": [
+						{
+							"id": "A",
+							"name": "A",
+							"width": 10
+						},
+						{
+							"id": "B",
+							"name": "B",
+							"width": 10
+						},
+						{
+							"id": "C",
+							"name": "C",
+							"width": 10
+						},
+						{
+							"id": "D",
+							"name": "D",
+							"width": 10
+						}
+					],
+					"recordCount": 19
+				},
+				"print": {
+					"area": "A1:D20",
+					"rowBreaks": [
+						5,
+						12
+					],
+					"columnBreaks": [
+						2
+					]
+				}
+			},
+			"expected": {
+				"pages": [
+					{
+						"rows": [
+							1,
+							2,
+							3,
+							4,
+							5
+						],
+						"columns": [
+							"A",
+							"B"
+						]
+					},
+					{
+						"rows": [
+							6,
+							7,
+							8,
+							9,
+							10,
+							11,
+							12
+						],
+						"columns": [
+							"A",
+							"B"
+						]
+					},
+					{
+						"rows": [
+							13,
+							14,
+							15,
+							16,
+							17,
+							18,
+							19,
+							20
+						],
+						"columns": [
+							"A",
+							"B"
+						]
+					},
+					{
+						"rows": [
+							1,
+							2,
+							3,
+							4,
+							5
+						],
+						"columns": [
+							"C",
+							"D"
+						]
+					},
+					{
+						"rows": [
+							6,
+							7,
+							8,
+							9,
+							10,
+							11,
+							12
+						],
+						"columns": [
+							"C",
+							"D"
+						]
+					},
+					{
+						"rows": [
+							13,
+							14,
+							15,
+							16,
+							17,
+							18,
+							19,
+							20
+						],
+						"columns": [
+							"C",
+							"D"
+						]
+					}
+				]
+			}
+		},
+		{
+			"note": "fitToWidth 1 shrinks so ten columns fit one page across; tall area still paginates down",
+			"input": {
+				"sheet": {
+					"columns": [
+						{
+							"id": "A",
+							"name": "A",
+							"width": 10
+						},
+						{
+							"id": "B",
+							"name": "B",
+							"width": 10
+						},
+						{
+							"id": "C",
+							"name": "C",
+							"width": 10
+						},
+						{
+							"id": "D",
+							"name": "D",
+							"width": 10
+						},
+						{
+							"id": "E",
+							"name": "E",
+							"width": 10
+						},
+						{
+							"id": "F",
+							"name": "F",
+							"width": 10
+						},
+						{
+							"id": "G",
+							"name": "G",
+							"width": 10
+						},
+						{
+							"id": "H",
+							"name": "H",
+							"width": 10
+						},
+						{
+							"id": "I",
+							"name": "I",
+							"width": 10
+						},
+						{
+							"id": "J",
+							"name": "J",
+							"width": 10
+						}
+					],
+					"recordCount": 99
+				},
+				"print": {
+					"area": "A1:J100",
+					"fitToWidth": 1,
+					"fitToHeight": 0,
+					"scale": 50
+				}
+			},
+			"expected": {
+				"scale": 0.9088,
+				"pages": [
+					{
+						"rows": [
+							1,
+							2,
+							3,
+							4,
+							5,
+							6,
+							7,
+							8,
+							9,
+							10,
+							11,
+							12,
+							13,
+							14,
+							15,
+							16,
+							17,
+							18,
+							19,
+							20,
+							21,
+							22,
+							23,
+							24,
+							25,
+							26,
+							27,
+							28,
+							29,
+							30,
+							31,
+							32,
+							33,
+							34,
+							35,
+							36,
+							37,
+							38,
+							39,
+							40,
+							41,
+							42,
+							43,
+							44,
+							45,
+							46,
+							47,
+							48,
+							49,
+							50
+						],
+						"columns": [
+							"A",
+							"B",
+							"C",
+							"D",
+							"E",
+							"F",
+							"G",
+							"H",
+							"I",
+							"J"
+						]
+					},
+					{
+						"rows": [
+							51,
+							52,
+							53,
+							54,
+							55,
+							56,
+							57,
+							58,
+							59,
+							60,
+							61,
+							62,
+							63,
+							64,
+							65,
+							66,
+							67,
+							68,
+							69,
+							70,
+							71,
+							72,
+							73,
+							74,
+							75,
+							76,
+							77,
+							78,
+							79,
+							80,
+							81,
+							82,
+							83,
+							84,
+							85,
+							86,
+							87,
+							88,
+							89,
+							90,
+							91,
+							92,
+							93,
+							94,
+							95,
+							96,
+							97,
+							98,
+							99,
+							100
+						],
+						"columns": [
+							"A",
+							"B",
+							"C",
+							"D",
+							"E",
+							"F",
+							"G",
+							"H",
+							"I",
+							"J"
+						]
+					}
+				]
+			}
+		},
+		{
+			"note": "fit never enlarges, and scale is ignored when fit is present",
+			"input": {
+				"sheet": {
+					"columns": [
+						{
+							"id": "A",
+							"name": "A",
+							"width": 10
+						},
+						{
+							"id": "B",
+							"name": "B",
+							"width": 10
+						}
+					],
+					"recordCount": 4
+				},
+				"print": {
+					"area": "A1:B5",
+					"fitToWidth": 1,
+					"scale": 50
+				}
+			},
+			"expected": {
+				"scale": 1,
+				"pages": [
+					{
+						"rows": [
+							1,
+							2,
+							3,
+							4,
+							5
+						],
+						"columns": [
+							"A",
+							"B"
+						]
+					}
+				]
+			}
+		},
+		{
+			"note": "scale 50 doubles what fits",
+			"input": {
+				"sheet": {
+					"columns": [
+						{
+							"id": "A",
+							"name": "A",
+							"width": 10
+						},
+						{
+							"id": "B",
+							"name": "B",
+							"width": 10
+						},
+						{
+							"id": "C",
+							"name": "C",
+							"width": 10
+						},
+						{
+							"id": "D",
+							"name": "D",
+							"width": 10
+						},
+						{
+							"id": "E",
+							"name": "E",
+							"width": 10
+						},
+						{
+							"id": "F",
+							"name": "F",
+							"width": 10
+						},
+						{
+							"id": "G",
+							"name": "G",
+							"width": 10
+						},
+						{
+							"id": "H",
+							"name": "H",
+							"width": 10
+						},
+						{
+							"id": "I",
+							"name": "I",
+							"width": 10
+						},
+						{
+							"id": "J",
+							"name": "J",
+							"width": 10
+						}
+					],
+					"recordCount": 99
+				},
+				"print": {
+					"area": "A1:J100",
+					"scale": 50
+				}
+			},
+			"expected": {
+				"scale": 0.5,
+				"pages": [
+					{
+						"rows": [
+							1,
+							2,
+							3,
+							4,
+							5,
+							6,
+							7,
+							8,
+							9,
+							10,
+							11,
+							12,
+							13,
+							14,
+							15,
+							16,
+							17,
+							18,
+							19,
+							20,
+							21,
+							22,
+							23,
+							24,
+							25,
+							26,
+							27,
+							28,
+							29,
+							30,
+							31,
+							32,
+							33,
+							34,
+							35,
+							36,
+							37,
+							38,
+							39,
+							40,
+							41,
+							42,
+							43,
+							44,
+							45,
+							46,
+							47,
+							48,
+							49,
+							50,
+							51,
+							52,
+							53,
+							54,
+							55,
+							56,
+							57,
+							58,
+							59,
+							60,
+							61,
+							62,
+							63,
+							64,
+							65,
+							66,
+							67,
+							68,
+							69,
+							70,
+							71,
+							72,
+							73,
+							74,
+							75,
+							76,
+							77,
+							78,
+							79,
+							80,
+							81,
+							82,
+							83,
+							84,
+							85,
+							86,
+							87,
+							88,
+							89,
+							90,
+							91
+						],
+						"columns": [
+							"A",
+							"B",
+							"C",
+							"D",
+							"E",
+							"F",
+							"G",
+							"H",
+							"I",
+							"J"
+						]
+					},
+					{
+						"rows": [
+							92,
+							93,
+							94,
+							95,
+							96,
+							97,
+							98,
+							99,
+							100
+						],
+						"columns": [
+							"A",
+							"B",
+							"C",
+							"D",
+							"E",
+							"F",
+							"G",
+							"H",
+							"I",
+							"J"
+						]
+					}
+				]
+			}
+		},
+		{
+			"note": "an item wider than the page still gets a group of its own",
+			"input": {
+				"sheet": {
+					"columns": [
+						{
+							"id": "A",
+							"name": "A",
+							"width": 200
+						},
+						{
+							"id": "B",
+							"name": "B",
+							"width": 200
+						}
+					],
+					"recordCount": 1
+				},
+				"print": {
+					"area": "A1:B2"
+				}
+			},
+			"expected": {
+				"pages": [
+					{
+						"rows": [
+							1,
+							2
+						],
+						"columns": [
+							"A"
+						]
+					},
+					{
+						"rows": [
+							1,
+							2
+						],
+						"columns": [
+							"B"
+						]
+					}
+				]
+			}
+		},
+		{
+			"note": "declared row heights (points) replace the 20px default: 600pt = 800px, 150pt = 200px",
+			"input": {
+				"sheet": {
+					"columns": [
+						{
+							"id": "A",
+							"name": "A",
+							"width": 10
+						}
+					],
+					"recordCount": 9,
+					"rowHeights": {
+						"1": 600,
+						"2": 150
+					}
+				},
+				"print": {
+					"area": "A1:A10"
+				}
+			},
+			"expected": {
+				"pages": [
+					{
+						"rows": [
+							1
+						],
+						"columns": [
+							"A"
+						]
+					},
+					{
+						"rows": [
+							2,
+							3,
+							4,
+							5,
+							6,
+							7,
+							8,
+							9,
+							10
+						],
+						"columns": [
+							"A"
+						]
+					}
+				]
+			}
+		},
+		{
+			"note": "paper size and orientation: a5 landscape with 0.5 inch margins",
+			"input": {
+				"sheet": {
+					"columns": [
+						{
+							"id": "A",
+							"name": "A",
+							"width": 10
+						}
+					],
+					"recordCount": 0
+				},
+				"print": {
+					"area": "A1:A1",
+					"paperSize": "a5",
+					"orientation": "landscape",
+					"margins": {
+						"top": 0.5,
+						"right": 0.5,
+						"bottom": 0.5,
+						"left": 0.5
+					}
+				}
+			},
+			"expected": {
+				"printable": {
+					"width": 697.92,
+					"height": 463.68
+				}
+			}
+		},
+		{
+			"note": "without area the used range is printed: text, a fill, and a border count; a font alone does not",
+			"input": {
+				"sheet": {
+					"columns": [
+						{
+							"id": "A",
+							"name": "A",
+							"width": 10
+						},
+						{
+							"id": "B",
+							"name": "B",
+							"width": 10
+						},
+						{
+							"id": "C",
+							"name": "C",
+							"width": 10
+						},
+						{
+							"id": "D",
+							"name": "D",
+							"width": 10
+						}
+					],
+					"recordCount": 5,
+					"values": {
+						"B4": "x"
+					},
+					"cells": {
+						"C2": {
+							"style": "fill"
+						},
+						"D6": {
+							"style": "fontonly"
+						}
+					}
+				},
+				"print": {},
+				"styles": [
+					{
+						"id": "fill",
+						"fill": {
+							"color": "#ffff00"
+						}
+					},
+					{
+						"id": "fontonly",
+						"font": {
+							"bold": true
+						}
+					}
+				]
+			},
+			"expected": {
+				"area": "A1:C4",
+				"pages": [
+					{
+						"rows": [
+							1,
+							2,
+							3,
+							4
+						],
+						"columns": [
+							"A",
+							"B",
+							"C"
+						]
+					}
+				]
+			}
+		},
+		{
+			"note": "a visible border counts, a none-style edge does not",
+			"input": {
+				"sheet": {
+					"columns": [
+						{
+							"id": "A",
+							"name": "A",
+							"width": 10
+						},
+						{
+							"id": "B",
+							"name": "B",
+							"width": 10
+						},
+						{
+							"id": "C",
+							"name": "C",
+							"width": 10
+						}
+					],
+					"recordCount": 2,
+					"cells": {
+						"C3": {
+							"style": "edge"
+						}
+					}
+				},
+				"print": {},
+				"styles": [
+					{
+						"id": "edge",
+						"border": {
+							"bottom": {
+								"style": "thin",
+								"color": "#000000"
+							},
+							"left": {
+								"style": "none"
+							}
+						}
+					}
+				]
+			},
+			"expected": {
+				"area": "A1:C3"
+			}
+		},
+		{
+			"note": "an empty sheet prints A1",
+			"input": {
+				"sheet": {
+					"columns": [
+						{
+							"id": "A",
+							"name": "A",
+							"width": 10
+						},
+						{
+							"id": "B",
+							"name": "B",
+							"width": 10
+						}
+					],
+					"recordCount": 0,
+					"values": {}
+				},
+				"print": {}
+			},
+			"expected": {
+				"area": "A1:A1",
+				"pages": [
+					{
+						"rows": [
+							1
+						],
+						"columns": [
+							"A"
+						]
+					}
+				]
+			}
+		}
+	]
+}

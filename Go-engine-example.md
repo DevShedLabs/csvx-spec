@@ -1,5 +1,9 @@
 > Build an open-source Go engine first, and make Coder merely one consumer of it.
 
+> **Not normative.** This is an early project/design document kept for history. The authority is
+> `spec/` (start at `spec/README.md`), then `schemas/` and `tests/`; where this file disagrees with
+> them, they win, and this file should not be extended — add to `spec/` instead (`AGENTS.md` §1).
+
 ```text
                     ┌─────────────────────┐
                     │     CSVX Engine     │

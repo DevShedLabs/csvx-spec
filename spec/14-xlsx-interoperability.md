@@ -115,3 +115,65 @@ defined name is not imported, and the importer MUST report each as a warning wit
 single reference or constant (for example `OFFSET(...)`), a name that breaks the 02-workbook.md
 rules, or a built-in `_xlnm.` name with no CSVX equivalent. An exporter writes each `namedRanges`
 entry as a workbook-scoped defined name.
+
+## 14.9 CSVX to XLSX export
+
+An exporter writes an XLSX workbook from CSVX content; the CSVX workbook is the authority, never an
+embedded source that an edit has made stale (14.2). If `authority` is `original` and the workbook is
+unmodified, an exporter SHOULD return the embedded source bytes instead.
+
+**Values.** Each cell's type is its metadata `type`, else its column's, else the untyped literal
+rules of 04-data-types.md. `integer` and `decimal` are numbers whose text is written unchanged;
+`boolean` is `t="b"`; `string` is a string (shared or inline); `blank` has no value, though its style
+is kept; `date`, `time` and `datetime` are numbers in the 1900 date system, with a date or time
+number format applied if the cell's style has none. `error` is an XLSX error literal:
+
+| CSVX code | XLSX |
+| --- | --- |
+| `DIV0` | `#DIV/0!` |
+| `VALUE` | `#VALUE!` |
+| `REF` | `#REF!` |
+| `NAME` | `#NAME?` |
+| `NUM` | `#NUM!` |
+| `NULL` | `#NULL!` |
+| `N/A` | `#N/A` |
+
+`CYCLE` has no XLSX equivalent and is written as `#VALUE!` with a warning. A formula cell is written
+as the formula without its leading `=`, with its `cached` value when present. The header row is
+written as strings, so row N of the sheet is row N of the worksheet (14.7).
+
+**Styles.** Each style referenced by a cell becomes an XLSX cell format: `numberFormat`, `font`
+(`name`, `size`, `bold`, `italic`, `color`), `fill` (`color` as a solid fill), `border` per edge
+(with an `xlsxStyle` value restored when present), and `alignment`. A style property XLSX cannot
+represent is reported as a warning, not dropped silently.
+
+**Sheets and layout.** `Column.width` and `rowHeights` are written in their own units (03-sheets.md).
+The `print` object is written as in 14.6, including the print names. Validation rules are written as
+data validations; a `list` rule whose `formula1` does not start with `=` is a literal list. `namedRanges`
+are written as workbook-scoped defined names (14.8).
+
+**Sheet names.** XLSX limits a name to 31 characters and forbids `[ ] * ? / \`. An exporter MUST
+replace each forbidden character with `_`, shorten to 31 characters, make names unique ignoring case,
+rewrite every reference to the sheet in formulas and names, and report a warning for each change.
+
+**Reporting.** An exporter MUST report each loss or transformation as a warning with feature, location
+and reason. The vectors are `tests/interop/csvx-to-xlsx.json`: each exports a fixture, imports the
+result again, and compares cells, styles, print settings and names.
+
+## 14.10 Importing dates, times, and errors
+
+The importer is the inverse of 14.9 for these values, so a CSVX workbook keeps its CSV text through an
+export and import.
+
+**Dates and times.** A numeric cell whose number format is a date or time format is a `date`, `time`
+or `datetime`, decided from the format with quoted text and bracketed sections (`"at"`, `[$-409]`,
+`[h]`) ignored: a format with a `d` or `y` token and an `h` or `s` token is a `datetime`, a format
+with only `d`/`y` a `date`, a format with only `h`/`s` a `time`. The CSV text is the ISO 8601 form
+04-data-types.md requires (`2026-09-22`, `14:30:00`, `2026-09-22T14:30:00`), converted from the serial
+number in the workbook's date system (1900 unless `workbookPr/@date1904` is true). A serial that does
+not convert (negative, not a whole number in a date format, or one day or more in a time format)
+is kept as the number.
+
+**Errors.** An error cell's `cached` code and its CSV text use the CSVX code (`DIV0`, written `#DIV0`
+in the CSV), by the table in 14.9. An XLSX error literal with no entry in the table keeps its text
+without the `#` and `!` or `?` suffix.

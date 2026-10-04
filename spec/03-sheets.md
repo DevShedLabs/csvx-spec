@@ -77,16 +77,51 @@ an absent property takes the default shown. Unknown properties are preserved.
 | `rowBreaks` | array of integers | none | 1-based row numbers after which a page break is forced. |
 
 Ranges and row and column numbers here are A1 coordinates as defined at the top of this document,
-so they are the row and column numbers an XLSX import carries over unchanged. The **used
-range** is the rows and columns up to the last cell that prints something: a value, a formula, a
-visible fill, or a visible border. Formatting that draws nothing (a number format or font on an
-empty cell) is not part of the used range; this matters because spreadsheets often format
-thousands of empty rows.
+so they are the row and column numbers an XLSX import carries over unchanged.
 
-Pagination is the renderer's responsibility. Given the paper size, orientation, margins, and scale,
-a renderer places columns left to right into pages that fit the printable width, and rows top to
-bottom into pages that fit the printable height, honoring `columnBreaks`, `rowBreaks`,
-`repeatRows`, and `repeatColumns`. Column widths and row heights use the units defined above.
-Where `fitToWidth` or `fitToHeight` would require a scale below 10%, a renderer SHOULD clamp to 10%
-and paginate the remainder.
+## Used range
+
+The **used range** is the rows and columns up to the last cell that prints something, and is always
+at least `A1:A1`. A cell prints something if its text is non-empty (for the header row, the column
+name, except that a name equal to the column's own letter stands for an empty header cell,
+14.7 of 14-xlsx-interoperability.md), or its metadata has a `formula`, or its style has a `fill.color`, or its style has a **visible
+border** on any edge. An edge's border is visible if, after applying the `border.style` and
+`border.color` shorthand and then the edge object (08-styles.md), it declares a `style` other than
+`none` or a `color`. Formatting that draws nothing (a number format or font on an empty cell) is not
+part of the used range; this matters because spreadsheets often format thousands of empty rows.
+
+## Pagination
+
+An engine MUST implement pagination exactly as follows, so every engine and renderer agrees on which
+cells land on which page. It is a pure function of the sheet, its styles, and its `print` settings.
+Pixels are CSS pixels at 96 per inch.
+
+1. **Settings.** Absent properties take the defaults in the table above.
+2. **Page.** Paper size in inches, portrait (width × height): `letter` 8.5 × 11, `legal` 8.5 × 14,
+   `tabloid` 11 × 17, `a3` 11.69 × 16.54, `a4` 8.27 × 11.69, `a5` 5.83 × 8.27. `landscape` swaps the
+   two. The **printable** width and height are the paper size minus the margins, in pixels, and
+   never less than 1.
+3. **Sizes.** A column is `round(width × 7 + 5)` pixels wide, where an absent `width` is 8.43, so
+   64 pixels. A row is `round(points × 4 / 3)` pixels tall, taken from `rowHeights` by row number,
+   where an absent height is 15 points, so 20 pixels. These are the unscaled sizes.
+4. **Area.** If `area` is set it is used, clipped to the sheet: its last row to the sheet's last
+   row and its last column to the sheet's last column. Otherwise the area is the used range. If no
+   cell is left, there are no pages.
+5. **Scale.** Without `fitToWidth` or `fitToHeight` the scale is `scale / 100`. If either is present
+   the `scale` property is ignored and the scale is the smallest of: 1; for a positive `fitToWidth` of
+   *n*, *n* × printable width ÷ (area width + (*n* − 1) × repeated-columns width); and for a positive
+   `fitToHeight` of *m*, *m* × printable height ÷ (area height + (*m* − 1) × repeated-rows height).
+   A value of `0` imposes no limit. Fitting never enlarges. The scale is then clamped to `[0.1, 4]`.
+6. **Groups.** The area's rows, and separately its columns, are split into consecutive groups. A
+   group may hold items while their total size is at most the printable size divided by the scale,
+   plus 1e-6 to absorb rounding. A forced break (`rowBreaks`, `columnBreaks`: break *after* that
+   1-based number) ends the current group. A group always holds at least one item, however large.
+   A group that does not start at or before the end of the repeated rows (columns) has them
+   prepended, and their size counts against the group's room.
+7. **Pages.** With `downThenOver`, for each column group in order, each row group in order is a page;
+   with `overThenDown`, for each row group, each column group. Pages are numbered from 1 in that
+   order. A page lists the row numbers and column letters it shows, repeated ones first.
+
+Rows are A1 row numbers (the header is 1) and columns are letters. Pagination gives the same result
+whatever the renderer's pixel density; a renderer scales the page boxes, not the grouping.
 
