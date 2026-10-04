@@ -3,7 +3,7 @@
 	"operation": "insert-columns",
 	"cases": [
 		{
-			"note": "columns at/right of the insertion move",
+			"note": "columns at/right of the insertion move; the formula cell in D moves to E",
 			"input": {
 				"workbook": {
 					"sheets": [
@@ -67,12 +67,12 @@
 			},
 			"expected": {
 				"formulas": {
-					"D1": "=A2+C2+D2"
+					"E1": "=A2+C2+D2"
 				}
 			}
 		},
 		{
-			"note": "insertion inside a range grows it",
+			"note": "insertion inside a range grows it; the formula cell in D moves to E",
 			"input": {
 				"workbook": {
 					"sheets": [
@@ -136,7 +136,7 @@
 			},
 			"expected": {
 				"formulas": {
-					"D1": "=SUM(A2:D2)"
+					"E1": "=SUM(A2:D2)"
 				}
 			}
 		},
