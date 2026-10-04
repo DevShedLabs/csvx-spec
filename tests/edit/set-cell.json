@@ -1,0 +1,641 @@
+{
+	"id": "edit-set-cell",
+	"cases": [
+		{
+			"note": "literal replaces content: formula, type and cached dropped; style and validation kept",
+			"operation": "set-cell",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Qty",
+									"type": "integer"
+								},
+								{
+									"id": "B",
+									"name": "Note"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"x"
+								],
+								[
+									"2",
+									"y"
+								]
+							],
+							"cells": {
+								"B2": {
+									"formula": "=A2",
+									"type": "string",
+									"cached": {
+										"type": "integer",
+										"value": "2"
+									},
+									"style": "cur",
+									"validation": "v1"
+								}
+							}
+						}
+					],
+					"styles": [
+						{
+							"id": "cur",
+							"numberFormat": "\"$\"#,##0.00"
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"coordinate": "B2",
+					"text": "hello"
+				}
+			},
+			"expected": {
+				"records": [
+					[
+						"1",
+						"x"
+					],
+					[
+						"2",
+						"hello"
+					]
+				],
+				"cells": {
+					"B2": {
+						"style": "cur",
+						"validation": "v1"
+					}
+				}
+			}
+		},
+		{
+			"note": "a literal that leaves no metadata removes the entry",
+			"operation": "set-cell",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Qty",
+									"type": "integer"
+								},
+								{
+									"id": "B",
+									"name": "Note"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"x"
+								],
+								[
+									"2",
+									"y"
+								]
+							],
+							"cells": {
+								"B2": {
+									"formula": "=A2",
+									"cached": {
+										"type": "integer",
+										"value": "2"
+									}
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"coordinate": "B2",
+					"text": "plain"
+				}
+			},
+			"expected": {
+				"records": [
+					[
+						"1",
+						"x"
+					],
+					[
+						"2",
+						"plain"
+					]
+				],
+				"cells": {}
+			}
+		},
+		{
+			"note": "formula: stored in metadata, CSV field empty, old type/cached dropped",
+			"operation": "set-cell",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Qty",
+									"type": "integer"
+								},
+								{
+									"id": "B",
+									"name": "Note"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"x"
+								],
+								[
+									"2",
+									"y"
+								]
+							],
+							"cells": {
+								"B2": {
+									"type": "string"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"coordinate": "B2",
+					"text": "=A2*2"
+				}
+			},
+			"expected": {
+				"records": [
+					[
+						"1",
+						"x"
+					],
+					[
+						"2",
+						""
+					]
+				],
+				"cells": {
+					"B2": {
+						"formula": "=A2*2"
+					}
+				}
+			}
+		},
+		{
+			"note": "currency literal in a numberFormat cell is canonicalized",
+			"operation": "set-cell",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Price"
+								},
+								{
+									"id": "B",
+									"name": "Note"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"x"
+								],
+								[
+									"2",
+									"y"
+								]
+							],
+							"cells": {
+								"A2": {
+									"style": "cur"
+								}
+							}
+						}
+					],
+					"styles": [
+						{
+							"id": "cur",
+							"numberFormat": "\"$\"#,##0.00"
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"coordinate": "A2",
+					"text": "$7.00"
+				}
+			},
+			"expected": {
+				"records": [
+					[
+						"1",
+						"x"
+					],
+					[
+						"7.00",
+						"y"
+					]
+				],
+				"cells": {
+					"A2": {
+						"style": "cur"
+					}
+				}
+			}
+		},
+		{
+			"note": "text that does not match the format is stored as typed",
+			"operation": "set-cell",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Price"
+								},
+								{
+									"id": "B",
+									"name": "Note"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"x"
+								],
+								[
+									"2",
+									"y"
+								]
+							],
+							"cells": {
+								"A2": {
+									"style": "cur"
+								}
+							}
+						}
+					],
+					"styles": [
+						{
+							"id": "cur",
+							"numberFormat": "\"$\"#,##0.00"
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"coordinate": "A2",
+					"text": "n/a"
+				}
+			},
+			"expected": {
+				"records": [
+					[
+						"1",
+						"x"
+					],
+					[
+						"n/a",
+						"y"
+					]
+				],
+				"cells": {
+					"A2": {
+						"style": "cur"
+					}
+				}
+			}
+		},
+		{
+			"note": "header text renames the column",
+			"operation": "set-cell",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Qty",
+									"type": "integer"
+								},
+								{
+									"id": "B",
+									"name": "Note"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"x"
+								],
+								[
+									"2",
+									"y"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"coordinate": "B1",
+					"text": "Remarks"
+				}
+			},
+			"expected": {
+				"columns": [
+					{
+						"id": "A",
+						"name": "Qty",
+						"type": "integer"
+					},
+					{
+						"id": "B",
+						"name": "Remarks"
+					}
+				]
+			}
+		},
+		{
+			"note": "empty header text is invalid",
+			"operation": "set-cell",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Qty",
+									"type": "integer"
+								},
+								{
+									"id": "B",
+									"name": "Note"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"x"
+								],
+								[
+									"2",
+									"y"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"coordinate": "B1",
+					"text": ""
+				}
+			},
+			"expected": {
+				"valid": false
+			}
+		},
+		{
+			"note": "a cell beyond the extent extends the sheet; new columns are named Column N",
+			"operation": "set-cell",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Qty",
+									"type": "integer"
+								},
+								{
+									"id": "B",
+									"name": "Note"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"x"
+								],
+								[
+									"2",
+									"y"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"coordinate": "D4",
+					"text": "z"
+				}
+			},
+			"expected": {
+				"columns": [
+					{
+						"id": "A",
+						"name": "Qty",
+						"type": "integer"
+					},
+					{
+						"id": "B",
+						"name": "Note"
+					},
+					{
+						"id": "C",
+						"name": "Column 3"
+					},
+					{
+						"id": "D",
+						"name": "Column 4"
+					}
+				],
+				"records": [
+					[
+						"1",
+						"x",
+						"",
+						""
+					],
+					[
+						"2",
+						"y",
+						"",
+						""
+					],
+					[
+						"",
+						"",
+						"",
+						""
+					],
+					[
+						"",
+						"",
+						"",
+						"z"
+					]
+				]
+			}
+		},
+		{
+			"note": "paste applies each element as set-cell, atomically",
+			"operation": "paste",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Qty",
+									"type": "integer"
+								},
+								{
+									"id": "B",
+									"name": "Note"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"x"
+								],
+								[
+									"2",
+									"y"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"anchor": "A2",
+					"rows": [
+						[
+							"5",
+							"a"
+						],
+						[
+							"6",
+							"=A3"
+						]
+					]
+				}
+			},
+			"expected": {
+				"records": [
+					[
+						"5",
+						"a"
+					],
+					[
+						"6",
+						""
+					]
+				],
+				"cells": {
+					"B3": {
+						"formula": "=A3"
+					}
+				}
+			}
+		},
+		{
+			"note": "paste with an invalid element (empty header) applies nothing",
+			"operation": "paste",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Qty",
+									"type": "integer"
+								},
+								{
+									"id": "B",
+									"name": "Note"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"x"
+								],
+								[
+									"2",
+									"y"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"anchor": "A1",
+					"rows": [
+						[
+							"Q",
+							""
+						]
+					]
+				}
+			},
+			"expected": {
+				"valid": false
+			}
+		}
+	]
+}

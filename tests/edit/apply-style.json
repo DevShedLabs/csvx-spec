@@ -1,0 +1,561 @@
+{
+	"id": "edit-apply-style",
+	"cases": [
+		{
+			"note": "a cell with no style gets a new style s0",
+			"operation": "apply-style",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Qty",
+									"type": "integer"
+								},
+								{
+									"id": "B",
+									"name": "Note"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"x"
+								],
+								[
+									"2",
+									"y"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"coordinates": [
+						"A2"
+					],
+					"patch": {
+						"font": {
+							"bold": true
+						}
+					}
+				}
+			},
+			"expected": {
+				"cells": {
+					"A2": {
+						"style": "s0"
+					}
+				},
+				"styles": [
+					{
+						"id": "s0",
+						"font": {
+							"bold": true
+						}
+					}
+				]
+			}
+		},
+		{
+			"note": "identical result reuses the existing style (dedupe)",
+			"operation": "apply-style",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Qty",
+									"type": "integer"
+								},
+								{
+									"id": "B",
+									"name": "Note"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"x"
+								],
+								[
+									"2",
+									"y"
+								]
+							],
+							"cells": {
+								"A2": {
+									"style": "s0"
+								}
+							}
+						}
+					],
+					"styles": [
+						{
+							"id": "s0",
+							"font": {
+								"bold": true
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"coordinates": [
+						"A2",
+						"A3",
+						"B2"
+					],
+					"patch": {
+						"font": {
+							"bold": true
+						}
+					}
+				}
+			},
+			"expected": {
+				"cells": {
+					"A2": {
+						"style": "s0"
+					},
+					"A3": {
+						"style": "s0"
+					},
+					"B2": {
+						"style": "s0"
+					}
+				},
+				"styles": [
+					{
+						"id": "s0",
+						"font": {
+							"bold": true
+						}
+					}
+				]
+			}
+		},
+		{
+			"note": "merge one level deep; the existing shared style is not modified",
+			"operation": "apply-style",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Qty",
+									"type": "integer"
+								},
+								{
+									"id": "B",
+									"name": "Note"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"x"
+								],
+								[
+									"2",
+									"y"
+								]
+							],
+							"cells": {
+								"A2": {
+									"style": "s0"
+								},
+								"A3": {
+									"style": "s0"
+								}
+							}
+						}
+					],
+					"styles": [
+						{
+							"id": "s0",
+							"font": {
+								"bold": true
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"coordinates": [
+						"A2"
+					],
+					"patch": {
+						"font": {
+							"italic": true
+						}
+					}
+				}
+			},
+			"expected": {
+				"cells": {
+					"A2": {
+						"style": "s1"
+					},
+					"A3": {
+						"style": "s0"
+					}
+				},
+				"styles": [
+					{
+						"id": "s0",
+						"font": {
+							"bold": true
+						}
+					},
+					{
+						"id": "s1",
+						"font": {
+							"bold": true,
+							"italic": true
+						}
+					}
+				]
+			}
+		},
+		{
+			"note": "border edges merge per edge",
+			"operation": "apply-style",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Qty",
+									"type": "integer"
+								},
+								{
+									"id": "B",
+									"name": "Note"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"x"
+								],
+								[
+									"2",
+									"y"
+								]
+							],
+							"cells": {
+								"A2": {
+									"style": "s0"
+								}
+							}
+						}
+					],
+					"styles": [
+						{
+							"id": "s0",
+							"border": {
+								"top": {
+									"style": "thin"
+								},
+								"bottom": {
+									"style": "thin"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"coordinates": [
+						"A2"
+					],
+					"patch": {
+						"border": {
+							"bottom": {
+								"style": "thick",
+								"color": "#000000"
+							}
+						}
+					}
+				}
+			},
+			"expected": {
+				"cells": {
+					"A2": {
+						"style": "s1"
+					}
+				},
+				"styles": [
+					{
+						"id": "s0",
+						"border": {
+							"top": {
+								"style": "thin"
+							},
+							"bottom": {
+								"style": "thin"
+							}
+						}
+					},
+					{
+						"id": "s1",
+						"border": {
+							"top": {
+								"style": "thin"
+							},
+							"bottom": {
+								"style": "thick",
+								"color": "#000000"
+							}
+						}
+					}
+				]
+			}
+		},
+		{
+			"note": "unknown properties of the existing style are preserved",
+			"operation": "apply-style",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Qty",
+									"type": "integer"
+								},
+								{
+									"id": "B",
+									"name": "Note"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"x"
+								],
+								[
+									"2",
+									"y"
+								]
+							],
+							"cells": {
+								"A2": {
+									"style": "s0"
+								}
+							}
+						}
+					],
+					"styles": [
+						{
+							"id": "s0",
+							"protection": {
+								"locked": true
+							},
+							"x-ext": {
+								"k": 1
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"coordinates": [
+						"A2"
+					],
+					"patch": {
+						"font": {
+							"bold": true
+						}
+					}
+				}
+			},
+			"expected": {
+				"cells": {
+					"A2": {
+						"style": "s1"
+					}
+				},
+				"styles": [
+					{
+						"id": "s0",
+						"protection": {
+							"locked": true
+						},
+						"x-ext": {
+							"k": 1
+						}
+					},
+					{
+						"id": "s1",
+						"protection": {
+							"locked": true
+						},
+						"x-ext": {
+							"k": 1
+						},
+						"font": {
+							"bold": true
+						}
+					}
+				]
+			}
+		},
+		{
+			"note": "numberFormat: absent keeps, null removes",
+			"operation": "apply-style",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Qty",
+									"type": "integer"
+								},
+								{
+									"id": "B",
+									"name": "Note"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"x"
+								],
+								[
+									"2",
+									"y"
+								]
+							],
+							"cells": {
+								"A2": {
+									"style": "cur"
+								}
+							}
+						}
+					],
+					"styles": [
+						{
+							"id": "cur",
+							"numberFormat": "\"$\"#,##0.00"
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"coordinates": [
+						"A2"
+					],
+					"patch": {
+						"numberFormat": null
+					}
+				}
+			},
+			"expected": {
+				"cells": {},
+				"styles": [
+					{
+						"id": "cur",
+						"numberFormat": "\"$\"#,##0.00"
+					}
+				]
+			}
+		},
+		{
+			"note": "clear-style removes the reference and an emptied entry, not the style record",
+			"operation": "clear-style",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Qty",
+									"type": "integer"
+								},
+								{
+									"id": "B",
+									"name": "Note"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"x"
+								],
+								[
+									"2",
+									"y"
+								]
+							],
+							"cells": {
+								"A2": {
+									"style": "cur"
+								},
+								"B2": {
+									"style": "cur",
+									"validation": "v1"
+								}
+							}
+						}
+					],
+					"styles": [
+						{
+							"id": "cur",
+							"numberFormat": "\"$\"#,##0.00"
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"coordinates": [
+						"A2",
+						"B2"
+					]
+				}
+			},
+			"expected": {
+				"cells": {
+					"B2": {
+						"validation": "v1"
+					}
+				},
+				"styles": [
+					{
+						"id": "cur",
+						"numberFormat": "\"$\"#,##0.00"
+					}
+				]
+			}
+		}
+	]
+}

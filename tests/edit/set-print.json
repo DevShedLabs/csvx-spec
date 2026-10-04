@@ -1,0 +1,152 @@
+{
+	"id": "edit-set-print",
+	"cases": [
+		{
+			"note": "keys replace, null removes, unknown keys are kept",
+			"operation": "set-print",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Qty",
+									"type": "integer"
+								},
+								{
+									"id": "B",
+									"name": "Note"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"x"
+								],
+								[
+									"2",
+									"y"
+								]
+							],
+							"cells": {},
+							"print": {
+								"orientation": "portrait",
+								"scale": 80,
+								"x-ext": 1
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"patch": {
+						"orientation": "landscape",
+						"scale": null
+					}
+				}
+			},
+			"expected": {
+				"print": {
+					"orientation": "landscape",
+					"x-ext": 1
+				}
+			}
+		},
+		{
+			"note": "an emptied print object is removed",
+			"operation": "set-print",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Qty",
+									"type": "integer"
+								},
+								{
+									"id": "B",
+									"name": "Note"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"x"
+								],
+								[
+									"2",
+									"y"
+								]
+							],
+							"cells": {},
+							"print": {
+								"scale": 80
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"patch": {
+						"scale": null
+					}
+				}
+			},
+			"expected": {
+				"print": null
+			}
+		},
+		{
+			"note": "a value that violates the schema is invalid",
+			"operation": "set-print",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Qty",
+									"type": "integer"
+								},
+								{
+									"id": "B",
+									"name": "Note"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"x"
+								],
+								[
+									"2",
+									"y"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"patch": {
+						"scale": 5
+					}
+				}
+			},
+			"expected": {
+				"valid": false
+			}
+		}
+	]
+}

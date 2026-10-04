@@ -95,9 +95,66 @@ rewritten to the new name, quoted as 06-formulas.md requires for the new name.
 `delete-sheet(sheet)` removes the sheet and its resources. A workbook MUST keep at least one sheet.
 Every reference qualified with the deleted sheet's name is replaced by `#REF!`.
 
+## Setting cells
+
+`set-cell(sheet, coordinate, text)` replaces a cell's content with what the user typed.
+
+- **Header row** (row 1): the text becomes the column's `name`. It MUST be non-empty, because a
+  column name MUST be non-empty; an empty text makes the operation invalid. Header style metadata is
+  kept; a stale `formula`, `type` or `cached` on the header cell is dropped as for any content edit.
+- **Formula** (text beginning with `=`): the cell's metadata `formula` is set to the text, and any
+  `type` and `cached` describing the old content are dropped. The cell's CSV field is empty, as in
+  `examples/formulas.csvx`: a formula cell's value lives in `cached`, which recalculation sets.
+- **Literal** (anything else): the CSV field becomes the text, and `formula`, `type` and `cached`
+  are dropped (05-cell-values.md). If the cell has a `numberFormat` (08-styles.md) and, with the
+  per-cell `type` now gone, no declared type, a literal that parses as a number against that
+  format's own affixes and grouping is stored as the canonical numeric text (`$7.00` → `7.00`).
+  Anything else is stored exactly as typed.
+
+`style` and `validation` are never changed by `set-cell`. A metadata entry left empty is removed.
+The sheet MUST be recalculated afterwards (10-calculation.md). A coordinate beyond the sheet's
+current extent extends the sheet with blank rows, and with columns named `Column N`, as needed.
+
+`paste(sheet, anchor, rows)` applies a rectangular array of texts, the top-left at `anchor`, as one
+`set-cell` per element, with one recalculation at the end. It is atomic: if any element would be
+invalid, none is applied. Formula text is stored verbatim; translating relative references to the
+destination is not part of this version.
+
+## Styles
+
+`apply-style(sheet, coordinates, patch)` changes the presentation of each listed cell. `patch` may
+contain `numberFormat`, `font`, `fill`, `border`, `alignment`, and any other style property.
+
+For each cell the new style is the cell's current style (an empty style if it has none) merged with
+the patch:
+
+- `numberFormat`: an absent key keeps the current value, a string sets it, and `null` removes it.
+- `font`, `fill`, `border`, `alignment` and other object-valued groups merge one level deep: each
+  key in the patch replaces that key in the group and the other keys are kept, so patching
+  `border.bottom` replaces the bottom edge object whole and leaves the other edges as they were.
+  A key set to `null` is removed.
+- Properties the patch does not mention, including ones the engine does not understand, MUST be
+  preserved (08-styles.md).
+
+If the result has no properties, the cell's `style` reference is removed (and a metadata entry left empty is removed). Otherwise the engine
+reuses an existing style in `styles.json` whose properties, ignoring `id` and key order, equal the
+result, and only when none does adds a new style. A new style gets `id` `s<N>`, where N is one more
+than the largest N among existing ids of that form, or `0` if there are none. Within one call, ids
+are assigned in the order of `coordinates` as given. Existing styles are never modified or removed
+by an edit, so a style shared with other cells is never changed under them.
+
+`clear-style(sheet, coordinates)` removes `style` from each listed cell, removing a metadata entry
+left empty. It does not change `styles.json`.
+
+## Print settings
+
+`set-print(sheet, patch)` merges `patch` into the sheet's `print` object: each key in the patch
+replaces that key, a key set to `null` is removed (so it takes its default, 03-sheets.md), and keys
+not mentioned, including unknown ones, are kept. The result MUST conform to the sheet metadata
+schema or the operation is invalid. If `print` ends up empty it is removed from the sidecar.
+
 ## Not yet specified
 
-Cell and range edits (set cell, paste block), style patch with deduplication, and print-settings
-merge are workbook-model operations that still live only in `csvx-web`. They are tracked in
-`CSVX-GAPS.md` and MUST be specified here, with vectors, before an engine implements them.
-Data-validation ranges (09-validation.md) are not yet rewritten by structural edits.
+Translating relative references when copying and pasting formulas, and data-validation ranges
+(09-validation.md) under structural edits, are not yet covered. They MUST be specified here, with
+vectors, before an engine implements them.
