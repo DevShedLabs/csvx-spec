@@ -1,0 +1,33 @@
+{
+	"id": "named-range-valid",
+	"note": "valid declarations of every kind",
+	"operation": "validate-named-ranges",
+	"input": {
+		"namedRanges": [
+			{
+				"name": "TaxRate",
+				"refersTo": "=Rates!$B$1"
+			},
+			{
+				"name": "Prices",
+				"refersTo": "='Q1 Sales'!$C$2:$C$100"
+			},
+			{
+				"name": "Pi.Value",
+				"refersTo": "=3.14"
+			},
+			{
+				"name": "Greeting",
+				"refersTo": "=\"Hello\""
+			},
+			{
+				"name": "Gone",
+				"refersTo": "=#REF!"
+			}
+		]
+	},
+	"expected": {
+		"valid": true,
+		"errors": []
+	}
+}

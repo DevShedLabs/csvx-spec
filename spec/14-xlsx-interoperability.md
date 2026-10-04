@@ -100,3 +100,18 @@ formula and its cached value) is kept under the row-1 coordinate like any other 
 keys are worksheet row numbers unchanged. A worksheet with no cells is imported as a header of `A`
 only.
 
+
+## 14.8 Defined names
+
+An importer MUST map a workbook-scoped XLSX defined name (a `definedName` with no `localSheetId`)
+onto `namedRanges` (02-workbook.md) when its formula is a single cell reference, a single range,
+or a constant (number, string, or boolean), and its name satisfies the rules in 02-workbook.md.
+`refersTo` is `=` followed by the formula, with each sheet qualifier written as 06-formulas.md
+requires (XLSX always quotes it) and `$` markers kept.
+
+`_xlnm.Print_Area` and `_xlnm.Print_Titles` are print settings (14.6), not names. Every other
+defined name is not imported, and the importer MUST report each as a warning with the feature
+`definedName` and a message naming it and giving the reason: sheet-scoped, a formula that is not a
+single reference or constant (for example `OFFSET(...)`), a name that breaks the 02-workbook.md
+rules, or a built-in `_xlnm.` name with no CSVX equivalent. An exporter writes each `namedRanges`
+entry as a workbook-scoped defined name.

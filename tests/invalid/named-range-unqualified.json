@@ -1,0 +1,22 @@
+{
+	"id": "invalid-named-range-unqualified",
+	"note": "every reference must be sheet-qualified",
+	"operation": "validate-named-ranges",
+	"input": {
+		"namedRanges": [
+			{
+				"name": "Local",
+				"refersTo": "=$B$1"
+			}
+		]
+	},
+	"expected": {
+		"valid": false,
+		"errors": [
+			{
+				"code": "INVALID_NAMED_RANGE",
+				"name": "Local"
+			}
+		]
+	}
+}

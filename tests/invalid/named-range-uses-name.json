@@ -1,0 +1,26 @@
+{
+	"id": "invalid-named-range-uses-name",
+	"note": "refersTo must not use a name",
+	"operation": "validate-named-ranges",
+	"input": {
+		"namedRanges": [
+			{
+				"name": "One",
+				"refersTo": "=1"
+			},
+			{
+				"name": "Two",
+				"refersTo": "=One"
+			}
+		]
+	},
+	"expected": {
+		"valid": false,
+		"errors": [
+			{
+				"code": "INVALID_NAMED_RANGE",
+				"name": "Two"
+			}
+		]
+	}
+}

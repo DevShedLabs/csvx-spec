@@ -123,10 +123,18 @@ Every reference qualified with the deleted sheet's name, in the same places, is 
 The sheet MUST be recalculated afterwards (10-calculation.md). A coordinate beyond the sheet's
 current extent extends the sheet with blank rows, and with columns named `Column N`, as needed.
 
-`paste(sheet, anchor, rows)` applies a rectangular array of texts, the top-left at `anchor`, as one
-`set-cell` per element, with one recalculation at the end. It is atomic: if any element would be
-invalid, none is applied. Formula text is stored verbatim; translating relative references to the
-destination is not part of this version.
+`paste(sheet, anchor, rows, from?)` applies a rectangular array of texts, the top-left at `anchor`,
+as one `set-cell` per element, with one recalculation at the end. It is atomic: if any element
+would be invalid, none is applied.
+
+Without `from`, formula text is stored verbatim. With `from`, the coordinate the rows were copied
+from (the top-left of the source), every text beginning with `=` is **translated** by the offset
+from `from` to `anchor`: each reference's relative column and relative row move by that many
+columns and rows, and a part marked absolute with `$` does not move. This applies to every
+reference in the formula, whichever sheet it names, and to both ends of a range independently. A
+reference that would land above row 1 or left of column A becomes `#REF!` (a range becomes `#REF!`
+if either end would). `#REF!`, names, string literals and everything that is not a reference are
+unchanged. Texts that are not formulas are stored as typed.
 
 ## Styles
 
@@ -165,5 +173,4 @@ removed from the sidecar.
 
 ## Not yet specified
 
-Translating relative references when copying and pasting formulas is not yet covered. It MUST be
-specified here, with vectors, before an engine implements it.
+Nothing in this chapter is deferred.

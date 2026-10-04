@@ -35,6 +35,9 @@ inherently about real files, not abstract values.
 that already shipped here (a decimal formula result cached with `"type": "decimal"` on the schema
 side but `"type": "string"` in practice), without trying to assert the entire fixture byte-for-byte.
 
+`namedRanges` (the imported `workbook.json` names, in order) and `warnings` (the `definedName`-feature
+warnings recorded in the source metadata, by `name`, in order) are used by `xlsx-named-ranges.json`.
+
 `schemaValid: true` means the runner must also validate the operation's real output against
 `../../schemas/*.json` (via `../../validator` or an engine's native equivalent) — a passing interop
 test implies a passing schema-shape test, not just the reverse.

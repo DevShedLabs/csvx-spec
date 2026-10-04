@@ -1,0 +1,22 @@
+{
+	"id": "invalid-named-range-cell-like-long",
+	"note": "Tax1 looks like column TAX row 1",
+	"operation": "validate-named-ranges",
+	"input": {
+		"namedRanges": [
+			{
+				"name": "Tax1",
+				"refersTo": "=Rates!$B$1"
+			}
+		]
+	},
+	"expected": {
+		"valid": false,
+		"errors": [
+			{
+				"code": "INVALID_NAMED_RANGE",
+				"name": "Tax1"
+			}
+		]
+	}
+}

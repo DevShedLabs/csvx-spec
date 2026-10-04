@@ -1,0 +1,22 @@
+{
+	"id": "invalid-named-range-boolean",
+	"note": "TRUE and FALSE are reserved, any case",
+	"operation": "validate-named-ranges",
+	"input": {
+		"namedRanges": [
+			{
+				"name": "true",
+				"refersTo": "=1"
+			}
+		]
+	},
+	"expected": {
+		"valid": false,
+		"errors": [
+			{
+				"code": "INVALID_NAMED_RANGE",
+				"name": "true"
+			}
+		]
+	}
+}

@@ -39,5 +39,11 @@ A workbook MAY declare names in `workbook.json` under `namedRanges`, an array of
   home sheet. It MUST NOT itself use a name.
 - Names are workbook-scoped; sheet-scoped names are not part of Core 1.0.
 
+A package that breaks these rules (a malformed or reserved name, a duplicate, or a `refersTo` that
+does not parse, uses a name, or has an unqualified reference) is invalid. A reader MUST reject it
+with the diagnostic code `INVALID_NAMED_RANGE`, naming the offending `name`. `schemas/` can only
+check each field's shape, so this is checked by the engine after loading (the vectors are
+`tests/invalid/named-range-*.json`).
+
 A formula uses a name wherever it could use the thing it refers to (06-formulas.md). Names are
 declarative data: loading a workbook never evaluates them.

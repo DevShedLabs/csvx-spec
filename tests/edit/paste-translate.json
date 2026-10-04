@@ -1,0 +1,678 @@
+{
+	"id": "edit-paste-translate",
+	"cases": [
+		{
+			"note": "relative references move by the offset; absolute parts stay",
+			"operation": "paste",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								},
+								{
+									"id": "C",
+									"name": "C"
+								},
+								{
+									"id": "D",
+									"name": "D"
+								},
+								{
+									"id": "E",
+									"name": "E"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"anchor": "D3",
+					"from": "B2",
+					"rows": [
+						[
+							"=A1+$A$1+A$1+$A1"
+						]
+					]
+				}
+			},
+			"expected": {
+				"formulas": {
+					"D3": "=C2+$A$1+C$1+$A2"
+				}
+			}
+		},
+		{
+			"note": "ranges translate both ends; sheet-qualified references translate too",
+			"operation": "paste",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								},
+								{
+									"id": "C",
+									"name": "C"
+								},
+								{
+									"id": "D",
+									"name": "D"
+								},
+								{
+									"id": "E",
+									"name": "E"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"anchor": "C4",
+					"from": "A2",
+					"rows": [
+						[
+							"=SUM(A1:B3)+Other!A1"
+						]
+					]
+				}
+			},
+			"expected": {
+				"formulas": {
+					"C4": "=SUM(C3:D5)+Other!C3"
+				}
+			}
+		},
+		{
+			"note": "every element uses the same offset",
+			"operation": "paste",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								},
+								{
+									"id": "C",
+									"name": "C"
+								},
+								{
+									"id": "D",
+									"name": "D"
+								},
+								{
+									"id": "E",
+									"name": "E"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"anchor": "B2",
+					"from": "A1",
+					"rows": [
+						[
+							"=A1",
+							"=A2"
+						],
+						[
+							"=A3",
+							"x"
+						]
+					]
+				}
+			},
+			"expected": {
+				"formulas": {
+					"B2": "=B2",
+					"C2": "=B3",
+					"B3": "=B4"
+				},
+				"records": [
+					[
+						"",
+						"",
+						"",
+						"",
+						""
+					],
+					[
+						"",
+						"",
+						"x",
+						"",
+						""
+					],
+					[
+						"",
+						"",
+						"",
+						"",
+						""
+					],
+					[
+						"",
+						"",
+						"",
+						"",
+						""
+					],
+					[
+						"",
+						"",
+						"",
+						"",
+						""
+					],
+					[
+						"",
+						"",
+						"",
+						"",
+						""
+					]
+				]
+			}
+		},
+		{
+			"note": "moving left or up off the sheet gives #REF!, for a range if either end",
+			"operation": "paste",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								},
+								{
+									"id": "C",
+									"name": "C"
+								},
+								{
+									"id": "D",
+									"name": "D"
+								},
+								{
+									"id": "E",
+									"name": "E"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"anchor": "A2",
+					"from": "C3",
+					"rows": [
+						[
+							"=A1+C3",
+							"=SUM(B2:C3)"
+						]
+					]
+				}
+			},
+			"expected": {
+				"formulas": {
+					"A2": "=#REF!+A2",
+					"B2": "=SUM(#REF!)"
+				}
+			}
+		},
+		{
+			"note": "#REF!, string literals, and non-formula text are untouched",
+			"operation": "paste",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								},
+								{
+									"id": "C",
+									"name": "C"
+								},
+								{
+									"id": "D",
+									"name": "D"
+								},
+								{
+									"id": "E",
+									"name": "E"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"anchor": "B2",
+					"from": "A1",
+					"rows": [
+						[
+							"=A1+\"A1\"+#REF!",
+							"A1"
+						]
+					]
+				}
+			},
+			"expected": {
+				"formulas": {
+					"B2": "=B2+\"A1\"+#REF!"
+				},
+				"records": [
+					[
+						"",
+						"",
+						"A1",
+						"",
+						""
+					],
+					[
+						"",
+						"",
+						"",
+						"",
+						""
+					],
+					[
+						"",
+						"",
+						"",
+						"",
+						""
+					],
+					[
+						"",
+						"",
+						"",
+						"",
+						""
+					],
+					[
+						"",
+						"",
+						"",
+						"",
+						""
+					],
+					[
+						"",
+						"",
+						"",
+						"",
+						""
+					]
+				]
+			}
+		},
+		{
+			"note": "without from, formula text is stored verbatim",
+			"operation": "paste",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								},
+								{
+									"id": "C",
+									"name": "C"
+								},
+								{
+									"id": "D",
+									"name": "D"
+								},
+								{
+									"id": "E",
+									"name": "E"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"anchor": "D3",
+					"rows": [
+						[
+							"=A1"
+						]
+					]
+				}
+			},
+			"expected": {
+				"formulas": {
+					"D3": "=A1"
+				}
+			}
+		}
+	]
+}

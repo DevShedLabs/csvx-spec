@@ -1,0 +1,44 @@
+{
+	"id": "xlsx-to-csvx-named-ranges",
+	"operation": "xlsx-to-csvx",
+	"input": "../../examples/named-ranges.xlsx",
+	"expected": {
+		"schemaValid": true,
+		"namedRanges": [
+			{
+				"name": "TaxRate",
+				"refersTo": "=Fit!$A$1"
+			},
+			{
+				"name": "Prices",
+				"refersTo": "=Fit!$B$2:$B$4"
+			},
+			{
+				"name": "Pi.Value",
+				"refersTo": "=3.14159"
+			},
+			{
+				"name": "Greeting",
+				"refersTo": "=\"Hello\""
+			}
+		],
+		"warnings": [
+			{
+				"feature": "definedName",
+				"name": "Local"
+			},
+			{
+				"feature": "definedName",
+				"name": "Dynamic"
+			},
+			{
+				"feature": "definedName",
+				"name": "Tax1"
+			},
+			{
+				"feature": "definedName",
+				"name": "_xlnm._FilterDatabase"
+			}
+		]
+	}
+}

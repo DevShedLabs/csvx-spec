@@ -1,0 +1,26 @@
+{
+	"id": "invalid-named-range-duplicate",
+	"note": "names are unique ignoring case",
+	"operation": "validate-named-ranges",
+	"input": {
+		"namedRanges": [
+			{
+				"name": "Tax",
+				"refersTo": "=1"
+			},
+			{
+				"name": "TAX",
+				"refersTo": "=2"
+			}
+		]
+	},
+	"expected": {
+		"valid": false,
+		"errors": [
+			{
+				"code": "INVALID_NAMED_RANGE",
+				"name": "TAX"
+			}
+		]
+	}
+}

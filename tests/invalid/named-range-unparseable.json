@@ -1,0 +1,22 @@
+{
+	"id": "invalid-named-range-unparseable",
+	"note": "refersTo must parse",
+	"operation": "validate-named-ranges",
+	"input": {
+		"namedRanges": [
+			{
+				"name": "Broken",
+				"refersTo": "=Rates!A1+"
+			}
+		]
+	},
+	"expected": {
+		"valid": false,
+		"errors": [
+			{
+				"code": "INVALID_NAMED_RANGE",
+				"name": "Broken"
+			}
+		]
+	}
+}

@@ -1,0 +1,22 @@
+{
+	"id": "invalid-named-range-function",
+	"note": "a Core function name is reserved",
+	"operation": "validate-named-ranges",
+	"input": {
+		"namedRanges": [
+			{
+				"name": "Sum",
+				"refersTo": "=1"
+			}
+		]
+	},
+	"expected": {
+		"valid": false,
+		"errors": [
+			{
+				"code": "INVALID_NAMED_RANGE",
+				"name": "Sum"
+			}
+		]
+	}
+}
