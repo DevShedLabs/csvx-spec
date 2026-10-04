@@ -8,6 +8,7 @@ expression = literal | reference | ref-error | function | unary | binary | range
 binary   = expression operator expression
 operator = "+" | "-" | "*" | "/" | "%" | "=" | "!=" | "<" | "<=" | ">" | ">="
 reference = [sheet "!"] cell
+cell     = ["$"] column ["$"] row
 range    = reference ":" reference
 ref-error = "#REF!"
 
@@ -19,6 +20,13 @@ part of Core 1.0.
 References are case-insensitive for matching but MUST retain their original spelling when preserved.
 Quoted sheet names use single quotes with doubled single quotes for escaping. Formula parsing MUST
 be deterministic and MUST reject trailing tokens, invalid references, and unsupported syntax.
+
+## Absolute markers
+
+A `$` before the column letters, the row number, or both marks that part of a reference as
+absolute (`$A$1`, `A$1`, `$A1`). It has no effect on evaluation: `=$A$1` reads the same cell as
+`=A1`. It MUST be accepted by the parser and preserved in the stored formula text. Row and column
+insertion and deletion treat absolute and relative parts alike (15-edit-operations.md).
 
 ## Reference errors
 

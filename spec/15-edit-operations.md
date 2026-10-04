@@ -103,8 +103,9 @@ Every reference qualified with the deleted sheet's name is replaced by `#REF!`.
   column name MUST be non-empty; an empty text makes the operation invalid. Header style metadata is
   kept; a stale `formula`, `type` or `cached` on the header cell is dropped as for any content edit.
 - **Formula** (text beginning with `=`): the cell's metadata `formula` is set to the text, and any
-  `type` and `cached` describing the old content are dropped. The cell's CSV field is empty, as in
-  `examples/formulas.csvx`: a formula cell's value lives in `cached`, which recalculation sets.
+  `type` and `cached` describing the old content are dropped. The cell's CSV field is left empty;
+  the formula text never goes into the CSV. Recalculation then sets `cached`, and MAY write the
+  cache's text into the CSV field, which 03-sheets.md allows as a formula cache.
 - **Literal** (anything else): the CSV field becomes the text, and `formula`, `type` and `cached`
   are dropped (05-cell-values.md). If the cell has a `numberFormat` (08-styles.md) and, with the
   per-cell `type` now gone, no declared type, a literal that parses as a number against that
@@ -136,7 +137,7 @@ the patch:
 - Properties the patch does not mention, including ones the engine does not understand, MUST be
   preserved (08-styles.md).
 
-If the result has no properties, the cell's `style` reference is removed (and a metadata entry left empty is removed). Otherwise the engine
+A group left with no keys is dropped. If the result has no properties, the cell's `style` reference is removed (and a metadata entry left empty is removed). Otherwise the engine
 reuses an existing style in `styles.json` whose properties, ignoring `id` and key order, equal the
 result, and only when none does adds a new style. A new style gets `id` `s<N>`, where N is one more
 than the largest N among existing ids of that form, or `0` if there are none. Within one call, ids
@@ -151,7 +152,9 @@ left empty. It does not change `styles.json`.
 `set-print(sheet, patch)` merges `patch` into the sheet's `print` object: each key in the patch
 replaces that key, a key set to `null` is removed (so it takes its default, 03-sheets.md), and keys
 not mentioned, including unknown ones, are kept. The result MUST conform to the sheet metadata
-schema or the operation is invalid. If `print` ends up empty it is removed from the sidecar.
+schema, but the engine does not check that itself: schema validation is the canonical validator's job
+(AGENTS.md §3.3), so a saved package with a bad value is rejected there. If `print` ends up empty it is
+removed from the sidecar.
 
 ## Not yet specified
 

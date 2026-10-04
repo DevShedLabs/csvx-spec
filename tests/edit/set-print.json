@@ -102,51 +102,6 @@
 			"expected": {
 				"print": null
 			}
-		},
-		{
-			"note": "a value that violates the schema is invalid",
-			"operation": "set-print",
-			"input": {
-				"workbook": {
-					"sheets": [
-						{
-							"id": "sheet-1",
-							"name": "Sheet1",
-							"columns": [
-								{
-									"id": "A",
-									"name": "Qty",
-									"type": "integer"
-								},
-								{
-									"id": "B",
-									"name": "Note"
-								}
-							],
-							"records": [
-								[
-									"1",
-									"x"
-								],
-								[
-									"2",
-									"y"
-								]
-							],
-							"cells": {}
-						}
-					]
-				},
-				"args": {
-					"sheet": "Sheet1",
-					"patch": {
-						"scale": 5
-					}
-				}
-			},
-			"expected": {
-				"valid": false
-			}
 		}
 	]
 }

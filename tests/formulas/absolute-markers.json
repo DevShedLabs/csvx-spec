@@ -1,0 +1,52 @@
+{
+	"id": "formula-absolute-markers",
+	"operation": "evaluate",
+	"cases": [
+		{
+			"input": {
+				"formula": "=$A$1+A$2+$A3",
+				"cells": {
+					"A1": {
+						"type": "integer",
+						"value": 1
+					},
+					"A2": {
+						"type": "integer",
+						"value": 2
+					},
+					"A3": {
+						"type": "integer",
+						"value": 4
+					}
+				}
+			},
+			"expected": {
+				"type": "integer",
+				"value": 7
+			}
+		},
+		{
+			"input": {
+				"formula": "=SUM($A$1:A3)",
+				"cells": {
+					"A1": {
+						"type": "integer",
+						"value": 1
+					},
+					"A2": {
+						"type": "integer",
+						"value": 2
+					},
+					"A3": {
+						"type": "integer",
+						"value": 4
+					}
+				}
+			},
+			"expected": {
+				"type": "integer",
+				"value": 7
+			}
+		}
+	]
+}
