@@ -1,0 +1,13 @@
+{
+	"id": "csv-import-name-control",
+	"operation": "csv-to-csvx",
+	"input": {
+		"file": "examples/csv/people.csv",
+		"options": {
+			"name": "bad\u0001name"
+		}
+	},
+	"expected": {
+		"error": true
+	}
+}

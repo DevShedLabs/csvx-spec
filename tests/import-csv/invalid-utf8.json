@@ -1,0 +1,11 @@
+{
+	"id": "csv-import-invalid-utf8",
+	"operation": "csv-to-csvx",
+	"input": {
+		"file": "examples/csv/invalid-utf8.csv",
+		"options": {}
+	},
+	"expected": {
+		"error": true
+	}
+}

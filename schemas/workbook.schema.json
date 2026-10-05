@@ -45,6 +45,23 @@
         "additionalProperties": true
       }
     },
+    "source": {
+      "type": "object",
+      "description": "Provenance of an imported workbook (spec/14-xlsx-interoperability.md, 14.1); also written to source/source.json.",
+      "required": ["format", "filename", "sha256", "importedAt", "importer", "authority"],
+      "properties": {
+        "format": { "enum": ["xlsx", "xlsm"] },
+        "filename": { "type": "string" },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "importedAt": { "type": "string" },
+        "importer": { "type": "string" },
+        "authority": { "enum": ["original", "csvx"] },
+        "features": { "type": "object" },
+        "mappings": {},
+        "warnings": { "type": "array" }
+      },
+      "additionalProperties": true
+    },
     "calculation": {
       "type": "object",
       "properties": {

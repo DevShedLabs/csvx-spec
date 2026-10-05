@@ -4,8 +4,8 @@ Importers translate external formats into the CSVX data model; exporters transla
 MUST NOT silently discard formulas, errors, styles, or unsupported metadata. Lossy conversions MUST
 report warnings with a location and reason.
 
-CSV export MUST define how formulas are emitted; the Core default is to export calculated display
-values and report that formulas were omitted.
+CSV export is defined in 11.2: the Core default exports each formula cell's calculated value and
+reports that formulas were omitted.
 
 ## 11.1 CSV import
 
@@ -104,3 +104,73 @@ XLSX interoperability extension defined in `14-xlsx-interoperability.md`, but ex
 not change Core calculation semantics. The extension SHOULD be implemented early enough to validate
 CSVX against real XLSX workbooks; it MUST provide exact-source recovery for unchanged embedded
 sources and explicit diagnostics for regenerated exports.
+## 11.2 CSV export
+
+An engine MUST be able to export any sheet of a workbook as a CSV file, and `csvx-cli export` MUST do
+so when its output has a `.csv` extension. The purpose is clean data extraction: the output is the
+sheet's data and nothing else, byte for byte predictable, so that a file can be compared across
+conversions to detect corruption.
+
+### Options
+
+Engines MUST expose all five and MUST NOT add options or defaults beyond this list without amending
+this document.
+
+| Option | Values | Default | Meaning |
+| --- | --- | --- | --- |
+| `sheet` | a sheet id or name | the first sheet | Which sheet to export. An unknown sheet MUST be rejected. |
+| `header` | boolean | `true` | Write the header row (the column names) first. |
+| `delimiter` | one character other than `"`, CR or LF | `,` | The field delimiter. |
+| `formulas` | `values` or `text` | `values` | Write a formula cell as its calculated value, or as its formula text including the leading `=`. |
+| `display` | boolean | `false` | Write numbers as their number format displays them (`$1,250.00`) instead of their literal form (`1250.00`). |
+
+### Structure
+
+The file is UTF-8 with no byte-order mark. Every record, including the last, ends with LF. A field is
+quoted if and only if it contains the delimiter, a double quote, CR, or LF; a quoted field doubles
+its quotes. No other field is quoted, and field content, including leading and trailing whitespace,
+leading zeros, and a leading `=`, `+`, `-`, or `@`, MUST be written exactly: export neither escapes nor
+alters text (neutralizing formula injection is the concern of whoever opens the file in a
+spreadsheet application). The same rule is how every CSV resource in a package is written (11.1).
+
+The rows are the header row (when `header` is true) followed by the sheet's records, and the fields
+are the sheet's columns in order. Nothing is padded or trimmed, except that the records are extended
+with blank ones down to the last row that holds a formula cell, because a formula cell is data (the
+`multi-sheet` example has its only formula below its last record).
+
+### Values
+
+A field is the cell's CSV text as stored, except that a formula cell is written from its value, which
+an exporter MUST obtain by recalculating the workbook first (10-calculation.md), so a stale or missing
+cache never reaches the file. With `formulas` set to `values`, that value is written in its literal
+form (04-data-types.md): `true` or `false`, an integer or decimal's text unchanged, a string as is, a
+date, time or datetime in its ISO form, an error as `#` followed by its code (`#DIV0`), and a blank as
+the empty field. With `formulas` set to `text`, the formula is written.
+
+With `display` true, an integer or decimal in a cell whose style has a `numberFormat` is written as
+that format displays it (08-styles.md); every other value is written as above.
+
+### Warnings
+
+CSV carries data only, so an exporter MUST report what it leaves out, as warnings with a feature and a
+location. With `formulas` set to `values` and a formula cell on the sheet, there is one warning with
+the feature `formula` and the sheet's name as its location, saying how many formulas were exported as
+values. If the exported sheet has styled cells, validation rules, column widths, row heights or print
+settings, or the workbook declares names, there is one warning with the feature `metadata` and the
+sheet's name as its location, saying that CSV holds data only. A sheet that is plain data produces
+no warnings.
+
+### Round trip
+
+For a CSV in the canonical form above (LF, minimal quoting, rectangular, with a non-empty header),
+importing it with the default options and exporting the sheet with the default options MUST return
+the same bytes. For a CSV import warns about (ragged records, empty header fields) the export is the
+repaired canonical form the import produced.
+
+### Surfaces
+
+`csvx-cli export <input.csvx> <output.csv>` maps each option to a flag (`--sheet`, `--no-header`,
+`--delimiter`, `--formulas`, `--display`), writes the first sheet unless `--sheet` is given, and
+prints warnings to stderr. With `--all` and an output that is a directory it writes one `<sheet
+name>.csv` per sheet. The vectors are `tests/export-csv/`.
+

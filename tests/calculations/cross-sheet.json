@@ -96,6 +96,38 @@
 					}
 				}
 			}
+		},
+		{
+			"note": "a validation rule never changes a calculation: the failing value 9 still feeds the formula",
+			"input": {
+				"sheets": {
+					"Sheet1": {
+						"A1": {
+							"value": {
+								"type": "integer",
+								"value": 9
+							},
+							"validation": {
+								"type": "whole",
+								"operator": "between",
+								"formula1": "1",
+								"formula2": "5"
+							}
+						},
+						"B1": {
+							"formula": "=A1*2"
+						}
+					}
+				}
+			},
+			"expected": {
+				"Sheet1": {
+					"B1": {
+						"type": "integer",
+						"value": 18
+					}
+				}
+			}
 		}
 	]
 }

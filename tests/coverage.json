@@ -5,7 +5,11 @@
       "text": "ZIP entries MUST use UTF-8 names and MUST NOT contain absolute paths, `..` path segments, or duplicate names.",
       "file": "01-container.md",
       "section": "1. Container",
-      "gap": "zip-slip and duplicate-entry rejection are exercised by engine unit tests only; no vector"
+      "vectors": [
+        "tests/invalid/unsafe-entry-parent.json",
+        "tests/invalid/unsafe-entry-absolute.json"
+      ],
+      "note": "duplicate entry names are rejected by csvx-go's unit tests; csvx-ts cannot create or read a duplicate entry (README, known gap)"
     },
     "01:c78b5fec": {
       "text": "They MUST NOT be required for Core 1.0 packages.",
@@ -44,7 +48,9 @@
       "text": "Writers SHOULD use stable entry ordering and timestamps when producing reproducible archives.",
       "file": "01-container.md",
       "section": "1. Container",
-      "gap": "no vector checks that writing the same workbook twice gives identical bytes"
+      "vectors": [
+        "tests/parsing/deterministic-write.json"
+      ]
     },
     "01:b1e85b3e": {
       "text": "The package MUST NOT require a proprietary binary format or a language-specific serialization format for its tabular data.",
@@ -148,7 +154,10 @@
       "text": "Sheet names MUST be non-empty, no longer than 255 Unicode scalar values, and MUST NOT contain `:` or control characters.",
       "file": "03-sheets.md",
       "section": "3. Sheets",
-      "gap": "only duplicate sheet names are covered (edit/sheets-and-columns.json); empty, over-long, ':' and control characters have no vector"
+      "vectors": [
+        "tests/edit/sheets-and-columns.json"
+      ],
+      "note": "the empty-name case is covered for rename-sheet; the CSV import `name` option has no empty-string vector because Go treats an empty option as unset"
     },
     "03:a9e25628": {
       "text": "Sheet IDs MUST be stable and MUST match the package resource names.",
@@ -174,7 +183,9 @@
       "text": "An engine MUST NOT pad or trim a sheet on load or save, and `create` and CSV import keep the extent of the source data.",
       "file": "03-sheets.md",
       "section": "Default grid",
-      "gap": "no vector checks that load and save neither pad nor trim a sheet"
+      "vectors": [
+        "tests/parsing/no-padding.json"
+      ]
     },
     "03:685b5222": {
       "text": "Settings are part of the workbook: an editor MUST write the print settings the user chose back to the sidecar, and a reader MUST preserve ones it does not understand.",
@@ -223,7 +234,9 @@
       "text": "Implementations MUST NOT silently convert invalid values to string.",
       "file": "04-data-types.md",
       "section": "4. Data types",
-      "gap": "a declared type that does not match its text yields a VALUE error in both engines but no vector asserts it"
+      "vectors": [
+        "tests/values/resolve.json"
+      ]
     },
     "04:c0315b82": {
       "text": "A decimal's text is preserved exactly (`19.50` stays `\"19.50\"`); engines MUST NOT normalize it.",
@@ -373,7 +386,9 @@
       "text": "Number formats MUST NOT alter the underlying value.",
       "file": "08-styles.md",
       "section": "8. Styles",
-      "gap": "no vector checks that applying a number format leaves the underlying value unchanged"
+      "vectors": [
+        "tests/values/resolve.json"
+      ]
     },
     "08:450a089f": {
       "text": "Writers SHOULD emit per-edge objects.",
@@ -399,7 +414,9 @@
       "text": "It MUST NOT change calculation semantics.",
       "file": "09-validation.md",
       "section": "9. Validation",
-      "gap": "no vector checks that a validation rule leaves calculation unchanged"
+      "vectors": [
+        "tests/calculations/cross-sheet.json"
+      ]
     },
     "09:876f8c73": {
       "text": "Invalid input SHOULD be reported with a stable machine-readable code and MAY be rejected by an interactive editor.",
@@ -411,7 +428,9 @@
       "text": "A headless reader MUST preserve invalid values rather than deleting them.",
       "file": "09-validation.md",
       "section": "9. Validation",
-      "gap": "no vector checks that a headless reader keeps values that fail a rule"
+      "vectors": [
+        "tests/parsing/invalid-value-preserved.json"
+      ]
     },
     "10:db0e7f48": {
       "text": "Independent cells MUST produce the same results regardless of worker scheduling.",
@@ -420,7 +439,8 @@
       "vectors": [
         "tests/calculations/dependency-order.json",
         "tests/calculations/cross-sheet.json",
-        "tests/calculations/range-dependency.json"
+        "tests/calculations/range-dependency.json",
+        "tests/calculations/total-below-range.json"
       ]
     },
     "10:8d380792": {
@@ -451,12 +471,6 @@
         "tests/import-csv/ragged.json"
       ]
     },
-    "11:750953aa": {
-      "text": "CSV export MUST define how formulas are emitted; the Core default is to export calculated display values and report that formulas were omitted.",
-      "file": "11-import-export.md",
-      "section": "11. Import and export",
-      "gap": "CSV export is specified as a default but no engine or vector implements it"
-    },
     "11:ec74782a": {
       "text": "A plain `.csv` file MUST be convertible to a CSVX workbook by every conforming engine and by `csvx-cli`.",
       "file": "11-import-export.md",
@@ -481,7 +495,9 @@
       "text": "Input that is not valid UTF-8 MUST be rejected, not transcoded by guessing.",
       "file": "11-import-export.md",
       "section": "Options",
-      "gap": "no vector feeds invalid UTF-8 to the importer"
+      "vectors": [
+        "tests/import-csv/invalid-utf8.json"
+      ]
     },
     "11:33c59abb": {
       "text": "The CSV resource is written with LF terminators and minimal quoting; field *content*, including embedded newlines, leading/trailing whitespace, and leading zeros, MUST be preserved exactly.",
@@ -527,7 +543,11 @@
       "text": "A `name` option that is empty, longer than 255 Unicode scalar values, or contains `:` or a control character MUST be rejected (`03-sheets.md`).",
       "file": "11-import-export.md",
       "section": "Structure",
-      "gap": "no vector passes an invalid --name option (empty, over 255, ':' or control character)"
+      "vectors": [
+        "tests/import-csv/name-colon.json",
+        "tests/import-csv/name-control.json",
+        "tests/import-csv/name-too-long.json"
+      ]
     },
     "11:afb371a8": {
       "text": "A field beginning with `=`, `+`, `-`, or `@` is **not** a formula and MUST NOT gain a `formula` entry; it is a `string` (or a number if it matches a literal form, e.g.",
@@ -635,7 +655,14 @@
       "text": "`source/source.json` MUST include:",
       "file": "14-xlsx-interoperability.md",
       "section": "14.1 Embedded source",
-      "gap": "source.json's required fields have no schema or vector"
+      "schemas": [
+        "workbook.schema.json"
+      ],
+      "vectors": [
+        "tests/interop/xlsx-to-csvx-example.json",
+        "tests/interop/xlsx-named-ranges.json"
+      ],
+      "note": "the source object is in workbook.json (and mirrored to source/source.json); every XLSX import vector validates its package against the schema"
     },
     "14:b4317637": {
       "text": "The source hash MUST be the SHA-256 digest of the embedded source bytes.",
@@ -647,7 +674,7 @@
       "text": "A reader MUST verify this hash before offering exact-source recovery.",
       "file": "14-xlsx-interoperability.md",
       "section": "14.1 Embedded source",
-      "gap": "no vector or test corrupts the embedded source to prove recovery is refused"
+      "elsewhere": "csvx-go TestExportRefusesACorruptedEmbeddedSource flips one byte of an embedded source and expects the export to fail its SHA-256 check"
     },
     "14:2d7f3045": {
       "text": "When `authority` is `original` and the CSVX workbook has not been modified, an exporter SHOULD return the embedded source bytes unchanged.",
@@ -729,7 +756,9 @@
       "text": "A paper size with no CSVX equivalent is not mapped to `paperSize`; the importer MUST keep the source value on the `print` object as `xlsxPaperSize` so it round-trips.",
       "file": "14-xlsx-interoperability.md",
       "section": "14.6 Print settings mapping",
-      "gap": "no vector uses a paper size with no CSVX equivalent"
+      "vectors": [
+        "tests/interop/xlsx-paper-size.json"
+      ]
     },
     "14:885ef045": {
       "text": "An importer MUST therefore write worksheet row 1 as the CSV header row and worksheet rows 2 and later as data records.",
@@ -869,7 +898,9 @@
       "text": "The sheet MUST be recalculated afterwards (10-calculation.md).",
       "file": "15-edit-operations.md",
       "section": "Setting cells",
-      "gap": "the vectors compare the model before recalculation, so no vector shows the sheet is recalculated afterwards"
+      "vectors": [
+        "tests/edit/set-cell.json"
+      ]
     },
     "15:cc210164": {
       "text": "Properties the patch does not mention, including ones the engine does not understand, MUST be preserved (08-styles.md).",
@@ -892,6 +923,66 @@
       "vectors": [
         "tests/parsing/column-metadata-preserved.json",
         "tests/print/print-settings-preserved.json"
+      ]
+    },
+    "11:a2a92022": {
+      "text": "An engine MUST be able to export any sheet of a workbook as a CSV file, and `csvx-cli export` MUST do so when its output has a `.csv` extension.",
+      "file": "11-import-export.md",
+      "section": "11.2 CSV export",
+      "vectors": [
+        "tests/export-csv/export.json",
+        "tests/export-csv/round-trip.json"
+      ],
+      "note": "csvx-cli export is covered by its end-to-end tests (cli_e2e_export_csv_test.go) against these same vectors"
+    },
+    "11:11840d87": {
+      "text": "Engines MUST expose all five and MUST NOT add options or defaults beyond this list without amending this document.",
+      "file": "11-import-export.md",
+      "section": "Options",
+      "vectors": [
+        "tests/export-csv/export.json"
+      ]
+    },
+    "11:deb5db75": {
+      "text": "An unknown sheet MUST be rejected. |",
+      "file": "11-import-export.md",
+      "section": "Options",
+      "vectors": [
+        "tests/export-csv/export.json"
+      ]
+    },
+    "11:a8dafb71": {
+      "text": "No other field is quoted, and field content, including leading and trailing whitespace, leading zeros, and a leading `=`, `+`, `-`, or `@`, MUST be written exactly: export neither escapes nor alters text (neutralizing formula injection is the concern of whoever opens the file in a spreadsheet application).",
+      "file": "11-import-export.md",
+      "section": "Structure",
+      "vectors": [
+        "tests/export-csv/export.json"
+      ]
+    },
+    "11:da441e12": {
+      "text": "A field is the cell's CSV text as stored, except that a formula cell is written from its value, which an exporter MUST obtain by recalculating the workbook first (10-calculation.md), so a stale or missing cache never reaches the file.",
+      "file": "11-import-export.md",
+      "section": "Values",
+      "vectors": [
+        "tests/export-csv/export.json"
+      ]
+    },
+    "11:3e980b7c": {
+      "text": "CSV carries data only, so an exporter MUST report what it leaves out, as warnings with a feature and a location.",
+      "file": "11-import-export.md",
+      "section": "Warnings",
+      "vectors": [
+        "tests/export-csv/export.json",
+        "tests/interop/csvx-to-xlsx.json"
+      ]
+    },
+    "11:ff323b33": {
+      "text": "For a CSV in the canonical form above (LF, minimal quoting, rectangular, with a non-empty header), importing it with the default options and exporting the sheet with the default options MUST return the same bytes.",
+      "file": "11-import-export.md",
+      "section": "Round trip",
+      "vectors": [
+        "tests/export-csv/round-trip.json",
+        "tests/export-csv/via-xlsx.json"
       ]
     }
   },

@@ -1,0 +1,13 @@
+{
+	"id": "csv-import-name-too-long",
+	"operation": "csv-to-csvx",
+	"input": {
+		"file": "examples/csv/people.csv",
+		"options": {
+			"name": "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn"
+		}
+	},
+	"expected": {
+		"error": true
+	}
+}

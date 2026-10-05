@@ -11,5 +11,7 @@ Arithmetic uses decimal semantics. Division by zero returns `DIV0`; invalid oper
 function explicitly defines otherwise.
 
 A calculation result includes a status (`clean`, `changed`, or `error`) and updated cached values.
+A formula cell's calculated value is written to its CSV field in its literal form (04-data-types.md),
+so `true` and `false` are lower case and an error is `#` and its code.
 Implementations MUST invalidate stale caches when dependencies change and SHOULD expose the
 calculation timestamp separately from workbook content.

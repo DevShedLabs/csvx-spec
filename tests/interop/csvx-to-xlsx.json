@@ -36,13 +36,13 @@
 						"sheet": "Data",
 						"cell": "D2",
 						"type": "boolean",
-						"value": "TRUE"
+						"value": "true"
 					}
 				]
 			}
 		},
 		{
-			"note": "styles survive: number format, alignment, bold, fill",
+			"note": "styles survive: number format, alignment, bold, fill (and the text 'Total' in a decimal column is kept as text, with a warning)",
 			"input": "../../examples/styled.csvx",
 			"expected": {
 				"schemaValid": true,
@@ -66,6 +66,12 @@
 						"sheet": "Report",
 						"cell": "A3",
 						"style.fill.color": "#E8F0FE"
+					}
+				],
+				"warnings": [
+					{
+						"feature": "value",
+						"name": "Report!A3"
 					}
 				]
 			}

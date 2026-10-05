@@ -1,0 +1,43 @@
+{
+	"id": "calculation-total-below-range",
+	"operation": "recalculate",
+	"input": {
+		"cells": {
+			"A2": {
+				"formula": "=B2*2"
+			},
+			"A3": {
+				"formula": "=B3*2"
+			},
+			"A4": {
+				"formula": "=SUM(A2:A3)"
+			},
+			"B2": {
+				"value": {
+					"type": "integer",
+					"value": 1
+				}
+			},
+			"B3": {
+				"value": {
+					"type": "integer",
+					"value": 2
+				}
+			}
+		}
+	},
+	"expected": {
+		"A2": {
+			"type": "integer",
+			"value": 2
+		},
+		"A3": {
+			"type": "integer",
+			"value": 4
+		},
+		"A4": {
+			"type": "integer",
+			"value": 6
+		}
+	}
+}

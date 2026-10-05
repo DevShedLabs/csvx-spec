@@ -1,0 +1,18 @@
+{
+	"id": "invalid-unsafe-entry-absolute",
+	"operation": "validate-package",
+	"input": {
+		"files": [
+			"manifest.json",
+			"/etc/evil.txt"
+		]
+	},
+	"expected": {
+		"valid": false,
+		"errors": [
+			{
+				"code": "UNSAFE_ENTRY"
+			}
+		]
+	}
+}

@@ -1,0 +1,14 @@
+{
+	"id": "deterministic-write",
+	"operation": "write-twice",
+	"input": {
+		"packages": [
+			"examples/styled.csvx",
+			"examples/formulas.csvx",
+			"examples/multi-sheet.csvx"
+		]
+	},
+	"expected": {
+		"identical": true
+	}
+}

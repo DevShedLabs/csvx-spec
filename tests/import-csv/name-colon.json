@@ -1,0 +1,13 @@
+{
+	"id": "csv-import-name-colon",
+	"operation": "csv-to-csvx",
+	"input": {
+		"file": "examples/csv/people.csv",
+		"options": {
+			"name": "a:b"
+		}
+	},
+	"expected": {
+		"error": true
+	}
+}

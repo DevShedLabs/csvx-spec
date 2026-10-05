@@ -693,6 +693,60 @@
 			"expected": {
 				"sourceAuthority": "csvx"
 			}
+		},
+		{
+			"note": "set-cell with recalculation on: the formula's cached value and CSV text are filled in",
+			"operation": "set-cell",
+			"input": {
+				"recalculate": true,
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								}
+							],
+							"records": [
+								[
+									"5",
+									""
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"coordinate": "B2",
+					"text": "=A2*2"
+				}
+			},
+			"expected": {
+				"records": [
+					[
+						"5",
+						"10"
+					]
+				],
+				"cells": {
+					"B2": {
+						"formula": "=A2*2",
+						"cached": {
+							"type": "integer",
+							"value": 10
+						}
+					}
+				}
+			}
 		}
 	]
 }

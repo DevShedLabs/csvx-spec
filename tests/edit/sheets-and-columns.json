@@ -522,6 +522,198 @@
 				"idUnique": true,
 				"nameUnique": true
 			}
+		},
+		{
+			"note": "an empty sheet name is invalid",
+			"operation": "rename-sheet",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "X"
+								},
+								{
+									"id": "B",
+									"name": "Y"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"2"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales",
+					"name": ""
+				}
+			},
+			"expected": {
+				"valid": false
+			}
+		},
+		{
+			"note": "a sheet name with ':' is invalid",
+			"operation": "rename-sheet",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "X"
+								},
+								{
+									"id": "B",
+									"name": "Y"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"2"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales",
+					"name": "Q1:Q2"
+				}
+			},
+			"expected": {
+				"valid": false
+			}
+		},
+		{
+			"note": "a sheet name over 255 Unicode scalar values is invalid",
+			"operation": "rename-sheet",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "X"
+								},
+								{
+									"id": "B",
+									"name": "Y"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"2"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales",
+					"name": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+				}
+			},
+			"expected": {
+				"valid": false
+			}
+		},
+		{
+			"note": "a sheet name with a control character is invalid",
+			"operation": "rename-sheet",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "X"
+								},
+								{
+									"id": "B",
+									"name": "Y"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"2"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales",
+					"name": "bad\u0001name"
+				}
+			},
+			"expected": {
+				"valid": false
+			}
+		},
+		{
+			"note": "a sheet name of exactly 255 scalar values is valid",
+			"operation": "rename-sheet",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "X"
+								},
+								{
+									"id": "B",
+									"name": "Y"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"2"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales",
+					"name": "ééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééé"
+				}
+			},
+			"expected": {
+				"names": [
+					"ééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééé"
+				]
+			}
 		}
 	]
 }

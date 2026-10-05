@@ -1,0 +1,18 @@
+{
+	"id": "invalid-unsafe-entry-parent",
+	"operation": "validate-package",
+	"input": {
+		"files": [
+			"manifest.json",
+			"../evil.txt"
+		]
+	},
+	"expected": {
+		"valid": false,
+		"errors": [
+			{
+				"code": "UNSAFE_ENTRY"
+			}
+		]
+	}
+}

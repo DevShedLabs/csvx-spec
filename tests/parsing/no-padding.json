@@ -1,0 +1,74 @@
+{
+	"id": "sheet-extent-preserved",
+	"operation": "round-trip",
+	"input": {
+		"sheet": {
+			"columns": [
+				{
+					"id": "A",
+					"name": "A"
+				},
+				{
+					"id": "B",
+					"name": "B"
+				},
+				{
+					"id": "C",
+					"name": "C"
+				}
+			],
+			"records": [
+				[
+					"1",
+					"",
+					""
+				],
+				[
+					"",
+					"",
+					""
+				],
+				[
+					"",
+					"",
+					""
+				]
+			]
+		}
+	},
+	"expected": {
+		"sheet": {
+			"columns": [
+				{
+					"id": "A",
+					"name": "A"
+				},
+				{
+					"id": "B",
+					"name": "B"
+				},
+				{
+					"id": "C",
+					"name": "C"
+				}
+			],
+			"records": [
+				[
+					"1",
+					"",
+					""
+				],
+				[
+					"",
+					"",
+					""
+				],
+				[
+					"",
+					"",
+					""
+				]
+			]
+		}
+	}
+}

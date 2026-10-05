@@ -1,0 +1,22 @@
+{
+	"id": "xlsx-to-csvx-paper-size",
+	"operation": "xlsx-to-csvx",
+	"input": "../../examples/paper-size.xlsx",
+	"expected": {
+		"schemaValid": true,
+		"samples": [
+			{
+				"sheet": "Fit",
+				"print.xlsxPaperSize": 7
+			},
+			{
+				"sheet": "Fit",
+				"print.paperSize": null
+			},
+			{
+				"sheet": "Scaled",
+				"print.paperSize": "legal"
+			}
+		]
+	}
+}

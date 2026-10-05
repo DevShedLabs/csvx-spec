@@ -1,0 +1,72 @@
+{
+	"id": "export-csv-via-xlsx",
+	"operation": "csv-via-xlsx",
+	"cases": [
+		{
+			"note": "strings, decimals, a date and a boolean",
+			"input": {
+				"package": "examples/typed-data.csvx",
+				"options": {}
+			},
+			"expected": {
+				"identical": true
+			}
+		},
+		{
+			"note": "formula cells as their calculated values",
+			"input": {
+				"package": "examples/formulas.csvx",
+				"options": {}
+			},
+			"expected": {
+				"identical": true
+			}
+		},
+		{
+			"note": "formula text",
+			"input": {
+				"package": "examples/formulas.csvx",
+				"options": {
+					"formulas": "text"
+				}
+			},
+			"expected": {
+				"identical": true
+			}
+		},
+		{
+			"note": "a number format applied on display",
+			"input": {
+				"package": "examples/styled.csvx",
+				"options": {
+					"display": true
+				}
+			},
+			"expected": {
+				"identical": true
+			}
+		},
+		{
+			"note": "a cross-sheet formula on the second sheet",
+			"input": {
+				"package": "examples/multi-sheet.csvx",
+				"options": {
+					"sheet": "Summary"
+				}
+			},
+			"expected": {
+				"identical": true
+			}
+		},
+		{
+			"note": "a sheet with print settings, widths and a text table",
+			"input": {
+				"package": "examples/print.csvx",
+				"options": {}
+			},
+			"expected": {
+				"identical": true
+			}
+		}
+	]
+}

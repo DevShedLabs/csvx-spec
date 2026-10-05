@@ -17,9 +17,23 @@
       "go": "edit_vectors_test.go",
       "ts": "src/__tests__/edit-conformance.test.ts"
     },
+    "csv-round-trip": {
+      "go": "csv_export_vectors_test.go",
+      "ts": "src/__tests__/csv-export.test.ts"
+    },
     "csv-to-csvx": {
       "go": "csv_import_vectors_test.go",
       "ts": "src/__tests__/csv-import.test.ts"
+    },
+    "csv-via-xlsx": {
+      "go": "csv_export_vectors_test.go",
+      "ts": {
+        "unsupported": "csvx-ts has no XLSX reader or writer; csvx-go runs the chain"
+      }
+    },
+    "csvx-to-csv": {
+      "go": "csv_export_vectors_test.go",
+      "ts": "src/__tests__/csv-export.test.ts"
     },
     "csvx-to-xlsx": {
       "go": "xlsx_export_test.go",
@@ -79,6 +93,10 @@
       "go": "edit_vectors_test.go",
       "ts": "src/__tests__/edit-conformance.test.ts"
     },
+    "resolve-cell-value": {
+      "go": "values_vectors_test.go",
+      "ts": "src/__tests__/values.test.ts"
+    },
     "round-trip": {
       "go": "package_vectors_test.go",
       "ts": "src/__tests__/package-conformance.test.ts"
@@ -96,6 +114,10 @@
       "ts": "src/__tests__/edit-conformance.test.ts"
     },
     "validate-package": {
+      "go": "package_vectors_test.go",
+      "ts": "src/__tests__/package-conformance.test.ts"
+    },
+    "write-twice": {
       "go": "package_vectors_test.go",
       "ts": "src/__tests__/package-conformance.test.ts"
     },

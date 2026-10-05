@@ -1,0 +1,62 @@
+{
+	"id": "invalid-value-preserved",
+	"operation": "round-trip",
+	"input": {
+		"sheet": {
+			"columns": [
+				{
+					"id": "A",
+					"name": "Score",
+					"type": "integer"
+				}
+			],
+			"records": [
+				[
+					"9"
+				],
+				[
+					"abc"
+				]
+			],
+			"cells": {
+				"A2": {
+					"validation": {
+						"type": "whole",
+						"operator": "between",
+						"formula1": "1",
+						"formula2": "5"
+					}
+				}
+			}
+		}
+	},
+	"expected": {
+		"sheet": {
+			"columns": [
+				{
+					"id": "A",
+					"name": "Score",
+					"type": "integer"
+				}
+			],
+			"records": [
+				[
+					"9"
+				],
+				[
+					"abc"
+				]
+			],
+			"cells": {
+				"A2": {
+					"validation": {
+						"type": "whole",
+						"operator": "between",
+						"formula1": "1",
+						"formula2": "5"
+					}
+				}
+			}
+		}
+	}
+}

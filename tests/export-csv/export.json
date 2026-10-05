@@ -1,0 +1,559 @@
+{
+	"id": "export-csv",
+	"operation": "csvx-to-csv",
+	"cases": [
+		{
+			"note": "a plain sheet exports exactly as stored, with the header",
+			"input": {
+				"package": "examples/typed-data.csvx",
+				"options": {}
+			},
+			"expected": {
+				"csv": "Name,Amount,Date,Active\nAda,19.95,2026-09-22,true\n",
+				"warnings": []
+			}
+		},
+		{
+			"note": "header false omits the header row",
+			"input": {
+				"package": "examples/typed-data.csvx",
+				"options": {
+					"header": false
+				}
+			},
+			"expected": {
+				"csv": "Ada,19.95,2026-09-22,true\n",
+				"warnings": []
+			}
+		},
+		{
+			"note": "a tab delimiter",
+			"input": {
+				"package": "examples/typed-data.csvx",
+				"options": {
+					"delimiter": "\t"
+				}
+			},
+			"expected": {
+				"csv": "Name\tAmount\tDate\tActive\nAda\t19.95\t2026-09-22\ttrue\n",
+				"warnings": []
+			}
+		},
+		{
+			"note": "formulas export their calculated values, with a warning that formulas were omitted",
+			"input": {
+				"package": "examples/formulas.csvx",
+				"options": {}
+			},
+			"expected": {
+				"csv": "Quantity,Price,Total\n2,4.50,9.00\n3,2.00,6.00\n,,15.00\n",
+				"warnings": [
+					{
+						"feature": "formula",
+						"location": "Calculation"
+					}
+				]
+			}
+		},
+		{
+			"note": "formulas: text writes the formula text",
+			"input": {
+				"package": "examples/formulas.csvx",
+				"options": {
+					"formulas": "text"
+				}
+			},
+			"expected": {
+				"csv": "Quantity,Price,Total\n2,4.50,=A2*B2\n3,2.00,=A3*B3\n,,=SUM(C2:C3)\n",
+				"warnings": []
+			}
+		},
+		{
+			"note": "styles are not written, and the export says so",
+			"input": {
+				"package": "examples/styled.csvx",
+				"options": {}
+			},
+			"expected": {
+				"csv": "Revenue\n1250.00\nTotal\n",
+				"warnings": [
+					{
+						"feature": "metadata",
+						"location": "Report"
+					}
+				]
+			}
+		},
+		{
+			"note": "display writes a number as its number format shows it (and the comma in it forces quoting)",
+			"input": {
+				"package": "examples/styled.csvx",
+				"options": {
+					"display": true
+				}
+			},
+			"expected": {
+				"csv": "Revenue\n\"$1,250.00\"\nTotal\n",
+				"warnings": [
+					{
+						"feature": "metadata",
+						"location": "Report"
+					}
+				]
+			}
+		},
+		{
+			"note": "sheet selects by name; a cross-sheet formula is exported as its value",
+			"input": {
+				"package": "examples/multi-sheet.csvx",
+				"options": {
+					"sheet": "Summary"
+				}
+			},
+			"expected": {
+				"csv": "Total\n22.50\n",
+				"warnings": [
+					{
+						"feature": "formula",
+						"location": "Summary"
+					}
+				]
+			}
+		},
+		{
+			"note": "the first sheet is the default",
+			"input": {
+				"package": "examples/multi-sheet.csvx",
+				"options": {}
+			},
+			"expected": {
+				"csv": "Amount\n10.00\n12.50\n",
+				"warnings": []
+			}
+		},
+		{
+			"note": "quoting is minimal: only a delimiter, quote, CR or LF forces it; whitespace, zeros and =+-@ are untouched",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Text"
+								}
+							],
+							"records": [
+								[
+									"a,b"
+								],
+								[
+									"say \"hi\""
+								],
+								[
+									"two\nlines"
+								],
+								[
+									"  padded  "
+								],
+								[
+									"007"
+								],
+								[
+									"=SUM(A1)"
+								],
+								[
+									"+5"
+								],
+								[
+									"-3"
+								],
+								[
+									"@user"
+								],
+								[
+									""
+								],
+								[
+									"café ☕"
+								],
+								[
+									"a;b"
+								],
+								[
+									"cr\rhere"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"options": {}
+			},
+			"expected": {
+				"csv": "Text\n\"a,b\"\n\"say \"\"hi\"\"\"\n\"two\nlines\"\n  padded  \n007\n=SUM(A1)\n+5\n-3\n@user\n\ncafé ☕\na;b\n\"cr\rhere\"\n",
+				"warnings": []
+			}
+		},
+		{
+			"note": "with a tab delimiter a comma is plain and a tab is quoted",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								}
+							],
+							"records": [
+								[
+									"x,y",
+									"p\tq"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"options": {
+					"delimiter": "\t"
+				}
+			},
+			"expected": {
+				"csv": "A\tB\nx,y\t\"p\tq\"\n",
+				"warnings": []
+			}
+		},
+		{
+			"note": "a delimiter inside the header is quoted too",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "a,b"
+								},
+								{
+									"id": "B",
+									"name": "c"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"2"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"options": {}
+			},
+			"expected": {
+				"csv": "\"a,b\",c\n1,2\n",
+				"warnings": []
+			}
+		},
+		{
+			"note": "formula values are written in literal form: lower-case booleans, an error as #CODE, integers",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								},
+								{
+									"id": "C",
+									"name": "C"
+								}
+							],
+							"records": [
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {
+								"A2": {
+									"formula": "=1/0"
+								},
+								"B2": {
+									"formula": "=1=1"
+								},
+								"C2": {
+									"formula": "=SUM(1,2)"
+								}
+							}
+						}
+					]
+				},
+				"options": {}
+			},
+			"expected": {
+				"csv": "A,B,C\n#DIV0,true,3\n",
+				"warnings": [
+					{
+						"feature": "formula",
+						"location": "Sheet1"
+					}
+				]
+			}
+		},
+		{
+			"note": "an empty sheet exports just its header",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								}
+							],
+							"records": [],
+							"cells": {}
+						}
+					]
+				},
+				"options": {}
+			},
+			"expected": {
+				"csv": "A,B\n",
+				"warnings": []
+			}
+		},
+		{
+			"note": "an empty sheet with header false exports nothing",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								}
+							],
+							"records": [],
+							"cells": {}
+						}
+					]
+				},
+				"options": {
+					"header": false
+				}
+			},
+			"expected": {
+				"csv": "",
+				"warnings": []
+			}
+		},
+		{
+			"note": "no padding or trimming: empty records and trailing empty columns are kept",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								},
+								{
+									"id": "C",
+									"name": "C"
+								}
+							],
+							"records": [
+								[
+									"1",
+									"",
+									""
+								],
+								[
+									"",
+									"",
+									""
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"options": {}
+			},
+			"expected": {
+				"csv": "A,B,C\n1,,\n,,\n",
+				"warnings": []
+			}
+		},
+		{
+			"note": "an unknown sheet is rejected",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								}
+							],
+							"records": [
+								[
+									"1"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"options": {
+					"sheet": "Nope"
+				}
+			},
+			"expected": {
+				"error": true
+			}
+		},
+		{
+			"note": "a double quote is not a valid delimiter",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								}
+							],
+							"records": [
+								[
+									"1"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"options": {
+					"delimiter": "\""
+				}
+			},
+			"expected": {
+				"error": true
+			}
+		},
+		{
+			"note": "a multi-character delimiter is rejected",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								}
+							],
+							"records": [
+								[
+									"1"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"options": {
+					"delimiter": ";;"
+				}
+			},
+			"expected": {
+				"error": true
+			}
+		},
+		{
+			"note": "formulas must be values or text",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								}
+							],
+							"records": [
+								[
+									"1"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"options": {
+					"formulas": "both"
+				}
+			},
+			"expected": {
+				"error": true
+			}
+		}
+	]
+}
