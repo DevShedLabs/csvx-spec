@@ -499,38 +499,6 @@
         "tests/import-csv/invalid-utf8.json"
       ]
     },
-    "11:33c59abb": {
-      "text": "The CSV resource is written with LF terminators and minimal quoting; field *content*, including embedded newlines, leading/trailing whitespace, and leading zeros, MUST be preserved exactly.",
-      "file": "11-import-export.md",
-      "section": "Structure",
-      "vectors": [
-        "tests/import-csv/default-text.json"
-      ]
-    },
-    "11:78a810e4": {
-      "text": "When `header` is `false` the importer MUST synthesize a header row of `Column 1`, `Column 2`, … (the spreadsheet-neutral \"Column N\") and insert it as row 1, so the source's first record becomes row 2; it MUST report a warning saying data rows were shifted by one.",
-      "file": "11-import-export.md",
-      "section": "Structure",
-      "vectors": [
-        "tests/import-csv/no-header.json"
-      ]
-    },
-    "11:4599303a": {
-      "text": "An empty header field is likewise named `Column N`, since a column name MUST be non-empty.",
-      "file": "11-import-export.md",
-      "section": "Structure",
-      "vectors": [
-        "tests/import-csv/empty-header-blank-line.json"
-      ]
-    },
-    "11:5f2e4bd4": {
-      "text": "Each of these MUST be reported as a warning with the 1-based source record number (the header, when present, is record 1; for an empty header field the location is `record 1`).",
-      "file": "11-import-export.md",
-      "section": "Structure",
-      "vectors": [
-        "tests/import-csv/ragged.json"
-      ]
-    },
     "11:b87ebe49": {
       "text": "Input with no records at all (zero bytes, or only a byte-order mark and blank lines) MUST be rejected: a sheet needs a header row.",
       "file": "11-import-export.md",
@@ -768,12 +736,6 @@
         "tests/interop/xlsx-to-csvx-example.json"
       ]
     },
-    "14:5c52e5f4": {
-      "text": "Each header cell's text becomes that column's `name`; a header cell that is empty is named after its column letter (`A`, `B`, …) because a CSV header cell MUST NOT be empty.",
-      "file": "14-xlsx-interoperability.md",
-      "section": "14.7 Worksheet rows and the CSV header",
-      "elsewhere": "csvx-go xlsx_header_test.go covers empty header cells named after their column letter"
-    },
     "14:4c71cdd6": {
       "text": "An importer MUST map a workbook-scoped XLSX defined name (a `definedName` with no `localSheetId`) onto `namedRanges` (02-workbook.md) when its formula is a single cell reference, a single range, or a constant (number, string, or boolean), and its name satisfies the rules in 02-workbook.md.",
       "file": "14-xlsx-interoperability.md",
@@ -886,14 +848,6 @@
         "tests/edit/sheets-and-columns.json"
       ]
     },
-    "15:0f3f890e": {
-      "text": "It MUST be non-empty, because a column name MUST be non-empty; an empty text makes the operation invalid.",
-      "file": "15-edit-operations.md",
-      "section": "Setting cells",
-      "vectors": [
-        "tests/edit/set-cell.json"
-      ]
-    },
     "15:dc157aea": {
       "text": "The sheet MUST be recalculated afterwards (10-calculation.md).",
       "file": "15-edit-operations.md",
@@ -983,6 +937,44 @@
       "vectors": [
         "tests/export-csv/round-trip.json",
         "tests/export-csv/via-xlsx.json"
+      ]
+    },
+    "03:81c0262e": {
+      "text": "A reader MUST NOT require names to be non-empty, and a writer MUST NOT invent a name for a column that has none; an editor shows its own placeholder for a blank name, and the file keeps the truth.",
+      "file": "03-sheets.md",
+      "section": "3. Sheets",
+      "vectors": [
+        "tests/import-csv/empty-header-blank-line.json",
+        "tests/import-csv/no-header.json",
+        "tests/edit/sheets-and-columns.json",
+        "tests/edit/set-cell.json",
+        "tests/export-csv/export.json"
+      ]
+    },
+    "11:4ba69d36": {
+      "text": "The CSV resource is written with LF terminators and minimal quoting, except that a record consisting of exactly one empty field is written as `\"\"` (a bare empty line is not a record: readers skip blank lines, and a `\"\"` line is read as that one empty field); field *content*, including embedded newlines, leading/trailing whitespace, and leading zeros, MUST be preserved exactly.",
+      "file": "11-import-export.md",
+      "section": "Structure",
+      "vectors": [
+        "tests/import-csv/default-text.json",
+        "tests/import-csv/single-empty-field.json",
+        "tests/export-csv/export.json"
+      ]
+    },
+    "11:e4a31ba6": {
+      "text": "When `header` is `false` the importer MUST synthesize a header row in which every column has the empty name, and insert it as row 1, so the source's first record becomes row 2; it MUST report a warning saying data rows were shifted by one.",
+      "file": "11-import-export.md",
+      "section": "Structure",
+      "vectors": [
+        "tests/import-csv/no-header.json"
+      ]
+    },
+    "11:7b63516c": {
+      "text": "Each of these MUST be reported as a warning with the 1-based source record number (the header, when present, is record 1).",
+      "file": "11-import-export.md",
+      "section": "Structure",
+      "vectors": [
+        "tests/import-csv/ragged.json"
       ]
     }
   },

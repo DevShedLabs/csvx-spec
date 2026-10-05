@@ -1,0 +1,19 @@
+{
+	"id": "csv-import-single-empty-field",
+	"operation": "csv-to-csvx",
+	"input": {
+		"file": "examples/csv/single-empty-field.csv",
+		"options": {}
+	},
+	"expected": {
+		"schemaValid": true,
+		"columns": [
+			{
+				"id": "A",
+				"name": ""
+			}
+		],
+		"csv": "\"\"\n\"\"\nx\n",
+		"warnings": []
+	}
+}

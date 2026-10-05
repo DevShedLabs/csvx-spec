@@ -390,7 +390,7 @@
 			}
 		},
 		{
-			"note": "empty header text is invalid",
+			"note": "empty header text is valid: the column has the empty name",
 			"operation": "set-cell",
 			"input": {
 				"workbook": {
@@ -430,11 +430,21 @@
 				}
 			},
 			"expected": {
-				"valid": false
+				"columns": [
+					{
+						"id": "A",
+						"name": "Qty",
+						"type": "integer"
+					},
+					{
+						"id": "B",
+						"name": ""
+					}
+				]
 			}
 		},
 		{
-			"note": "a cell beyond the extent extends the sheet; new columns are named Column N",
+			"note": "a cell beyond the extent extends the sheet; new columns have the empty name",
 			"operation": "set-cell",
 			"input": {
 				"workbook": {
@@ -486,11 +496,11 @@
 					},
 					{
 						"id": "C",
-						"name": "Column 3"
+						"name": ""
 					},
 					{
 						"id": "D",
-						"name": "Column 4"
+						"name": ""
 					}
 				],
 				"records": [
@@ -583,7 +593,7 @@
 			}
 		},
 		{
-			"note": "paste with an invalid element (empty header) applies nothing",
+			"note": "paste may write an empty header name",
 			"operation": "paste",
 			"input": {
 				"workbook": {
@@ -628,7 +638,17 @@
 				}
 			},
 			"expected": {
-				"valid": false
+				"columns": [
+					{
+						"id": "A",
+						"name": "Q",
+						"type": "integer"
+					},
+					{
+						"id": "B",
+						"name": ""
+					}
+				]
 			}
 		},
 		{

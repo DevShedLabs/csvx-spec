@@ -193,7 +193,7 @@
 				"options": {}
 			},
 			"expected": {
-				"csv": "Text\n\"a,b\"\n\"say \"\"hi\"\"\"\n\"two\nlines\"\n  padded  \n007\n=SUM(A1)\n+5\n-3\n@user\n\ncafé ☕\na;b\n\"cr\rhere\"\n",
+				"csv": "Text\n\"a,b\"\n\"say \"\"hi\"\"\"\n\"two\nlines\"\n  padded  \n007\n=SUM(A1)\n+5\n-3\n@user\n\"\"\ncafé ☕\na;b\n\"cr\rhere\"\n",
 				"warnings": []
 			}
 		},
@@ -553,6 +553,111 @@
 			},
 			"expected": {
 				"error": true
+			}
+		},
+		{
+			"note": "a blank header name is exported as a blank field, not a placeholder",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": ""
+								},
+								{
+									"id": "B",
+									"name": "Amount"
+								},
+								{
+									"id": "C",
+									"name": ""
+								}
+							],
+							"records": [
+								[
+									"a",
+									"1",
+									"b"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"options": {}
+			},
+			"expected": {
+				"csv": ",Amount,\na,1,b\n",
+				"warnings": []
+			}
+		},
+		{
+			"note": "a record of exactly one empty field is written as \"\" so it is not mistaken for a blank line",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": ""
+								}
+							],
+							"records": [
+								[
+									""
+								],
+								[
+									"x"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"options": {}
+			},
+			"expected": {
+				"csv": "\"\"\n\"\"\nx\n",
+				"warnings": []
+			}
+		},
+		{
+			"note": "with a tab delimiter the one-empty-field rule applies too",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": ""
+								}
+							],
+							"records": [
+								[
+									"x"
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"options": {
+					"delimiter": "\t"
+				}
+			},
+			"expected": {
+				"csv": "\"\"\nx\n",
+				"warnings": []
 			}
 		}
 	]

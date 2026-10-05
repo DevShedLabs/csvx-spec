@@ -42,9 +42,8 @@ Each remaining column's `id` is reassigned to its new position's letter, in orde
 fixes `id` to the letter). The rest of a column object (`name`, `type`, `width`, unknown fields)
 travels with the column. Every record, and the header row, gains or loses the matching fields.
 
-An inserted column is named `Column N`, where N is its 1-based position at the moment of creation.
-The name is stored like any other name: it is not renumbered by later edits, because a column
-name is a header cell's text, not a derived value. It has no `type`, and its fields are empty.
+An inserted column has the empty name, no `type`, and empty fields: an engine invents no placeholder
+text for the user to filter out (03-sheets.md).
 
 Cell metadata (including row-1 header metadata) follows its column and is discarded with a deleted
 column. Formulas and print settings are rewritten as below.
@@ -90,8 +89,8 @@ properties are preserved untouched.
 ## Sheets
 
 `add-sheet` appends a sheet with a workbook-unique `id` and name, and the metadata sidecar and CSV
-that go with it. A new sheet has one column, `Column 1` (id `A`), and no data rows: its CSV is the
-single header line. Editors display the default grid of 03-sheets.md around it; nothing is padded
+that go with it. A new sheet has one column with the empty name (id `A`) and no data rows: its CSV is the
+single header line, `""`. Editors display the default grid of 03-sheets.md around it; nothing is padded
 into the file.
 
 `rename-sheet(sheet, name)` changes the sheet's `name` only. The name MUST satisfy 03-sheets.md and
@@ -106,9 +105,9 @@ Every reference qualified with the deleted sheet's name, in the same places, is 
 
 `set-cell(sheet, coordinate, text)` replaces a cell's content with what the user typed.
 
-- **Header row** (row 1): the text becomes the column's `name`. It MUST be non-empty, because a
-  column name MUST be non-empty; an empty text makes the operation invalid. Header style metadata is
-  kept; a stale `formula`, `type` or `cached` on the header cell is dropped as for any content edit.
+- **Header row** (row 1): the text becomes the column's `name`, which MAY be empty (03-sheets.md).
+  Header style metadata is kept; a stale `formula`, `type` or `cached` on the header cell is dropped
+  as for any content edit.
 - **Formula** (text beginning with `=`): the cell's metadata `formula` is set to the text, and any
   `type` and `cached` describing the old content are dropped. The cell's CSV field is left empty;
   the formula text never goes into the CSV. Recalculation then sets `cached`, and MAY write the
@@ -121,7 +120,7 @@ Every reference qualified with the deleted sheet's name, in the same places, is 
 
 `style` and `validation` are never changed by `set-cell`. A metadata entry left empty is removed.
 The sheet MUST be recalculated afterwards (10-calculation.md). A coordinate beyond the sheet's
-current extent extends the sheet with blank rows, and with columns named `Column N`, as needed.
+current extent extends the sheet with blank rows, and with columns that have the empty name, as needed.
 
 `paste(sheet, anchor, rows, from?)` applies a rectangular array of texts, the top-left at `anchor`,
 as one `set-cell` per element, with one recalculation at the end. It is atomic: if any element

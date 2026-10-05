@@ -35,21 +35,21 @@ resource is `sheets/<id>.csv`; its metadata sidecar is written only when it woul
 (declared column types), and is `sheets/<id>.meta.json`.
 
 Fields are parsed with RFC 4180 rules, accepting both CRLF and LF record terminators. The CSV
-resource is written with LF terminators and minimal quoting; field *content*, including embedded
+resource is written with LF terminators and minimal quoting, except that a record consisting of
+exactly one empty field is written as `""` (a bare empty line is not a record: readers skip blank
+lines, and a `""` line is read as that one empty field); field *content*, including embedded
 newlines, leading/trailing whitespace, and leading zeros, MUST be preserved exactly.
 
 Per `03-sheets.md` the header is row 1 and holds the column names. Each column gets `id` `A`, `B`,
 … in order, and `name` equal to its header text. When `header` is `false` the importer MUST
-synthesize a header row of `Column 1`, `Column 2`, … (the spreadsheet-neutral "Column N") and insert
-it as row 1, so the source's first record becomes row 2; it MUST report a warning saying data rows
-were shifted by one.
+synthesize a header row in which every column has the empty name, and insert it as row 1, so the
+source's first record becomes row 2; it MUST report a warning saying data rows were shifted by one.
 
 Records shorter than the header are padded with empty fields; records longer than the header
-extend the sheet with extra columns named `Column N` (N the 1-based column number). An empty header
-field is likewise named `Column N`, since a column name MUST be non-empty. Each of these MUST be
-reported as a warning with the 1-based source record number (the header, when present, is record 1;
-for an empty header field the location is `record 1`). Duplicate header texts are kept as-is
-(column ids, not names, are the identity).
+extend the sheet with extra columns that have the empty name. Each of these MUST be reported as a
+warning with the 1-based source record number (the header, when present, is record 1). An empty
+header field is not an error and is not reported: the column simply has the empty name (03-sheets.md).
+Duplicate header texts are kept as-is (column ids, not names, are the identity).
 
 Input with no records at all (zero bytes, or only a byte-order mark and blank lines) MUST be
 rejected: a sheet needs a header row. Wholly empty lines between records are skipped and are not
@@ -128,7 +128,8 @@ this document.
 
 The file is UTF-8 with no byte-order mark. Every record, including the last, ends with LF. A field is
 quoted if and only if it contains the delimiter, a double quote, CR, or LF; a quoted field doubles
-its quotes. No other field is quoted, and field content, including leading and trailing whitespace,
+its quotes. The one exception is a record of exactly one empty field, written as `""` so that it is
+not mistaken for a blank line. No other field is quoted, and field content, including leading and trailing whitespace,
 leading zeros, and a leading `=`, `+`, `-`, or `@`, MUST be written exactly: export neither escapes nor
 alters text (neutralizing formula injection is the concern of whoever opens the file in a
 spreadsheet application). The same rule is how every CSV resource in a package is written (11.1).

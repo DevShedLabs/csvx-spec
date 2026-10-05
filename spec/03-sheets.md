@@ -7,6 +7,11 @@ print settings — so the Nth line of the CSV file is always row N. The header r
 the sheet: it can carry style and other cell metadata under row-1 coordinates (`A1`, `B1`, …), and
 a header cell's text is the column's `name`.
 
+A header cell MAY be empty: a column's `name` is its header cell's text, and the empty string is a
+valid name. A reader MUST NOT require names to be non-empty, and a writer MUST NOT invent a name for a
+column that has none; an editor shows its own placeholder for a blank name, and the file keeps the
+truth. Names need not be unique (column `id`s are the identity).
+
 The sidecar's `columns[].name`, when present, repeats that header text and MUST equal it. A reader
 MUST reject a sheet where they disagree, with the diagnostic code `COLUMN_NAME_MISMATCH`: silently
 picking one would hide an edit made to the other. A writer derives both from the same value, so an

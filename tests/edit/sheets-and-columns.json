@@ -66,7 +66,7 @@
 			}
 		},
 		{
-			"note": "inserted column is named Column N by its position at creation; ids follow position",
+			"note": "an inserted column has the empty name; ids follow position",
 			"operation": "insert-columns",
 			"input": {
 				"workbook": {
@@ -125,7 +125,7 @@
 					"sheet-1": [
 						{
 							"id": "A",
-							"name": "Column 1"
+							"name": ""
 						},
 						{
 							"id": "B",
@@ -488,7 +488,7 @@
 			}
 		},
 		{
-			"note": "add-sheet: one column named Column 1, no data rows, unique id and name",
+			"note": "add-sheet: one column with the empty name, no data rows, unique id and name",
 			"operation": "add-sheet",
 			"input": {
 				"workbook": {
@@ -514,7 +514,7 @@
 					"columns": [
 						{
 							"id": "A",
-							"name": "Column 1"
+							"name": ""
 						}
 					],
 					"records": []
