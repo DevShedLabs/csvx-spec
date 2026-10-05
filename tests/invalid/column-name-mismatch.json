@@ -1,0 +1,28 @@
+{
+	"id": "invalid-column-name-mismatch",
+	"note": "a sidecar name that differs from the header text is a package error",
+	"operation": "load-sheet",
+	"input": {
+		"csv": "Name,Amount\nAda,1\n",
+		"metadata": {
+			"columns": [
+				{
+					"id": "A",
+					"name": "Name"
+				},
+				{
+					"id": "B",
+					"name": "Total"
+				}
+			]
+		}
+	},
+	"expected": {
+		"valid": false,
+		"errors": [
+			{
+				"code": "COLUMN_NAME_MISMATCH"
+			}
+		]
+	}
+}

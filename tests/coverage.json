@@ -1,0 +1,902 @@
+{
+  "description": "How each normative statement in spec/ (a sentence with MUST or SHOULD) is tested. Ids are chapter:hash-of-sentence; check with `node tools/coverage.mjs`. Exactly one of vectors/schemas/examples (covered), elsewhere (covered by named engine or CLI tests), untestable, or gap (known, untested) per entry.",
+  "requirements": {
+    "01:8ff5af41": {
+      "text": "ZIP entries MUST use UTF-8 names and MUST NOT contain absolute paths, `..` path segments, or duplicate names.",
+      "file": "01-container.md",
+      "section": "1. Container",
+      "gap": "zip-slip and duplicate-entry rejection are exercised by engine unit tests only; no vector"
+    },
+    "01:c78b5fec": {
+      "text": "They MUST NOT be required for Core 1.0 packages.",
+      "file": "01-container.md",
+      "section": "1. Container",
+      "vectors": [
+        "tests/parsing/minimal-package.json"
+      ]
+    },
+    "01:8161243d": {
+      "text": "A sheet CSV MUST be valid UTF-8 RFC 4180-compatible CSV and MUST contain a header row.",
+      "file": "01-container.md",
+      "section": "1. Container",
+      "vectors": [
+        "tests/parsing/minimal-package.json",
+        "tests/import-csv/malformed.json"
+      ]
+    },
+    "01:f8c84e4c": {
+      "text": "A sheet entry MUST identify its CSV path and MAY identify its metadata sidecar.",
+      "file": "01-container.md",
+      "section": "1. Container",
+      "vectors": [
+        "tests/parsing/minimal-package.json"
+      ]
+    },
+    "01:5760d9ad": {
+      "text": "Readers MUST reject missing required entries, duplicate ZIP names, invalid UTF-8, and entries that exceed implementation resource limits.",
+      "file": "01-container.md",
+      "section": "1. Container",
+      "vectors": [
+        "tests/invalid/missing-manifest.json"
+      ]
+    },
+    "01:7ffe5e46": {
+      "text": "Writers SHOULD use stable entry ordering and timestamps when producing reproducible archives.",
+      "file": "01-container.md",
+      "section": "1. Container",
+      "gap": "no vector checks that writing the same workbook twice gives identical bytes"
+    },
+    "01:b1e85b3e": {
+      "text": "The package MUST NOT require a proprietary binary format or a language-specific serialization format for its tabular data.",
+      "file": "01-container.md",
+      "section": "1. Container",
+      "untestable": "design principle: the format uses ZIP, CSV and JSON"
+    },
+    "02:9072d4f1": {
+      "text": "Sheet IDs and names MUST be unique within a workbook.",
+      "file": "02-workbook.md",
+      "section": "2. Workbook",
+      "vectors": [
+        "tests/edit/sheets-and-columns.json"
+      ]
+    },
+    "02:487c499c": {
+      "text": "`name` MUST start with a letter or `_`, continue with letters, digits, `_` or `.`, and MUST NOT look like a cell reference (`A1`, `$B$2`) or be `TRUE` or `FALSE`.",
+      "file": "02-workbook.md",
+      "section": "Named ranges",
+      "vectors": [
+        "tests/invalid/named-range-cell-like.json",
+        "tests/invalid/named-range-cell-like-long.json",
+        "tests/invalid/named-range-boolean.json",
+        "tests/invalid/named-range-valid.json"
+      ]
+    },
+    "02:b983e257": {
+      "text": "Names are case-insensitive and MUST be unique within the workbook, ignoring case.",
+      "file": "02-workbook.md",
+      "section": "Named ranges",
+      "vectors": [
+        "tests/invalid/named-range-duplicate.json"
+      ]
+    },
+    "02:df2a911e": {
+      "text": "A name MUST NOT be a Core function name.",
+      "file": "02-workbook.md",
+      "section": "Named ranges",
+      "vectors": [
+        "tests/invalid/named-range-function.json"
+      ]
+    },
+    "02:cf00f8f6": {
+      "text": "Every cell reference in it MUST be sheet-qualified, because a name has no home sheet.",
+      "file": "02-workbook.md",
+      "section": "Named ranges",
+      "vectors": [
+        "tests/invalid/named-range-unqualified.json"
+      ]
+    },
+    "02:edf62990": {
+      "text": "It MUST NOT itself use a name.",
+      "file": "02-workbook.md",
+      "section": "Named ranges",
+      "vectors": [
+        "tests/invalid/named-range-uses-name.json"
+      ]
+    },
+    "02:0ef37f35": {
+      "text": "A reader MUST reject it with the diagnostic code `INVALID_NAMED_RANGE`, naming the offending `name`.",
+      "file": "02-workbook.md",
+      "section": "Named ranges",
+      "vectors": [
+        "tests/invalid/named-range-unparseable.json",
+        "tests/invalid/named-range-cell-like.json"
+      ]
+    },
+    "03:8655c66f": {
+      "text": "The sidecar's `columns[].name`, when present, repeats that header text and MUST equal it.",
+      "file": "03-sheets.md",
+      "section": "3. Sheets",
+      "vectors": [
+        "tests/invalid/column-name-agree.json",
+        "tests/invalid/column-name-mismatch.json"
+      ]
+    },
+    "03:0954dfe3": {
+      "text": "A reader MUST reject a sheet where they disagree, with the diagnostic code `COLUMN_NAME_MISMATCH`: silently picking one would hide an edit made to the other.",
+      "file": "03-sheets.md",
+      "section": "3. Sheets",
+      "vectors": [
+        "tests/invalid/column-name-mismatch.json"
+      ]
+    },
+    "03:8c78ef2d": {
+      "text": "Quoting, commas, and newlines MUST follow RFC 4180-compatible CSV rules.",
+      "file": "03-sheets.md",
+      "section": "3. Sheets",
+      "vectors": [
+        "tests/import-csv/malformed.json",
+        "tests/import-csv/ragged.json"
+      ]
+    },
+    "03:e154d4a0": {
+      "text": "It MUST NOT duplicate ordinary CSV values unless needed as a formula cache.",
+      "file": "03-sheets.md",
+      "section": "3. Sheets",
+      "gap": "no vector checks that a sidecar does not duplicate CSV values"
+    },
+    "03:9f907aa1": {
+      "text": "Sheet names MUST be non-empty, no longer than 255 Unicode scalar values, and MUST NOT contain `:` or control characters.",
+      "file": "03-sheets.md",
+      "section": "3. Sheets",
+      "gap": "only duplicate sheet names are covered (edit/sheets-and-columns.json); empty, over-long, ':' and control characters have no vector"
+    },
+    "03:a9e25628": {
+      "text": "Sheet IDs MUST be stable and MUST match the package resource names.",
+      "file": "03-sheets.md",
+      "section": "3. Sheets",
+      "gap": "no vector checks that sheet IDs are stable and match resource names"
+    },
+    "03:072b50c3": {
+      "text": "A renderer converts to pixels with `pixels = round(width * 7 + 5)` (the standard Calibri-11 approximation) and back with `width = (pixels - 5) / 7` when writing a pixel-based resize back to this field; neither direction is exact (real glyph widths vary slightly by character and by font), but both engines MUST use this same formula so a width written by one tool round-trips predictably through another.",
+      "file": "03-sheets.md",
+      "section": "3. Sheets",
+      "vectors": [
+        "tests/print/pagination.json"
+      ]
+    },
+    "03:e7646448": {
+      "text": "An interactive editor SHOULD present every sheet, including a newly created one, as at least the grid `A1:Z100` (columns A–Z, rows 1–100), padding the view with blank cells beyond the sheet's actual data.",
+      "file": "03-sheets.md",
+      "section": "Default grid",
+      "untestable": "an interactive-editor presentation default; there is nothing for an engine to compute"
+    },
+    "03:17d46608": {
+      "text": "An engine MUST NOT pad or trim a sheet on load or save, and `create` and CSV import keep the extent of the source data.",
+      "file": "03-sheets.md",
+      "section": "Default grid",
+      "gap": "no vector checks that load and save neither pad nor trim a sheet"
+    },
+    "03:685b5222": {
+      "text": "Settings are part of the workbook: an editor MUST write the print settings the user chose back to the sidecar, and a reader MUST preserve ones it does not understand.",
+      "file": "03-sheets.md",
+      "section": "Print settings",
+      "vectors": [
+        "tests/print/print-settings-preserved.json",
+        "tests/edit/set-print.json"
+      ]
+    },
+    "03:8dc5c858": {
+      "text": "An engine MUST implement pagination exactly as follows, so every engine and renderer agrees on which cells land on which page.",
+      "file": "03-sheets.md",
+      "section": "Pagination",
+      "vectors": [
+        "tests/print/pagination.json"
+      ]
+    },
+    "04:d5d9ea47": {
+      "text": "All values MUST use an object with a `type` member.",
+      "file": "04-data-types.md",
+      "section": "4. Data types",
+      "vectors": [
+        "tests/formulas/core-functions.json",
+        "tests/formulas/errors.json"
+      ]
+    },
+    "04:28b394e2": {
+      "text": "`error` MUST use a stable `code` member and MAY include a diagnostic `message`; messages are not used for semantic comparison.",
+      "file": "04-data-types.md",
+      "section": "4. Data types",
+      "vectors": [
+        "tests/formulas/errors.json",
+        "tests/calculations/cycle.json"
+      ]
+    },
+    "04:7e7b479a": {
+      "text": "Decimals MUST be encoded as base-10 strings.",
+      "file": "04-data-types.md",
+      "section": "4. Data types",
+      "vectors": [
+        "tests/formulas/core-functions.json"
+      ]
+    },
+    "04:cbe5aa00": {
+      "text": "Implementations MUST NOT silently convert invalid values to string.",
+      "file": "04-data-types.md",
+      "section": "4. Data types",
+      "gap": "a declared type that does not match its text yields a VALUE error in both engines but no vector asserts it"
+    },
+    "04:c0315b82": {
+      "text": "A decimal's text is preserved exactly (`19.50` stays `\"19.50\"`); engines MUST NOT normalize it.",
+      "file": "04-data-types.md",
+      "section": "Literal forms",
+      "vectors": [
+        "tests/import-csv/infer.json",
+        "tests/interop/xlsx-to-csvx-example.json"
+      ]
+    },
+    "05:de43a3af": {
+      "text": "A formula cell MUST contain `formula`; it MAY contain a `cached` value produced by the last successful calculation.",
+      "file": "05-cell-values.md",
+      "section": "5. Cell values",
+      "schemas": [
+        "formulas.schema.json",
+        "sheet-metadata.schema.json"
+      ]
+    },
+    "05:04660707": {
+      "text": "Readers that calculate MUST replace it when the formula is evaluated.",
+      "file": "05-cell-values.md",
+      "section": "5. Cell values",
+      "vectors": [
+        "tests/calculations/dependency-order.json"
+      ]
+    },
+    "05:0a94a7e8": {
+      "text": "Readers that cannot calculate MUST preserve the formula and cache byte-for-byte where practical.",
+      "file": "05-cell-values.md",
+      "section": "5. Cell values",
+      "examples": [
+        "formulas.csvx"
+      ]
+    },
+    "05:ccd2c1d9": {
+      "text": "`type`, `formula`, and `cached` all describe a cell's current *content*, not the cell as a slot — an editor that replaces a cell's content (a new literal value, or one formula replacing another) MUST drop any `type` and `cached` that described the old content, the same way it MUST drop a stale `formula`.",
+      "file": "05-cell-values.md",
+      "section": "5. Cell values",
+      "vectors": [
+        "tests/edit/set-cell.json"
+      ]
+    },
+    "05:858133a1": {
+      "text": "A reader with no declared type at all for a cell (no column type, no `type` override) MUST resolve its CSV text using the same literal rules as an untyped CSV value (see 04-data-types.md): blank, boolean, integer, or decimal by literal shape, otherwise string.",
+      "file": "05-cell-values.md",
+      "section": "5. Cell values",
+      "vectors": [
+        "tests/import-csv/infer.json",
+        "tests/import-csv/default-text.json"
+      ]
+    },
+    "05:9ee35e3e": {
+      "text": "An editor that offers case conversion MUST use these rules, so every engine and app agrees on the result.",
+      "file": "05-cell-values.md",
+      "section": "Text case",
+      "vectors": [
+        "tests/edit/text-case.json"
+      ]
+    },
+    "05:82e121b8": {
+      "text": "Formula cells and cells resolving to any other type, including `blank`, MUST be left exactly as they are:",
+      "file": "05-cell-values.md",
+      "section": "Text case",
+      "vectors": [
+        "tests/edit/text-case.json"
+      ]
+    },
+    "05:f3d6ef50": {
+      "text": "A code point whose mapping is not exactly one code point (`ß` → `SS`, `İ` → `i̇`) MUST be left unchanged, which keeps the result identical in every implementation.",
+      "file": "05-cell-values.md",
+      "section": "Text case",
+      "vectors": [
+        "tests/edit/text-case.json"
+      ]
+    },
+    "06:5e887df9": {
+      "text": "References are case-insensitive for matching but MUST retain their original spelling when preserved.",
+      "file": "06-formulas.md",
+      "section": "6. Formulas",
+      "vectors": [
+        "tests/formulas/absolute-markers.json",
+        "tests/edit/insert-rows.json"
+      ]
+    },
+    "06:ae198055": {
+      "text": "Formula parsing MUST be deterministic and MUST reject trailing tokens, invalid references, and unsupported syntax.",
+      "file": "06-formulas.md",
+      "section": "6. Formulas",
+      "vectors": [
+        "tests/invalid/ref-error-range.json",
+        "tests/invalid/unsupported-formula.json"
+      ]
+    },
+    "06:1d952f3b": {
+      "text": "It MUST be accepted by the parser and preserved in the stored formula text.",
+      "file": "06-formulas.md",
+      "section": "Absolute markers",
+      "vectors": [
+        "tests/formulas/absolute-markers.json"
+      ]
+    },
+    "06:f5134f0d": {
+      "text": "It is the spelling an engine writes into a formula when an edit destroys the cell a reference pointed to — for example deleting a row or column that the reference named — and the engine MUST preserve it in the stored formula text.",
+      "file": "06-formulas.md",
+      "section": "Reference errors",
+      "vectors": [
+        "tests/edit/delete-rows.json",
+        "tests/edit/delete-columns.json"
+      ]
+    },
+    "06:6bd84e82": {
+      "text": "A formula containing `#REF!` is syntactically valid: a parser MUST NOT report `NAME` or any other parse error for it.",
+      "file": "06-formulas.md",
+      "section": "Reference errors",
+      "vectors": [
+        "tests/formulas/ref-error.json",
+        "tests/calculations/ref-error-propagation.json"
+      ]
+    },
+    "07:f3b9e959": {
+      "text": "A function MUST return the same result for the same workbook state and MUST document its treatment of blanks, strings, dates, and errors.",
+      "file": "07-functions.md",
+      "section": "7. Functions",
+      "vectors": [
+        "tests/formulas/core-functions.json"
+      ]
+    },
+    "07:f6304f1c": {
+      "text": "Unknown functions produce `NAME`; implementations MAY support extensions under a registered namespace, but MUST NOT reinterpret a Core function.",
+      "file": "07-functions.md",
+      "section": "7. Functions",
+      "vectors": [
+        "tests/invalid/unsupported-formula.json"
+      ]
+    },
+    "08:ba69c63d": {
+      "text": "Unsupported style properties MUST be preserved when round-tripping.",
+      "file": "08-styles.md",
+      "section": "8. Styles",
+      "vectors": [
+        "tests/styles/preserve-unknown-style.json",
+        "tests/edit/apply-style.json"
+      ]
+    },
+    "08:a602cf35": {
+      "text": "Number formats MUST NOT alter the underlying value.",
+      "file": "08-styles.md",
+      "section": "8. Styles",
+      "gap": "no vector checks that applying a number format leaves the underlying value unchanged"
+    },
+    "08:450a089f": {
+      "text": "Writers SHOULD emit per-edge objects.",
+      "file": "08-styles.md",
+      "section": "Borders",
+      "untestable": "a writer preference; both forms are valid and read the same"
+    },
+    "08:3eb55247": {
+      "text": "Border color MUST NOT be rendered as an inset outline, box-shadow, or any other effect that draws inside the cell's content area: printing and export depend on the border sitting on the cell edge.",
+      "file": "08-styles.md",
+      "section": "Borders",
+      "untestable": "a rendering rule for renderers, not engines"
+    },
+    "08:b99191d6": {
+      "text": "`diagonal`) MUST be preserved when round-tripping.",
+      "file": "08-styles.md",
+      "section": "Borders",
+      "vectors": [
+        "tests/styles/border-per-edge.json"
+      ]
+    },
+    "09:2966212b": {
+      "text": "It MUST NOT change calculation semantics.",
+      "file": "09-validation.md",
+      "section": "9. Validation",
+      "gap": "no vector checks that a validation rule leaves calculation unchanged"
+    },
+    "09:876f8c73": {
+      "text": "Invalid input SHOULD be reported with a stable machine-readable code and MAY be rejected by an interactive editor.",
+      "file": "09-validation.md",
+      "section": "9. Validation",
+      "untestable": "an interactive editor behavior"
+    },
+    "09:d4f6d3a3": {
+      "text": "A headless reader MUST preserve invalid values rather than deleting them.",
+      "file": "09-validation.md",
+      "section": "9. Validation",
+      "gap": "no vector checks that a headless reader keeps values that fail a rule"
+    },
+    "10:db0e7f48": {
+      "text": "Independent cells MUST produce the same results regardless of worker scheduling.",
+      "file": "10-calculation.md",
+      "section": "10. Calculation",
+      "vectors": [
+        "tests/calculations/dependency-order.json",
+        "tests/calculations/cross-sheet.json",
+        "tests/calculations/range-dependency.json"
+      ]
+    },
+    "10:8d380792": {
+      "text": "Implementations MUST invalidate stale caches when dependencies change and SHOULD expose the calculation timestamp separately from workbook content.",
+      "file": "10-calculation.md",
+      "section": "10. Calculation",
+      "vectors": [
+        "tests/calculations/dependency-order.json"
+      ]
+    },
+    "11:c70d296d": {
+      "text": "They MUST NOT silently discard formulas, errors, styles, or unsupported metadata.",
+      "file": "11-import-export.md",
+      "section": "11. Import and export",
+      "vectors": [
+        "tests/interop/csvx-to-xlsx.json",
+        "tests/interop/xlsx-to-csvx-example.json",
+        "tests/interop/xlsx-named-ranges.json"
+      ]
+    },
+    "11:0025d1f5": {
+      "text": "Lossy conversions MUST report warnings with a location and reason.",
+      "file": "11-import-export.md",
+      "section": "11. Import and export",
+      "vectors": [
+        "tests/interop/csvx-to-xlsx.json",
+        "tests/interop/xlsx-named-ranges.json",
+        "tests/import-csv/ragged.json"
+      ]
+    },
+    "11:750953aa": {
+      "text": "CSV export MUST define how formulas are emitted; the Core default is to export calculated display values and report that formulas were omitted.",
+      "file": "11-import-export.md",
+      "section": "11. Import and export",
+      "gap": "CSV export is specified as a default but no engine or vector implements it"
+    },
+    "11:ec74782a": {
+      "text": "A plain `.csv` file MUST be convertible to a CSVX workbook by every conforming engine and by `csvx-cli`.",
+      "file": "11-import-export.md",
+      "section": "11.1 CSV import",
+      "vectors": [
+        "tests/import-csv/default-text.json",
+        "tests/import-csv/infer.json",
+        "tests/import-csv/no-header.json"
+      ]
+    },
+    "11:bac9839e": {
+      "text": "Engines MUST expose all four.",
+      "file": "11-import-export.md",
+      "section": "Options",
+      "vectors": [
+        "tests/import-csv/infer.json",
+        "tests/import-csv/no-header.json",
+        "tests/import-csv/default-text.json"
+      ]
+    },
+    "11:e429f19e": {
+      "text": "Input that is not valid UTF-8 MUST be rejected, not transcoded by guessing.",
+      "file": "11-import-export.md",
+      "section": "Options",
+      "gap": "no vector feeds invalid UTF-8 to the importer"
+    },
+    "11:33c59abb": {
+      "text": "The CSV resource is written with LF terminators and minimal quoting; field *content*, including embedded newlines, leading/trailing whitespace, and leading zeros, MUST be preserved exactly.",
+      "file": "11-import-export.md",
+      "section": "Structure",
+      "vectors": [
+        "tests/import-csv/default-text.json"
+      ]
+    },
+    "11:78a810e4": {
+      "text": "When `header` is `false` the importer MUST synthesize a header row of `Column 1`, `Column 2`, … (the spreadsheet-neutral \"Column N\") and insert it as row 1, so the source's first record becomes row 2; it MUST report a warning saying data rows were shifted by one.",
+      "file": "11-import-export.md",
+      "section": "Structure",
+      "vectors": [
+        "tests/import-csv/no-header.json"
+      ]
+    },
+    "11:4599303a": {
+      "text": "An empty header field is likewise named `Column N`, since a column name MUST be non-empty.",
+      "file": "11-import-export.md",
+      "section": "Structure",
+      "vectors": [
+        "tests/import-csv/empty-header-blank-line.json"
+      ]
+    },
+    "11:5f2e4bd4": {
+      "text": "Each of these MUST be reported as a warning with the 1-based source record number (the header, when present, is record 1; for an empty header field the location is `record 1`).",
+      "file": "11-import-export.md",
+      "section": "Structure",
+      "vectors": [
+        "tests/import-csv/ragged.json"
+      ]
+    },
+    "11:b87ebe49": {
+      "text": "Input with no records at all (zero bytes, or only a byte-order mark and blank lines) MUST be rejected: a sheet needs a header row.",
+      "file": "11-import-export.md",
+      "section": "Structure",
+      "vectors": [
+        "tests/import-csv/empty.json"
+      ]
+    },
+    "11:e8f23c4c": {
+      "text": "A `name` option that is empty, longer than 255 Unicode scalar values, or contains `:` or a control character MUST be rejected (`03-sheets.md`).",
+      "file": "11-import-export.md",
+      "section": "Structure",
+      "gap": "no vector passes an invalid --name option (empty, over 255, ':' or control character)"
+    },
+    "11:afb371a8": {
+      "text": "A field beginning with `=`, `+`, `-`, or `@` is **not** a formula and MUST NOT gain a `formula` entry; it is a `string` (or a number if it matches a literal form, e.g.",
+      "file": "11-import-export.md",
+      "section": "Never formulas",
+      "vectors": [
+        "tests/import-csv/default-text.json"
+      ]
+    },
+    "11:3328ebb4": {
+      "text": "The importer MUST NOT strip, escape, or alter such a field (CSV-injection mitigation is a concern of whoever later exports to a spreadsheet application, not of import fidelity).",
+      "file": "11-import-export.md",
+      "section": "Never formulas",
+      "vectors": [
+        "tests/import-csv/default-text.json"
+      ]
+    },
+    "11:f9b44492": {
+      "text": "Malformed CSV (an unterminated quote, a stray quote inside an unquoted field) MUST be rejected with an error carrying the line number; importers MUST NOT repair it silently.",
+      "file": "11-import-export.md",
+      "section": "Diagnostics",
+      "vectors": [
+        "tests/import-csv/malformed.json"
+      ]
+    },
+    "11:860eb2ac": {
+      "text": "`csvx-cli import` accepts a `.csv` input and writes a `.csvx` (it MUST map each option above to a flag and print warnings to stderr).",
+      "file": "11-import-export.md",
+      "section": "Surfaces",
+      "elsewhere": "csvx-cli end-to-end tests drive `csvx import` on CSV input with each flag and check stderr"
+    },
+    "11:44a6a7be": {
+      "text": "Engines MUST NOT add options or defaults beyond this list without amending this document.",
+      "file": "11-import-export.md",
+      "section": "Surfaces",
+      "untestable": "a process rule about amending the document"
+    },
+    "11:5ab8ea16": {
+      "text": "The extension SHOULD be implemented early enough to validate CSVX against real XLSX workbooks; it MUST provide exact-source recovery for unchanged embedded sources and explicit diagnostics for regenerated exports.",
+      "file": "11-import-export.md",
+      "section": "Surfaces",
+      "elsewhere": "csvx-go Convert tests and csvx-cli end-to-end tests recover an unmodified embedded source byte for byte"
+    },
+    "12:bf709b4d": {
+      "text": "CSVX readers MUST treat workbook content as untrusted data.",
+      "file": "12-security.md",
+      "section": "12. Security",
+      "untestable": "a principle; the specific obligations are the statements that follow"
+    },
+    "12:6cba6365": {
+      "text": "They MUST NOT execute macros, scripts, external links, formulas with side effects, or embedded files automatically.",
+      "file": "12-security.md",
+      "section": "12. Security",
+      "gap": "no vector shows that loading never executes anything; engines simply have no execution path"
+    },
+    "12:ae67eea6": {
+      "text": "Readers SHOULD enforce configurable limits for archive size, compression ratio, entry count, JSON depth, cell count, formula length, and formula dependency count.",
+      "file": "12-security.md",
+      "section": "12. Security",
+      "gap": "neither engine has configurable limits yet, so there is nothing to test"
+    },
+    "12:218c98b2": {
+      "text": "ZIP extraction MUST defend against path traversal and resource exhaustion.",
+      "file": "12-security.md",
+      "section": "12. Security",
+      "elsewhere": "engine unit tests reject absolute, `..` and NUL entry paths; no vector"
+    },
+    "12:05f547c9": {
+      "text": "A conforming Core implementation MUST reject or quarantine them, not fetch them.",
+      "file": "12-security.md",
+      "section": "12. Security",
+      "gap": "external references are not loaded by either engine, but no vector asserts rejection"
+    },
+    "12:b706a7d8": {
+      "text": "Error messages SHOULD avoid exposing local filesystem paths or secrets.",
+      "file": "12-security.md",
+      "section": "12. Security",
+      "untestable": "a quality-of-message guideline"
+    },
+    "13:13884d65": {
+      "text": "Test comparisons MUST be semantic for JSON object key ordering and exact for decimal strings, error codes, formulas, and coordinates.",
+      "file": "13-conformance.md",
+      "section": "13. Conformance",
+      "elsewhere": "every engine runner compares semantically; this describes the runners themselves"
+    },
+    "13:25636635": {
+      "text": "A test runner SHOULD report implementation name, version, supported extensions, and each vector ID.",
+      "file": "13-conformance.md",
+      "section": "13. Conformance",
+      "gap": "no runner reports implementation name, version and vector IDs yet"
+    },
+    "14:8522fd83": {
+      "text": "XLSX behavior MUST NOT redefine Core values, formulas, calculation, or errors.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14. XLSX interoperability extension",
+      "untestable": "a principle about extension scope"
+    },
+    "14:7ce34bfc": {
+      "text": "`source/original.xlsx` MUST be an opaque copy of the source bytes.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.1 Embedded source",
+      "elsewhere": "csvx-go tests check the embedded original is a byte-for-byte copy"
+    },
+    "14:7d199fcc": {
+      "text": "`source/source.json` MUST include:",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.1 Embedded source",
+      "gap": "source.json's required fields have no schema or vector"
+    },
+    "14:b4317637": {
+      "text": "The source hash MUST be the SHA-256 digest of the embedded source bytes.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.1 Embedded source",
+      "elsewhere": "csvx-go computes and verifies the SHA-256 in its XLSX tests"
+    },
+    "14:2c04fc8a": {
+      "text": "A reader MUST verify this hash before offering exact-source recovery.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.1 Embedded source",
+      "gap": "no vector or test corrupts the embedded source to prove recovery is refused"
+    },
+    "14:2d7f3045": {
+      "text": "When `authority` is `original` and the CSVX workbook has not been modified, an exporter SHOULD return the embedded source bytes unchanged.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.2 Exact-source recovery",
+      "elsewhere": "csvx-go TestExportOfEditedPackageDoesNotReturnTheStaleOriginal and csvx-cli e2e recover an unmodified source"
+    },
+    "14:573963a2": {
+      "text": "After a supported CSVX edit, `authority` MUST become `csvx`.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.2 Exact-source recovery",
+      "vectors": [
+        "tests/edit/set-cell.json"
+      ]
+    },
+    "14:0329b317": {
+      "text": "The exporter MUST NOT silently return an unchanged embedded source when that would hide the edit.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.2 Exact-source recovery",
+      "elsewhere": "csvx-go and csvx-cli end-to-end tests export an edited package and check the edit is present"
+    },
+    "14:7d1df5a2": {
+      "text": "An importer MUST inventory features it detects, including sheets, dimensions, values, formulas, cached results, shared strings, styles, number formats, merged cells, hidden content, validations, names, relationships, drawings, comments, images, charts, macros, and external references where applicable.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.3 Feature inventory and diagnostics",
+      "gap": "the feature inventory has no vector"
+    },
+    "14:633ac029": {
+      "text": "Unsupported or lossy features MUST produce diagnostics with a feature category, source location when known, severity, and reason.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.3 Feature inventory and diagnostics",
+      "vectors": [
+        "tests/interop/xlsx-named-ranges.json",
+        "tests/interop/csvx-to-xlsx.json"
+      ]
+    },
+    "14:eb0c0413": {
+      "text": "An importer MUST preserve unsupported source resources when possible or report that they cannot be preserved.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.3 Feature inventory and diagnostics",
+      "gap": "preserving or reporting unsupported source resources has no vector"
+    },
+    "14:858dedc8": {
+      "text": "Implementations MUST treat embedded sources as untrusted data and MUST NOT execute macros or external links during import or export.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.4 Security and policy",
+      "untestable": "engines have no execution path for macros or links"
+    },
+    "14:c25347a9": {
+      "text": "Macro preservation and removal MUST be explicit policy decisions and MUST be reported in diagnostics.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.4 Security and policy",
+      "gap": "macro policy and its diagnostics are not implemented or tested"
+    },
+    "14:59d63241": {
+      "text": "Implementations SHOULD provide:",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.5 Interoperability testing",
+      "untestable": "recommends that implementations provide tests"
+    },
+    "14:d3b735d4": {
+      "text": "An importer MUST map these XLSX constructs onto the sheet `print` object (03-sheets.md) and an exporter MUST map them back:",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.6 Print settings mapping",
+      "vectors": [
+        "tests/interop/xlsx-print-settings.json",
+        "tests/interop/csvx-to-xlsx.json"
+      ]
+    },
+    "14:d9c8fc04": {
+      "text": "An importer SHOULD omit `margins` that equal the defaults in 03-sheets.md and `scale` of 100, since nearly every XLSX file states them and they carry no information.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.6 Print settings mapping",
+      "vectors": [
+        "tests/interop/xlsx-print-settings.json"
+      ]
+    },
+    "14:a7971420": {
+      "text": "A paper size with no CSVX equivalent is not mapped to `paperSize`; the importer MUST keep the source value on the `print` object as `xlsxPaperSize` so it round-trips.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.6 Print settings mapping",
+      "gap": "no vector uses a paper size with no CSVX equivalent"
+    },
+    "14:885ef045": {
+      "text": "An importer MUST therefore write worksheet row 1 as the CSV header row and worksheet rows 2 and later as data records.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.7 Worksheet rows and the CSV header",
+      "vectors": [
+        "tests/interop/xlsx-to-csvx-example.json"
+      ]
+    },
+    "14:5c52e5f4": {
+      "text": "Each header cell's text becomes that column's `name`; a header cell that is empty is named after its column letter (`A`, `B`, …) because a CSV header cell MUST NOT be empty.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.7 Worksheet rows and the CSV header",
+      "elsewhere": "csvx-go xlsx_header_test.go covers empty header cells named after their column letter"
+    },
+    "14:4c71cdd6": {
+      "text": "An importer MUST map a workbook-scoped XLSX defined name (a `definedName` with no `localSheetId`) onto `namedRanges` (02-workbook.md) when its formula is a single cell reference, a single range, or a constant (number, string, or boolean), and its name satisfies the rules in 02-workbook.md.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.8 Defined names",
+      "vectors": [
+        "tests/interop/xlsx-named-ranges.json"
+      ]
+    },
+    "14:0f7d4070": {
+      "text": "Every other defined name is not imported, and the importer MUST report each as a warning with the feature `definedName` and a message naming it and giving the reason: sheet-scoped, a formula that is not a single reference or constant (for example `OFFSET(...)`), a name that breaks the 02-workbook.md rules, or a built-in `_xlnm.` name with no CSVX equivalent.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.8 Defined names",
+      "vectors": [
+        "tests/interop/xlsx-named-ranges.json"
+      ]
+    },
+    "14:80c5d5b1": {
+      "text": "If `authority` is `original` and the workbook is unmodified, an exporter SHOULD return the embedded source bytes instead.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.9 CSVX to XLSX export",
+      "elsewhere": "same as 14.2: csvx-go and csvx-cli recover an unmodified source"
+    },
+    "14:6a32a7ed": {
+      "text": "An exporter MUST replace each forbidden character with `_`, shorten to 31 characters, make names unique ignoring case, rewrite every reference to the sheet in formulas and names, and report a warning for each change.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.9 CSVX to XLSX export",
+      "vectors": [
+        "tests/interop/csvx-to-xlsx.json"
+      ]
+    },
+    "14:955c7e45": {
+      "text": "**Reporting.** An exporter MUST report each loss or transformation as a warning with feature, location and reason.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.9 CSVX to XLSX export",
+      "vectors": [
+        "tests/interop/csvx-to-xlsx.json"
+      ]
+    },
+    "15:26822da4": {
+      "text": "An engine that edits a workbook MUST implement the operations in this chapter exactly as written, so that the same edit produces the same package in every engine and app.",
+      "file": "15-edit-operations.md",
+      "section": "15. Edit operations",
+      "vectors": [
+        "tests/edit/insert-rows.json",
+        "tests/edit/delete-rows.json",
+        "tests/edit/insert-columns.json",
+        "tests/edit/delete-columns.json",
+        "tests/edit/sheets-and-columns.json",
+        "tests/edit/set-cell.json",
+        "tests/edit/apply-style.json",
+        "tests/edit/set-print.json",
+        "tests/edit/paste-translate.json",
+        "tests/edit/named-ranges.json",
+        "tests/edit/validation-refs.json",
+        "tests/edit/print-shift.json"
+      ]
+    },
+    "15:d598a9a9": {
+      "text": "A consumer app MUST call the engine for them and MUST NOT carry its own copy (AGENTS.md §5).",
+      "file": "15-edit-operations.md",
+      "section": "15. Edit operations",
+      "untestable": "a rule for consumer apps (AGENTS.md section 5), not for engines"
+    },
+    "15:2d97b6da": {
+      "text": "An operation that is invalid (below) MUST fail without changing the workbook.",
+      "file": "15-edit-operations.md",
+      "section": "15. Edit operations",
+      "vectors": [
+        "tests/edit/sheets-and-columns.json",
+        "tests/edit/set-cell.json"
+      ]
+    },
+    "15:61e719f4": {
+      "text": "`at` MUST be ≥ 2, so the header row is never displaced;",
+      "file": "15-edit-operations.md",
+      "section": "Inserting and deleting rows",
+      "vectors": [
+        "tests/edit/sheets-and-columns.json"
+      ]
+    },
+    "15:e496591b": {
+      "text": "`delete-rows(sheet, rows)` deletes the given set of rows (duplicates ignored); every row MUST be ≥ 2 and exist.",
+      "file": "15-edit-operations.md",
+      "section": "Inserting and deleting rows",
+      "vectors": [
+        "tests/edit/sheets-and-columns.json"
+      ]
+    },
+    "15:3314e89c": {
+      "text": "`delete-columns(sheet, columns)` deletes the given set of columns; a sheet MUST keep at least one column.",
+      "file": "15-edit-operations.md",
+      "section": "Inserting and deleting columns",
+      "vectors": [
+        "tests/edit/sheets-and-columns.json"
+      ]
+    },
+    "15:dfecb5c5": {
+      "text": "The name MUST satisfy 03-sheets.md and be unique in the workbook, otherwise the operation is invalid.",
+      "file": "15-edit-operations.md",
+      "section": "Sheets",
+      "vectors": [
+        "tests/edit/sheets-and-columns.json"
+      ]
+    },
+    "15:1fe891b1": {
+      "text": "A workbook MUST keep at least one sheet.",
+      "file": "15-edit-operations.md",
+      "section": "Sheets",
+      "vectors": [
+        "tests/edit/sheets-and-columns.json"
+      ]
+    },
+    "15:0f3f890e": {
+      "text": "It MUST be non-empty, because a column name MUST be non-empty; an empty text makes the operation invalid.",
+      "file": "15-edit-operations.md",
+      "section": "Setting cells",
+      "vectors": [
+        "tests/edit/set-cell.json"
+      ]
+    },
+    "15:dc157aea": {
+      "text": "The sheet MUST be recalculated afterwards (10-calculation.md).",
+      "file": "15-edit-operations.md",
+      "section": "Setting cells",
+      "gap": "the vectors compare the model before recalculation, so no vector shows the sheet is recalculated afterwards"
+    },
+    "15:cc210164": {
+      "text": "Properties the patch does not mention, including ones the engine does not understand, MUST be preserved (08-styles.md).",
+      "file": "15-edit-operations.md",
+      "section": "Styles",
+      "vectors": [
+        "tests/edit/apply-style.json"
+      ]
+    },
+    "15:aad0ed64": {
+      "text": "The result MUST conform to the sheet metadata schema, but the engine does not check that itself: schema validation is the canonical validator's job (AGENTS.md §3.3), so a saved package with a bad value is rejected there.",
+      "file": "15-edit-operations.md",
+      "section": "Print settings",
+      "untestable": "states that the engine does not validate the schema; nothing to test"
+    },
+    "03:f4c270a7": {
+      "text": "A writer MUST write the sidecar, and reference it from `workbook.json`, whenever the sheet has anything to put in it (column types or widths, row heights, cell metadata, or print settings), so that none of it is lost and no reference points at a file that is not there.",
+      "file": "03-sheets.md",
+      "section": "3. Sheets",
+      "vectors": [
+        "tests/parsing/column-metadata-preserved.json",
+        "tests/print/print-settings-preserved.json"
+      ]
+    }
+  },
+  "unmappedVectors": {
+    "tests/calculations/named-ranges.json": "covers how names evaluate (06-formulas.md, Names), which is stated without MUST or SHOULD and so is not a tracked requirement",
+    "tests/interop/xlsx-borders.json": "covers the XLSX border mapping (08-styles.md, Borders), which is descriptive rather than MUST or SHOULD"
+  }
+}

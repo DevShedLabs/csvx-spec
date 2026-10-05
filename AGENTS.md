@@ -109,6 +109,18 @@ schema it claims to implement.
      tests (`csvx-cli`'s `main_test.go` before this rule) are necessary but not sufficient on their
      own.
 
+8. **Every normative statement is accounted for, mechanically.** `tools/coverage.mjs` extracts each
+   sentence in `spec/` that says MUST or SHOULD and requires `tests/coverage.json` to say how it is
+   covered: by vectors, schemas or examples; by named engine or CLI tests; as untestable, with a
+   reason; or as a known gap, with a reason. It also requires every vector to be cited, and every
+   vector operation to be declared in `tests/runners.json` with the runner file in each engine that
+   executes it. Adding or rewording a requirement, adding a vector, or adding an operation fails the
+   check until the manifest is updated, which is what makes "spec first, tests third" enforceable
+   rather than remembered. It runs from `csvx-spec/scripts/check.sh` and from every engine's
+   `check.sh`; `--strict` additionally fails while any gap remains, for use before a release. The
+   manifest tracks MUST and SHOULD statements only; behavior described without them is covered by
+   vectors but not tracked.
+
 ## 4. Rules for csvx-cli
 
 1. `csvx-cli` is the *only* place `export`/`import`/`create`/`validate`/`codegen`/`gen test.csvx`

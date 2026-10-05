@@ -15,3 +15,9 @@ Tests are format-neutral JSON vectors. A runner loads `input`, performs the oper
 
 Decimal values are strings intentionally. Test IDs are stable and should be cited in implementation
 failure reports.
+
+## Coverage
+
+`coverage.json` records how each normative statement (MUST or SHOULD) in `spec/` is tested, and
+`runners.json` records which engine runner executes each vector operation. `node tools/coverage.mjs
+--verbose` checks both and lists the known gaps; see `AGENTS.md` rule 3.8.

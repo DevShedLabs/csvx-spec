@@ -1,0 +1,110 @@
+{
+  "description": "Which engine runner executes each vector operation. A value is a runner file in the engine's repo (checked to exist and to mention the operation), { \"unsupported\": reason } for an engine that cannot do it by design, or { \"gap\": reason } for a runner that should exist and does not. `cli` is optional.",
+  "operations": {
+    "add-sheet": {
+      "go": "edit_vectors_test.go",
+      "ts": "src/__tests__/edit-conformance.test.ts"
+    },
+    "apply-style": {
+      "go": "edit_vectors_test.go",
+      "ts": "src/__tests__/edit-conformance.test.ts"
+    },
+    "change-case": {
+      "go": "text_case_vectors_test.go",
+      "ts": "src/__tests__/text-case.test.ts"
+    },
+    "clear-style": {
+      "go": "edit_vectors_test.go",
+      "ts": "src/__tests__/edit-conformance.test.ts"
+    },
+    "csv-to-csvx": {
+      "go": "csv_import_vectors_test.go",
+      "ts": "src/__tests__/csv-import.test.ts"
+    },
+    "csvx-to-xlsx": {
+      "go": "xlsx_export_test.go",
+      "ts": {
+        "unsupported": "csvx-ts has no XLSX reader or writer; it calls the csvx CLI (csvx-ts README, \"XLSX\")"
+      }
+    },
+    "delete-columns": {
+      "go": "edit_vectors_test.go",
+      "ts": "src/__tests__/edit-conformance.test.ts"
+    },
+    "delete-rows": {
+      "go": "edit_vectors_test.go",
+      "ts": "src/__tests__/edit-conformance.test.ts"
+    },
+    "delete-sheet": {
+      "go": "edit_vectors_test.go",
+      "ts": "src/__tests__/edit-conformance.test.ts"
+    },
+    "evaluate": {
+      "go": "formula_vectors_test.go",
+      "ts": "src/__tests__/formula-conformance.test.ts"
+    },
+    "insert-columns": {
+      "go": "edit_vectors_test.go",
+      "ts": "src/__tests__/edit-conformance.test.ts"
+    },
+    "insert-rows": {
+      "go": "edit_vectors_test.go",
+      "ts": "src/__tests__/edit-conformance.test.ts"
+    },
+    "load-sheet": {
+      "go": "edit_vectors_test.go",
+      "ts": "src/__tests__/edit-conformance.test.ts"
+    },
+    "paginate": {
+      "go": "paginate_vectors_test.go",
+      "ts": "src/__tests__/pagination.test.ts"
+    },
+    "parse-formula": {
+      "go": "formula_vectors_test.go",
+      "ts": "src/__tests__/edit-conformance.test.ts"
+    },
+    "paste": {
+      "go": "edit_vectors_test.go",
+      "ts": "src/__tests__/edit-conformance.test.ts"
+    },
+    "recalculate": {
+      "go": "formula_vectors_test.go",
+      "ts": "src/__tests__/formula-conformance.test.ts"
+    },
+    "recalculate-workbook": {
+      "go": "formula_vectors_test.go",
+      "ts": "src/__tests__/formula-conformance.test.ts"
+    },
+    "rename-sheet": {
+      "go": "edit_vectors_test.go",
+      "ts": "src/__tests__/edit-conformance.test.ts"
+    },
+    "round-trip": {
+      "go": "package_vectors_test.go",
+      "ts": "src/__tests__/package-conformance.test.ts"
+    },
+    "set-cell": {
+      "go": "edit_vectors_test.go",
+      "ts": "src/__tests__/edit-conformance.test.ts"
+    },
+    "set-print": {
+      "go": "edit_vectors_test.go",
+      "ts": "src/__tests__/edit-conformance.test.ts"
+    },
+    "validate-named-ranges": {
+      "go": "edit_vectors_test.go",
+      "ts": "src/__tests__/edit-conformance.test.ts"
+    },
+    "validate-package": {
+      "go": "package_vectors_test.go",
+      "ts": "src/__tests__/package-conformance.test.ts"
+    },
+    "xlsx-to-csvx": {
+      "go": "xlsx_names_test.go",
+      "ts": {
+        "unsupported": "csvx-ts has no XLSX reader or writer; it calls the csvx CLI (csvx-ts README, \"XLSX\")"
+      },
+      "cli": "cmd/csvx/interop_test.go"
+    }
+  }
+}

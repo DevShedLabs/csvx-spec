@@ -7,6 +7,11 @@ print settings — so the Nth line of the CSV file is always row N. The header r
 the sheet: it can carry style and other cell metadata under row-1 coordinates (`A1`, `B1`, …), and
 a header cell's text is the column's `name`.
 
+The sidecar's `columns[].name`, when present, repeats that header text and MUST equal it. A reader
+MUST reject a sheet where they disagree, with the diagnostic code `COLUMN_NAME_MISMATCH`: silently
+picking one would hide an edit made to the other. A writer derives both from the same value, so an
+engine that renames a column changes both. (The vectors are `tests/invalid/column-name-*.json`.)
+
 ```text
 sheets/sales.csv
 sheets/sales.meta.json
@@ -17,7 +22,9 @@ to the sheet's declared column metadata when available; without metadata, they a
 commas, and newlines MUST follow RFC 4180-compatible CSV rules.
 
 The metadata sidecar contains stable identity, column types, formulas, styles, validation, and
-explicit cell overrides. It MUST NOT duplicate ordinary CSV values unless needed as a formula cache.
+explicit cell overrides. A writer MUST write the sidecar, and reference it from `workbook.json`,
+whenever the sheet has anything to put in it (column types or widths, row heights, cell metadata, or
+print settings), so that none of it is lost and no reference points at a file that is not there. It MUST NOT duplicate ordinary CSV values unless needed as a formula cache.
 A sidecar MAY represent sparse cell metadata using A1 coordinates. An absent cell is blank; an
 explicit blank metadata entry is allowed when style or validation must be attached.
 

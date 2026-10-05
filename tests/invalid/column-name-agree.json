@@ -1,0 +1,24 @@
+{
+	"id": "column-name-agree",
+	"note": "sidecar names equal the header text",
+	"operation": "load-sheet",
+	"input": {
+		"csv": "Name,Amount\nAda,1\n",
+		"metadata": {
+			"columns": [
+				{
+					"id": "A",
+					"name": "Name"
+				},
+				{
+					"id": "B",
+					"name": "Amount"
+				}
+			]
+		}
+	},
+	"expected": {
+		"valid": true,
+		"errors": []
+	}
+}

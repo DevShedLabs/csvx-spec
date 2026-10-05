@@ -1,0 +1,46 @@
+{
+	"id": "column-metadata-preserved",
+	"operation": "round-trip",
+	"input": {
+		"sheetMetadata": {
+			"id": "sheet-1",
+			"name": "Report",
+			"columns": [
+				{
+					"id": "A",
+					"name": "Amount",
+					"type": "decimal",
+					"width": 12.5
+				},
+				{
+					"id": "B",
+					"name": "Note"
+				}
+			],
+			"rowHeights": {
+				"2": 30
+			}
+		}
+	},
+	"expected": {
+		"sheetMetadata": {
+			"id": "sheet-1",
+			"name": "Report",
+			"columns": [
+				{
+					"id": "A",
+					"name": "Amount",
+					"type": "decimal",
+					"width": 12.5
+				},
+				{
+					"id": "B",
+					"name": "Note"
+				}
+			],
+			"rowHeights": {
+				"2": 30
+			}
+		}
+	}
+}
