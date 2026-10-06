@@ -1036,6 +1036,26 @@
       "vectors": [
         "tests/calculations/cross-sheet-references.json"
       ]
+    },
+    "08:c14b28d1": {
+      "text": "An absent key takes its default; a writer SHOULD omit a key that equals its default.",
+      "file": "08-styles.md",
+      "section": "Fonts",
+      "gap": "no vector checks that a writer omits default-valued font keys; the engines write what they are given"
+    },
+    "08:0aafe715": {
+      "text": "Unknown keys in `font` MUST be preserved (above).",
+      "file": "08-styles.md",
+      "section": "Fonts",
+      "vectors": [
+        "tests/edit/apply-style.json"
+      ]
+    },
+    "08:0e744fdf": {
+      "text": "Whether an editor grows a row to fit a larger font is its own behavior; an editor that does so SHOULD write the resulting height to `rowHeights` so the file, not the editor, holds it.",
+      "file": "08-styles.md",
+      "section": "Fonts",
+      "untestable": "a SHOULD on editor behavior; the stored rowHeights it asks for is covered by the row-height vectors, the auto-fit decision is UI-only"
     }
   },
   "unmappedVectors": {

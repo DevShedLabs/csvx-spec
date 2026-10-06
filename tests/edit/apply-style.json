@@ -556,6 +556,80 @@
 					}
 				]
 			}
+		},
+		{
+			"note": "font size is a number in points; patching it merges with the font's other keys and an unknown key survives",
+			"operation": "apply-style",
+			"input": {
+				"workbook": {
+					"styles": [
+						{
+							"id": "s0",
+							"font": {
+								"bold": true,
+								"hinting": "full"
+							}
+						}
+					],
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sheet1",
+							"columns": [
+								{
+									"id": "A",
+									"name": "Qty"
+								}
+							],
+							"records": [
+								[
+									"1"
+								]
+							],
+							"cells": {
+								"A2": {
+									"style": "s0"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sheet1",
+					"coordinates": [
+						"A2"
+					],
+					"patch": {
+						"font": {
+							"size": 14
+						}
+					}
+				}
+			},
+			"expected": {
+				"cells": {
+					"A2": {
+						"style": "s1"
+					}
+				},
+				"styles": [
+					{
+						"id": "s0",
+						"font": {
+							"bold": true,
+							"hinting": "full"
+						}
+					},
+					{
+						"id": "s1",
+						"font": {
+							"bold": true,
+							"hinting": "full",
+							"size": 14
+						}
+					}
+				]
+			}
 		}
 	]
 }

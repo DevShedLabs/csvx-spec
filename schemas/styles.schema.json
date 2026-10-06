@@ -25,7 +25,18 @@
         "properties": {
           "id": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$" },
           "numberFormat": { "type": "string" },
-          "font": { "type": "object", "additionalProperties": true },
+          "font": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "size": { "type": "number", "exclusiveMinimum": 0, "description": "Font size in points (spec/08-styles.md); default 11." },
+              "bold": { "type": "boolean" },
+              "italic": { "type": "boolean" },
+              "underline": { "type": "boolean" },
+              "color": { "type": "string" }
+            },
+            "additionalProperties": true
+          },
           "fill": { "type": "object", "additionalProperties": true },
           "border": {
             "type": "object",

@@ -18,6 +18,28 @@ grouping separators, multi-currency disambiguation, etc.), which is a substantia
 this version does not attempt to solve. Text that doesn't match the format's own shape falls through
 to the normal untyped literal rules, same as if no `numberFormat` were present at all.
 
+## Fonts
+
+`font` is an object with these keys, all optional:
+
+| Key | Value | Default | Meaning |
+| --- | --- | --- | --- |
+| `name` | string | renderer's | Font family name. |
+| `size` | number > 0 | `11` | Font size in points, XLSX's own unit. A JSON number, never a string (`11`, `10.5`). |
+| `bold` | boolean | `false` | Bold weight. |
+| `italic` | boolean | `false` | Italic. |
+| `underline` | boolean | `false` | Underline. |
+| `color` | string | renderer's | A CSS hex color (`#RRGGBB`). |
+
+An absent key takes its default; a writer SHOULD omit a key that equals its default. A pixel-based
+renderer converts a size with `pixels = points * 4/3`, as for row heights (03-sheets.md). Unknown
+keys in `font` MUST be preserved (above).
+
+A font size does not change a row's height. A row's height is its `rowHeights` entry, or 15 points
+when it has none (03-sheets.md), and that stored height is what printing and export use. Whether an
+editor grows a row to fit a larger font is its own behavior; an editor that does so SHOULD write the
+resulting height to `rowHeights` so the file, not the editor, holds it.
+
 ## Borders
 
 `border` describes the cell's own edges, not an outline drawn around its content. It has up to four
