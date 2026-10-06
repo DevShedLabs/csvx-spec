@@ -82,7 +82,7 @@ export function requirements() {
 /** Every operation named by a vector under tests/, with the vectors that use it. */
 function vectorOperations() {
   const operations = new Map()
-  const files = walk(path.join(root, 'tests'), (f) => f.endsWith('.json') && !/coverage\.json$|runners\.json$/.test(f))
+  const files = walk(path.join(root, 'tests'), (f) => f.endsWith('.json') && !/coverage\.json$|runners\.json$|[\\/]fixtures[\\/]/.test(f))
   for (const file of files) {
     const vector = JSON.parse(readFileSync(file, 'utf8'))
     const used = new Set([vector.operation, ...(vector.cases ?? []).map((c) => c.operation)].filter(Boolean))

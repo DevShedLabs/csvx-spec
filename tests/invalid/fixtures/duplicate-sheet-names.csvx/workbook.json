@@ -1,0 +1,16 @@
+{
+	"id": "book-1",
+	"version": "1.0",
+	"sheets": [
+		{
+			"id": "sheet-1",
+			"name": "Sales",
+			"path": "sheets/sheet-1.csv"
+		},
+		{
+			"id": "sheet-2",
+			"name": "SALES",
+			"path": "sheets/sheet-2.csv"
+		}
+	]
+}

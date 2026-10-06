@@ -31,7 +31,7 @@ to the normal untyped literal rules, same as if no `numberFormat` were present a
 | `underline` | boolean | `false` | Underline. |
 | `color` | string | renderer's | A CSS hex color (`#RRGGBB`). |
 
-An absent key takes its default; a writer SHOULD omit a key that equals its default. A pixel-based
+An absent key takes its default, so a writer may omit a key that equals it. A pixel-based
 renderer converts a size with `pixels = points * 4/3`, as for row heights (03-sheets.md). Unknown
 keys in `font` MUST be preserved (above).
 

@@ -1,0 +1,45 @@
+{
+	"id": "xlsx-to-csvx-cross-sheet",
+	"operation": "xlsx-to-csvx",
+	"note": "examples/cross-sheet.xlsx: sheets Sales, Q1 and Summary. Q1!A2 quotes Sales needlessly; Summary!A2 reads the cell-like sheet 'Q1'; Summary!A3 is a three-dimensional reference and Summary!A4 reads another workbook",
+	"input": "../../examples/cross-sheet.xlsx",
+	"expected": {
+		"schemaValid": true,
+		"formulas": [
+			{
+				"sheet": "Q1",
+				"cell": "A2",
+				"formula": "=SUM(Sales!B2:B3)"
+			},
+			{
+				"sheet": "Summary",
+				"cell": "A2",
+				"formula": "='Q1'!A2+Sales!B2"
+			}
+		],
+		"values": [
+			{
+				"sheet": "Summary",
+				"cell": "A3",
+				"type": "integer",
+				"value": 40
+			},
+			{
+				"sheet": "Summary",
+				"cell": "A4",
+				"type": "integer",
+				"value": 7
+			}
+		],
+		"warnings": [
+			{
+				"feature": "formula",
+				"path": "Summary!A3"
+			},
+			{
+				"feature": "formula",
+				"path": "Summary!A4"
+			}
+		]
+	}
+}

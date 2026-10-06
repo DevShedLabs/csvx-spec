@@ -7,6 +7,7 @@
 		"samples": [
 			{"sheet": "Sheet1", "cell": "A1", "type": "string", "value": "Average salary for a Senior Software Engineer"},
 			{"sheet": "Sheet1", "cell": "A1", "style.font.bold": true},
+			{"sheet": "Sheet1", "cell": "B33", "style.font.size": 11},
       {"sheet": "Sheet1", "cell": "B1", "value": ""},
       {"sheet": "Sheet1", "cell": "C1", "value": "Minimum"},
       {"sheet": "Sheet1", "cell": "A2", "value": "40 hours a week"},

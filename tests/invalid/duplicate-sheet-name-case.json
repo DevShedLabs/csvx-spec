@@ -1,0 +1,14 @@
+{
+	"id": "invalid-duplicate-sheet-name-case",
+	"note": "sheet names are unique ignoring ASCII case: Sales and SALES collide, because formulas find a sheet by name",
+	"operation": "validate-package",
+	"input": "tests/invalid/fixtures/duplicate-sheet-names.csvx",
+	"expected": {
+		"valid": false,
+		"errors": [
+			{
+				"code": "DUPLICATE_SHEET_NAME"
+			}
+		]
+	}
+}

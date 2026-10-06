@@ -1006,19 +1006,28 @@
       "text": "An importer MUST write each qualifier as 06-formulas.md requires of a writer, so a name XLSX quoted needlessly is bare again, and an exporter writes the qualifier as XLSX accepts it, quoting any name that is not a plain identifier.",
       "file": "14-xlsx-interoperability.md",
       "section": "14.11 Cross-sheet references",
-      "gap": "no XLSX fixture with a three-dimensional or external-workbook reference yet, and neither importer emits the warning"
+      "vectors": [
+        "tests/interop/xlsx-cross-sheet.json",
+        "tests/interop/csvx-to-xlsx.json"
+      ]
     },
     "14:0c163541": {
       "text": "An importer MUST NOT guess a meaning for either.",
       "file": "14-xlsx-interoperability.md",
       "section": "14.11 Cross-sheet references",
-      "gap": "no XLSX fixture with a three-dimensional or external-workbook reference yet, and neither importer emits the warning"
+      "vectors": [
+        "tests/interop/xlsx-cross-sheet.json",
+        "tests/interop/csvx-to-xlsx.json"
+      ]
     },
     "14:6f1506ed": {
       "text": "It MUST report a warning with the feature `formula`, the cell's location, and the reason, and it MUST keep the cell's cached result as the cell's value without the formula, so no formula that Core would reject is written into the package.",
       "file": "14-xlsx-interoperability.md",
       "section": "14.11 Cross-sheet references",
-      "gap": "no XLSX fixture with a three-dimensional or external-workbook reference yet, and neither importer emits the warning"
+      "vectors": [
+        "tests/interop/xlsx-cross-sheet.json",
+        "tests/interop/csvx-to-xlsx.json"
+      ]
     },
     "15:f2e0117a": {
       "text": "The name MUST satisfy 03-sheets.md and be unique in the workbook ignoring ASCII case (02-workbook.md), otherwise the operation is invalid; changing only the case of the sheet's own name is valid.",
@@ -1037,12 +1046,6 @@
         "tests/calculations/cross-sheet-references.json"
       ]
     },
-    "08:c14b28d1": {
-      "text": "An absent key takes its default; a writer SHOULD omit a key that equals its default.",
-      "file": "08-styles.md",
-      "section": "Fonts",
-      "gap": "no vector checks that a writer omits default-valued font keys; the engines write what they are given"
-    },
     "08:0aafe715": {
       "text": "Unknown keys in `font` MUST be preserved (above).",
       "file": "08-styles.md",
@@ -1056,6 +1059,14 @@
       "file": "08-styles.md",
       "section": "Fonts",
       "untestable": "a SHOULD on editor behavior; the stored rowHeights it asks for is covered by the row-height vectors, the auto-fit decision is UI-only"
+    },
+    "02:d5c7b2e8": {
+      "text": "A reader MUST reject a package whose sheet names collide that way with the diagnostic code `DUPLICATE_SHEET_NAME`, naming the second sheet (the vector is `tests/invalid/duplicate-sheet-name-case.json`).",
+      "file": "02-workbook.md",
+      "section": "2. Workbook",
+      "vectors": [
+        "tests/invalid/duplicate-sheet-name-case.json"
+      ]
     }
   },
   "unmappedVectors": {

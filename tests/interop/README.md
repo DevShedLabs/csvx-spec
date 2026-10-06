@@ -42,6 +42,12 @@ warnings recorded in the source metadata, by `name`, in order) are used by `xlsx
 `../../schemas/*.json` (via `../../validator` or an engine's native equivalent) — a passing interop
 test implies a passing schema-shape test, not just the reverse.
 
+`xlsx-cross-sheet.json` (spec 14.11) uses `examples/cross-sheet.xlsx`, a hand-assembled workbook whose
+formulas include a needlessly quoted sheet, a cell-like sheet name (`Q1`), a three-dimensional
+reference and a reference into another workbook. Its `formulas` are expected formula text, `values`
+the cells that keep only a cached result because their formula was dropped, and `warnings` the
+`formula` diagnostics by `path`.
+
 ## Current status (2026-09-30)
 
 - `xlsx-to-csvx` is implemented (`csvx-go`'s `Convert`) and is the only direction currently

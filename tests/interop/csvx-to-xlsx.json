@@ -99,7 +99,7 @@
 			}
 		},
 		{
-			"note": "cross-sheet formulas and several sheets",
+			"note": "cross-sheet formulas and several sheets; the needless quotes around Sales in the source formula are gone after the XLSX round trip (14.11)",
 			"input": "../../examples/multi-sheet.csvx",
 			"expected": {
 				"schemaValid": true,
@@ -113,7 +113,7 @@
 					{
 						"sheet": "Summary",
 						"cell": "A2",
-						"formula": "=SUM('Sales'!A2:A3)",
+						"formula": "=SUM(Sales!A2:A3)",
 						"cached.value": "22.50"
 					}
 				]
