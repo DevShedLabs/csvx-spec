@@ -1,0 +1,8 @@
+{
+	"id": "invalid-cross-sheet-range-3d",
+	"operation": "parse-formula",
+	"input": "=SUM(Sales!B2:Other!B10)",
+	"expected": {
+		"valid": false
+	}
+}

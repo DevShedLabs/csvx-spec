@@ -59,7 +59,10 @@ When rows or columns of sheet S change, every reference that targets S is rewrit
   begins with `=`. A value that does not begin with `=` (a literal, a comma-separated list) is not
   a formula and is left alone. An unqualified reference in one targets the sheet the cell is on.
 
-A reference targets S if it is qualified with S's name, or is unqualified and sits on S. `$` anchors are preserved:
+A reference targets S if it is qualified with S's name (compared ignoring ASCII case), or is unqualified and sits on S.
+A qualified range targets the sheet its qualifier names, for both ends, so `Sales!B2:B10` on any sheet
+moves with Sales, and a qualified range keeps its qualifier (or qualifiers, if both ends had one) when
+only its row or column numbers change. `$` anchors are preserved:
 inserting and deleting treat absolute and relative references alike. Spelling, case and quoting of
 untouched parts are preserved. Rewriting acts on the parsed formula; text in string literals is
 never touched. References to row 1 are never affected by a row operation.
@@ -94,12 +97,15 @@ single header line, `""`. Editors display the default grid of 03-sheets.md aroun
 into the file.
 
 `rename-sheet(sheet, name)` changes the sheet's `name` only. The name MUST satisfy 03-sheets.md and
-be unique in the workbook, otherwise the operation is invalid. The `id` and `path` do not change.
+be unique in the workbook ignoring ASCII case (02-workbook.md), otherwise the operation is invalid;
+changing only the case of the sheet's own name is valid. The `id` and `path` do not change.
 Every sheet-qualified reference to the sheet in the places listed under "Reference rewriting" is
-rewritten to the new name, quoted as 06-formulas.md requires for the new name.
+rewritten to the new name, quoted as 06-formulas.md requires for the new name. A range that
+qualifies both ends has both qualifiers rewritten.
 
 `delete-sheet(sheet)` removes the sheet and its resources. A workbook MUST keep at least one sheet.
-Every reference qualified with the deleted sheet's name, in the same places, is replaced by `#REF!`.
+Every reference qualified with the deleted sheet's name, in the same places, is replaced by `#REF!`;
+a qualified range, with both of its ends and any second qualifier, becomes a single `#REF!`.
 
 ## Setting cells
 
@@ -119,7 +125,8 @@ Every reference qualified with the deleted sheet's name, in the same places, is 
   Anything else is stored exactly as typed.
 
 `style` and `validation` are never changed by `set-cell`. A metadata entry left empty is removed.
-The sheet MUST be recalculated afterwards (10-calculation.md). A coordinate beyond the sheet's
+The workbook MUST be recalculated afterwards (10-calculation.md), since formulas on other sheets
+may read the changed cell. A coordinate beyond the sheet's
 current extent extends the sheet with blank rows, and with columns that have the empty name, as needed.
 
 `paste(sheet, anchor, rows, from?)` applies a rectangular array of texts, the top-left at `anchor`,

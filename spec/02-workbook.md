@@ -5,6 +5,8 @@ style references.
 
 Required fields are `id`, `version`, and `sheets`. IDs are stable opaque strings matching
 `^[A-Za-z][A-Za-z0-9_-]{0,63}$`. Sheet IDs and names MUST be unique within a workbook.
+Names MUST also be unique ignoring ASCII case, so `Sales` and `SALES` cannot both exist: formulas
+find a sheet by name (06-formulas.md, Sheet references).
 
 The core workbook object is:
 

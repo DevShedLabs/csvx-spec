@@ -177,3 +177,18 @@ is kept as the number.
 **Errors.** An error cell's `cached` code and its CSV text use the CSVX code (`DIV0`, written `#DIV0`
 in the CSV), by the table in 14.9. An XLSX error literal with no entry in the table keeps its text
 without the `#` and `!` or `?` suffix.
+
+## 14.11 Cross-sheet references
+
+XLSX writes a sheet qualifier as `Sheet!A1` or `'Sheet Name'!A1`, and a range on another sheet as
+`Sheet!A1:B5`; these are CSVX's qualifiers and ranges (06-formulas.md, Sheet references). An importer
+MUST write each qualifier as 06-formulas.md requires of a writer, so a name XLSX quoted needlessly is
+bare again, and an exporter writes the qualifier as XLSX accepts it, quoting any name that is not a
+plain identifier. Exporting a formula reads its references with the sheet names that 14.9 produced:
+a renamed sheet changes every qualifier that names it.
+
+XLSX also has references CSVX Core does not: a three-dimensional reference (`Sheet1:Sheet3!A1`) and a
+reference into another workbook (`[1]Sheet1!A1`). An importer MUST NOT guess a meaning for either. It
+MUST report a warning with the feature `formula`, the cell's location, and the reason, and it MUST
+keep the cell's cached result as the cell's value without the formula, so no formula that Core would
+reject is written into the package.

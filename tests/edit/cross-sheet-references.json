@@ -1,0 +1,705 @@
+{
+	"id": "edit-cross-sheet-references",
+	"cases": [
+		{
+			"note": "rows inserted inside a range qualified from another sheet grow it, whichever way the qualifier is spelled",
+			"operation": "insert-rows",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								}
+							],
+							"records": [
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								]
+							],
+							"cells": {}
+						},
+						{
+							"id": "sheet-2",
+							"name": "Summary",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								}
+							],
+							"records": [
+								[
+									"",
+									""
+								]
+							],
+							"cells": {
+								"A2": {
+									"formula": "=SUM(Sales!B2:B6)"
+								},
+								"A3": {
+									"formula": "=SUM(sales!B2:SALES!B6)"
+								},
+								"A4": {
+									"formula": "=SUM(B2:B6)"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales",
+					"at": 4,
+					"count": 2
+				}
+			},
+			"expected": {
+				"formulas": {
+					"sheet-2": {
+						"A2": "=SUM(Sales!B2:B8)",
+						"A3": "=SUM(sales!B2:SALES!B8)",
+						"A4": "=SUM(B2:B6)"
+					}
+				}
+			}
+		},
+		{
+			"note": "deleting every row of a qualified range replaces the whole range, qualifiers included, with #REF!",
+			"operation": "delete-rows",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								}
+							],
+							"records": [
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								]
+							],
+							"cells": {}
+						},
+						{
+							"id": "sheet-2",
+							"name": "Summary",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								}
+							],
+							"records": [
+								[
+									"",
+									""
+								]
+							],
+							"cells": {
+								"A2": {
+									"formula": "=SUM(Sales!B3:B4)+1"
+								},
+								"A3": {
+									"formula": "=SUM(Sales!B3:Sales!B4)"
+								},
+								"A4": {
+									"formula": "=SUM(Sales!B2:B6)"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales",
+					"rows": [
+						3,
+						4
+					]
+				}
+			},
+			"expected": {
+				"formulas": {
+					"sheet-2": {
+						"A2": "=SUM(#REF!)+1",
+						"A3": "=SUM(#REF!)",
+						"A4": "=SUM(Sales!B2:B4)"
+					}
+				}
+			}
+		},
+		{
+			"note": "rename-sheet rewrites a qualified range, both qualifiers when both ends have one, quoting by the 06 rule",
+			"operation": "rename-sheet",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								}
+							],
+							"records": [
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								]
+							],
+							"cells": {}
+						},
+						{
+							"id": "sheet-2",
+							"name": "Summary",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								}
+							],
+							"records": [
+								[
+									"",
+									""
+								]
+							],
+							"cells": {
+								"A2": {
+									"formula": "=SUM(Sales!B2:B6)"
+								},
+								"A3": {
+									"formula": "=SUM(Sales!B2:Sales!B6)"
+								},
+								"A4": {
+									"formula": "=Sales!A2"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales",
+					"name": "Q1"
+				}
+			},
+			"expected": {
+				"names": [
+					"Q1",
+					"Summary"
+				],
+				"formulas": {
+					"sheet-2": {
+						"A2": "=SUM('Q1'!B2:B6)",
+						"A3": "=SUM('Q1'!B2:'Q1'!B6)",
+						"A4": "='Q1'!A2"
+					}
+				}
+			}
+		},
+		{
+			"note": "rename-sheet leaves a plain identifier bare and escapes a quote in the new name",
+			"operation": "rename-sheet",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								}
+							],
+							"records": [
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								]
+							],
+							"cells": {}
+						},
+						{
+							"id": "sheet-2",
+							"name": "Summary",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								}
+							],
+							"records": [
+								[
+									"",
+									""
+								]
+							],
+							"cells": {
+								"A2": {
+									"formula": "=SUM(Sales!B2:B6)"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales",
+					"name": "Bob's Data"
+				}
+			},
+			"expected": {
+				"names": [
+					"Bob's Data",
+					"Summary"
+				],
+				"formulas": {
+					"sheet-2": {
+						"A2": "=SUM('Bob''s Data'!B2:B6)"
+					}
+				}
+			}
+		},
+		{
+			"note": "delete-sheet turns a qualified range into one #REF!",
+			"operation": "delete-sheet",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								}
+							],
+							"records": [
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								]
+							],
+							"cells": {}
+						},
+						{
+							"id": "sheet-2",
+							"name": "Summary",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								}
+							],
+							"records": [
+								[
+									"",
+									""
+								]
+							],
+							"cells": {
+								"A2": {
+									"formula": "=SUM(Sales!B2:B6)"
+								},
+								"A3": {
+									"formula": "=SUM(Sales!B2:Sales!B6)"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales"
+				}
+			},
+			"expected": {
+				"formulas": {
+					"sheet-2": {
+						"A2": "=SUM(#REF!)",
+						"A3": "=SUM(#REF!)"
+					}
+				}
+			}
+		},
+		{
+			"note": "a name that differs from another sheet only in case is not unique",
+			"operation": "rename-sheet",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								}
+							],
+							"records": [
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								]
+							],
+							"cells": {}
+						},
+						{
+							"id": "sheet-2",
+							"name": "Summary",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								}
+							],
+							"records": [
+								[
+									"",
+									""
+								]
+							],
+							"cells": {}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Summary",
+					"name": "SALES"
+				}
+			},
+			"expected": {
+				"valid": false
+			}
+		},
+		{
+			"note": "changing only the case of a sheet's own name is valid and rewrites references to it",
+			"operation": "rename-sheet",
+			"input": {
+				"workbook": {
+					"sheets": [
+						{
+							"id": "sheet-1",
+							"name": "Sales",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								}
+							],
+							"records": [
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								],
+								[
+									"",
+									""
+								]
+							],
+							"cells": {}
+						},
+						{
+							"id": "sheet-2",
+							"name": "Summary",
+							"columns": [
+								{
+									"id": "A",
+									"name": "A"
+								},
+								{
+									"id": "B",
+									"name": "B"
+								}
+							],
+							"records": [
+								[
+									"",
+									""
+								]
+							],
+							"cells": {
+								"A2": {
+									"formula": "=Sales!A2"
+								}
+							}
+						}
+					]
+				},
+				"args": {
+					"sheet": "Sales",
+					"name": "SALES"
+				}
+			},
+			"expected": {
+				"names": [
+					"SALES",
+					"Summary"
+				],
+				"formulas": {
+					"sheet-2": {
+						"A2": "=SALES!A2"
+					}
+				}
+			}
+		}
+	]
+}

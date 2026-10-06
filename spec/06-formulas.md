@@ -9,7 +9,8 @@ binary   = expression operator expression
 operator = "+" | "-" | "*" | "/" | "%" | "=" | "!=" | "<" | "<=" | ">" | ">="
 reference = [sheet "!"] cell
 cell     = ["$"] column ["$"] row
-range    = reference ":" reference
+range    = [sheet "!"] cell ":" cell | sheet "!" cell ":" sheet "!" cell
+sheet    = bare-name | "'" quoted-name "'"
 ref-error = "#REF!"
 name     = identifier
 
@@ -19,8 +20,40 @@ part of Core 1.0.
 ```
 
 References are case-insensitive for matching but MUST retain their original spelling when preserved.
-Quoted sheet names use single quotes with doubled single quotes for escaping. Formula parsing MUST
-be deterministic and MUST reject trailing tokens, invalid references, and unsupported syntax.
+Formula parsing MUST be deterministic and MUST reject trailing tokens, invalid references, and
+unsupported syntax.
+
+## Sheet references
+
+A reference or range reads another sheet when it is qualified with that sheet's name:
+`=Sales!B2`, `=SUM('Q1 Totals'!B2:B10)`. A formula MAY mix any number of sheets, its own included:
+`=SUM(Q1!B2:B10)+SUM(Q2!B2:B10)-Adjust!A1`. A qualifier is the sheet's `name` (02-workbook.md),
+never its `id` or `path`.
+
+- **Resolution.** The qualifier is matched against the workbook's sheet names ignoring ASCII case.
+  Sheet names are unique under that comparison, so at most one sheet matches. A qualifier that
+  matches no sheet is not a parse error: the reference evaluates to `REF`, as does a range
+  qualified with it. Qualifying a reference with the formula's own sheet is the same as leaving it
+  unqualified.
+- **Quoting.** A quoted qualifier is delimited by single quotes, with a single quote inside the
+  name written as two (`'Bob''s Data'!A1`). A bare qualifier is an ASCII letter or `_` followed by
+  ASCII letters, digits and `_`. A parser MUST accept a quoted qualifier whether or not it needed
+  quoting. A writer that composes a qualifier (rename-sheet, 15-edit-operations.md; an importer,
+  14-xlsx-interoperability.md) MUST write it bare only when it is a valid bare qualifier, is not
+  cell-like (letters followed by digits, such as `Q1` or `FY2026`, optionally with `$`), and is not
+  `TRUE` or `FALSE` ignoring case; otherwise it MUST quote it. A qualifier already in a formula
+  keeps its spelling until an operation changes it.
+- **Ranges.** `Sales!B2:B10` is a range on Sales: the qualifier applies to both ends. Both ends may
+  carry it (`Sales!B2:Sales!B10`) when they name the same sheet. A range whose ends name different
+  sheets (`Sales!B2:Other!B10`) is a three-dimensional range, which Core 1.0 does not have, and a
+  range whose first end is unqualified but whose second is qualified (`B2:Sales!B10`) is
+  ambiguous; a parser MUST reject both as invalid syntax. Any function that accepts a range accepts
+  a qualified one, and `$` markers behave as on the home sheet.
+- **What is read.** A qualified reference reads the cell exactly as that sheet's own formulas
+  would: a formula cell yields its calculated value (never a stale `cached` one; 10-calculation.md),
+  any other cell its typed value, a coordinate beyond the sheet's extent is blank, and row 1 yields
+  the column's header text. Errors in the referenced cell propagate into the formula that reads it.
+  Cells on other sheets are read, never changed: a formula has no effect outside its own cell.
 
 ## Absolute markers
 

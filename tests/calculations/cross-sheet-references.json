@@ -1,0 +1,349 @@
+{
+	"id": "calculation-cross-sheet-references",
+	"operation": "recalculate-workbook",
+	"cases": [
+		{
+			"note": "one formula combines ranges and cells from several sheets, quoted names included",
+			"input": {
+				"sheets": {
+					"Summary": {
+						"A1": {
+							"formula": "=SUM(Q1!B2:B3)+SUM('Q2 Sales'!B2:B3)-Adjust!A1"
+						}
+					},
+					"Q1": {
+						"B2": {
+							"value": {
+								"type": "integer",
+								"value": 1
+							}
+						},
+						"B3": {
+							"value": {
+								"type": "integer",
+								"value": 2
+							}
+						}
+					},
+					"Q2 Sales": {
+						"B2": {
+							"value": {
+								"type": "integer",
+								"value": 10
+							}
+						},
+						"B3": {
+							"value": {
+								"type": "integer",
+								"value": 20
+							}
+						}
+					},
+					"Adjust": {
+						"A1": {
+							"value": {
+								"type": "integer",
+								"value": 3
+							}
+						}
+					}
+				}
+			},
+			"expected": {
+				"Summary": {
+					"A1": {
+						"type": "integer",
+						"value": 30
+					}
+				}
+			}
+		},
+		{
+			"note": "sheet qualifiers match ignoring case; a self-qualified reference equals an unqualified one",
+			"input": {
+				"sheets": {
+					"Sheet1": {
+						"A1": {
+							"value": {
+								"type": "integer",
+								"value": 5
+							}
+						},
+						"B1": {
+							"formula": "=sheet1!A1+SALES!A1"
+						},
+						"C1": {
+							"formula": "=A1+Sheet1!A1"
+						},
+						"D1": {
+							"formula": "='Sales'!A1+1"
+						}
+					},
+					"Sales": {
+						"A1": {
+							"value": {
+								"type": "integer",
+								"value": 7
+							}
+						}
+					}
+				}
+			},
+			"expected": {
+				"Sheet1": {
+					"B1": {
+						"type": "integer",
+						"value": 12
+					},
+					"C1": {
+						"type": "integer",
+						"value": 10
+					},
+					"D1": {
+						"type": "integer",
+						"value": 8
+					}
+				}
+			}
+		},
+		{
+			"note": "both ends of a range may carry the same qualifier; a quote in a name is doubled",
+			"input": {
+				"sheets": {
+					"Sheet1": {
+						"A1": {
+							"formula": "=SUM(Data!A1:Data!A2)"
+						},
+						"A2": {
+							"formula": "=SUM('Bob''s Data'!A1:A2)"
+						}
+					},
+					"Data": {
+						"A1": {
+							"value": {
+								"type": "integer",
+								"value": 1
+							}
+						},
+						"A2": {
+							"value": {
+								"type": "integer",
+								"value": 2
+							}
+						}
+					},
+					"Bob's Data": {
+						"A1": {
+							"value": {
+								"type": "integer",
+								"value": 4
+							}
+						},
+						"A2": {
+							"value": {
+								"type": "integer",
+								"value": 5
+							}
+						}
+					}
+				}
+			},
+			"expected": {
+				"Sheet1": {
+					"A1": {
+						"type": "integer",
+						"value": 3
+					},
+					"A2": {
+						"type": "integer",
+						"value": 9
+					}
+				}
+			}
+		},
+		{
+			"note": "a cell-like sheet name must be quoted, and a range reads a chain of formulas on another sheet",
+			"input": {
+				"sheets": {
+					"Report": {
+						"A1": {
+							"formula": "=SUM('Q1'!A1:A3)"
+						}
+					},
+					"Q1": {
+						"A1": {
+							"value": {
+								"type": "integer",
+								"value": 1
+							}
+						},
+						"A2": {
+							"formula": "=A1*2"
+						},
+						"A3": {
+							"formula": "=Calc!A1+A2"
+						}
+					},
+					"Calc": {
+						"A1": {
+							"formula": "=Q1!A2*10"
+						}
+					}
+				}
+			},
+			"expected": {
+				"Report": {
+					"A1": {
+						"type": "integer",
+						"value": 25
+					}
+				},
+				"Q1": {
+					"A2": {
+						"type": "integer",
+						"value": 2
+					},
+					"A3": {
+						"type": "integer",
+						"value": 22
+					}
+				},
+				"Calc": {
+					"A1": {
+						"type": "integer",
+						"value": 20
+					}
+				}
+			}
+		},
+		{
+			"note": "blank cells and cells beyond the other sheet are blank; text is ignored by SUM",
+			"input": {
+				"sheets": {
+					"Sheet1": {
+						"A1": {
+							"formula": "=SUM(Data!A1:A50)"
+						},
+						"A2": {
+							"formula": "=Data!Z99+1"
+						}
+					},
+					"Data": {
+						"A1": {
+							"value": {
+								"type": "integer",
+								"value": 4
+							}
+						},
+						"A2": {
+							"value": {
+								"type": "string",
+								"value": "note"
+							}
+						}
+					}
+				}
+			},
+			"expected": {
+				"Sheet1": {
+					"A1": {
+						"type": "integer",
+						"value": 4
+					},
+					"A2": {
+						"type": "integer",
+						"value": 1
+					}
+				}
+			}
+		},
+		{
+			"note": "an error in a cell on another sheet propagates into the formulas that read it, singly or in a range",
+			"input": {
+				"sheets": {
+					"Sheet1": {
+						"A1": {
+							"formula": "=Data!A1+1"
+						},
+						"A2": {
+							"formula": "=SUM(Data!A1:A2)"
+						}
+					},
+					"Data": {
+						"A1": {
+							"formula": "=1/0"
+						},
+						"A2": {
+							"value": {
+								"type": "integer",
+								"value": 2
+							}
+						}
+					}
+				}
+			},
+			"expected": {
+				"Sheet1": {
+					"A1": {
+						"type": "error",
+						"code": "DIV0"
+					},
+					"A2": {
+						"type": "error",
+						"code": "DIV0"
+					}
+				},
+				"Data": {
+					"A1": {
+						"type": "error",
+						"code": "DIV0"
+					}
+				}
+			}
+		},
+		{
+			"note": "a qualified range with an unknown sheet is REF; a cycle through a cross-sheet range is CYCLE",
+			"input": {
+				"sheets": {
+					"Sheet1": {
+						"A1": {
+							"formula": "=SUM(Nope!A1:A3)"
+						},
+						"B1": {
+							"formula": "=SUM(Other!A1:A2)"
+						}
+					},
+					"Other": {
+						"A1": {
+							"value": {
+								"type": "integer",
+								"value": 1
+							}
+						},
+						"A2": {
+							"formula": "=Sheet1!B1"
+						}
+					}
+				}
+			},
+			"expected": {
+				"Sheet1": {
+					"A1": {
+						"type": "error",
+						"code": "REF"
+					},
+					"B1": {
+						"type": "error",
+						"code": "CYCLE"
+					}
+				},
+				"Other": {
+					"A2": {
+						"type": "error",
+						"code": "CYCLE"
+					}
+				}
+			}
+		}
+	]
+}

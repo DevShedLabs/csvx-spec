@@ -443,14 +443,6 @@
         "tests/calculations/total-below-range.json"
       ]
     },
-    "10:8d380792": {
-      "text": "Implementations MUST invalidate stale caches when dependencies change and SHOULD expose the calculation timestamp separately from workbook content.",
-      "file": "10-calculation.md",
-      "section": "10. Calculation",
-      "vectors": [
-        "tests/calculations/dependency-order.json"
-      ]
-    },
     "11:c70d296d": {
       "text": "They MUST NOT silently discard formulas, errors, styles, or unsupported metadata.",
       "file": "11-import-export.md",
@@ -832,28 +824,12 @@
         "tests/edit/sheets-and-columns.json"
       ]
     },
-    "15:dfecb5c5": {
-      "text": "The name MUST satisfy 03-sheets.md and be unique in the workbook, otherwise the operation is invalid.",
-      "file": "15-edit-operations.md",
-      "section": "Sheets",
-      "vectors": [
-        "tests/edit/sheets-and-columns.json"
-      ]
-    },
     "15:1fe891b1": {
       "text": "A workbook MUST keep at least one sheet.",
       "file": "15-edit-operations.md",
       "section": "Sheets",
       "vectors": [
         "tests/edit/sheets-and-columns.json"
-      ]
-    },
-    "15:dc157aea": {
-      "text": "The sheet MUST be recalculated afterwards (10-calculation.md).",
-      "file": "15-edit-operations.md",
-      "section": "Setting cells",
-      "vectors": [
-        "tests/edit/set-cell.json"
       ]
     },
     "15:cc210164": {
@@ -975,6 +951,90 @@
       "section": "Structure",
       "vectors": [
         "tests/import-csv/ragged.json"
+      ]
+    },
+    "02:13eb6b75": {
+      "text": "Names MUST also be unique ignoring ASCII case, so `Sales` and `SALES` cannot both exist: formulas find a sheet by name (06-formulas.md, Sheet references).",
+      "file": "02-workbook.md",
+      "section": "2. Workbook",
+      "vectors": [
+        "tests/edit/cross-sheet-references.json"
+      ]
+    },
+    "06:27b8fd50": {
+      "text": "A parser MUST accept a quoted qualifier whether or not it needed quoting.",
+      "file": "06-formulas.md",
+      "section": "Sheet references",
+      "vectors": [
+        "tests/calculations/cross-sheet-references.json"
+      ]
+    },
+    "06:cbe07857": {
+      "text": "A writer that composes a qualifier (rename-sheet, 15-edit-operations.md; an importer, 14-xlsx-interoperability.md) MUST write it bare only when it is a valid bare qualifier, is not cell-like (letters followed by digits, such as `Q1` or `FY2026`, optionally with `$`), and is not `TRUE` or `FALSE` ignoring case; otherwise it MUST quote it.",
+      "file": "06-formulas.md",
+      "section": "Sheet references",
+      "vectors": [
+        "tests/edit/cross-sheet-references.json",
+        "tests/edit/sheets-and-columns.json"
+      ]
+    },
+    "06:0a4cea39": {
+      "text": "A range whose ends name different sheets (`Sales!B2:Other!B10`) is a three-dimensional range, which Core 1.0 does not have, and a range whose first end is unqualified but whose second is qualified (`B2:Sales!B10`) is ambiguous; a parser MUST reject both as invalid syntax.",
+      "file": "06-formulas.md",
+      "section": "Sheet references",
+      "vectors": [
+        "tests/invalid/cross-sheet-range-3d.json",
+        "tests/invalid/cross-sheet-range-leading-unqualified.json"
+      ]
+    },
+    "10:4af4a464": {
+      "text": "Implementations MUST invalidate stale caches when dependencies change, on any sheet: a change to a cell recalculates every formula cell that depends on it directly or through other formulas, in every sheet of the workbook, not only the sheet that was edited.",
+      "file": "10-calculation.md",
+      "section": "10. Calculation",
+      "vectors": [
+        "tests/calculations/cross-sheet-references.json",
+        "tests/calculations/cross-sheet.json"
+      ]
+    },
+    "10:0f2089c2": {
+      "text": "Implementations SHOULD expose the calculation timestamp separately from workbook content.",
+      "file": "10-calculation.md",
+      "section": "10. Calculation",
+      "untestable": "a SHOULD about how an API exposes the calculation timestamp; no format-neutral observable"
+    },
+    "14:e5deb17a": {
+      "text": "An importer MUST write each qualifier as 06-formulas.md requires of a writer, so a name XLSX quoted needlessly is bare again, and an exporter writes the qualifier as XLSX accepts it, quoting any name that is not a plain identifier.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.11 Cross-sheet references",
+      "gap": "no XLSX fixture with a three-dimensional or external-workbook reference yet, and neither importer emits the warning"
+    },
+    "14:0c163541": {
+      "text": "An importer MUST NOT guess a meaning for either.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.11 Cross-sheet references",
+      "gap": "no XLSX fixture with a three-dimensional or external-workbook reference yet, and neither importer emits the warning"
+    },
+    "14:6f1506ed": {
+      "text": "It MUST report a warning with the feature `formula`, the cell's location, and the reason, and it MUST keep the cell's cached result as the cell's value without the formula, so no formula that Core would reject is written into the package.",
+      "file": "14-xlsx-interoperability.md",
+      "section": "14.11 Cross-sheet references",
+      "gap": "no XLSX fixture with a three-dimensional or external-workbook reference yet, and neither importer emits the warning"
+    },
+    "15:f2e0117a": {
+      "text": "The name MUST satisfy 03-sheets.md and be unique in the workbook ignoring ASCII case (02-workbook.md), otherwise the operation is invalid; changing only the case of the sheet's own name is valid.",
+      "file": "15-edit-operations.md",
+      "section": "Sheets",
+      "vectors": [
+        "tests/edit/sheets-and-columns.json",
+        "tests/edit/cross-sheet-references.json"
+      ]
+    },
+    "15:794f0862": {
+      "text": "The workbook MUST be recalculated afterwards (10-calculation.md), since formulas on other sheets may read the changed cell.",
+      "file": "15-edit-operations.md",
+      "section": "Setting cells",
+      "vectors": [
+        "tests/calculations/cross-sheet-references.json"
       ]
     }
   },
